@@ -15,9 +15,9 @@ type Config struct {
 	WorkerInstances              int `arg:"env" default:"30"`
 	Port                         int `arg:"env" default:"8000"`
 	GracefulShutdownTimeoutInSec int `arg:"env" default:"10"`
-	MaxBodySizeInMb				 int `arg:"env" default:"32"`
+	MaxBodySizeInMb              int `arg:"env" default:"32"`
 
-	CachedAssets []string `arg:"env"` //TODO:!
+	// CachedAssets []string `arg:"env"` //TODO:!
 }
 
 func ContextWithConfig(parentCtx context.Context, config Config) context.Context {

@@ -68,14 +68,13 @@ func (s *Server) Serve(ctx context.Context) {
 		Str("url", fmt.Sprintf("%s%s/index.html", localUrl, swaggerRoute)).
 		Msg("serving open-api (swagger) description")
 
-
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedHeaders:   []string{"*"},
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost},
 		AllowCredentials: true,
 	})
-	
+
 	r.Use(
 		maxBodySizeMiddleware(config.Get(ctx).MaxBodySizeInMb),
 		loggingMiddleware(),

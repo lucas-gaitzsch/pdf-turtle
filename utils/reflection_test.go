@@ -12,13 +12,13 @@ type testStruct struct {
 	TestProp4 *bool   `default:"true"`
 	TestProp5 *string `default:"testteststr2"`
 	TestProp6 string
-	testProp7 bool    `default:"true"`
+	testProp7 bool `default:"true"`
 }
 
 func TestReflectDefaultValuesEmptyStruct(t *testing.T) {
 	testBool := true
 	testStr := "testteststr2"
-	shouldBe := testStruct {
+	shouldBe := testStruct{
 		TestProp1: "testteststr",
 		TestProp2: 5,
 		TestProp3: true,
@@ -26,8 +26,7 @@ func TestReflectDefaultValuesEmptyStruct(t *testing.T) {
 		TestProp5: &testStr,
 	}
 
-	s := &testStruct{
-	}
+	s := &testStruct{}
 	ReflectDefaultValues(s)
 
 	if !reflect.DeepEqual(shouldBe, *s) {
@@ -38,7 +37,7 @@ func TestReflectDefaultValuesEmptyStruct(t *testing.T) {
 func TestReflectDefaultValuesPartiallyPrefilledStruct(t *testing.T) {
 	testBool := true
 	testStr := "peter"
-	shouldBe := testStruct {
+	shouldBe := testStruct{
 		TestProp1: "peter",
 		TestProp2: 5,
 		TestProp3: true,
@@ -57,11 +56,10 @@ func TestReflectDefaultValuesPartiallyPrefilledStruct(t *testing.T) {
 	}
 }
 
-
 func TestReflectDefaultValuesNoDefaultAnnotation(t *testing.T) {
 	testBool := true
 	testStr := "peter"
-	shouldBe := testStruct {
+	shouldBe := testStruct{
 		TestProp1: "peter",
 		TestProp2: 5,
 		TestProp3: true,

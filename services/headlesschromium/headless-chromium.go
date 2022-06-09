@@ -40,7 +40,7 @@ func NewChromiumBrowser(ctx context.Context) (context.Context, context.CancelFun
 
 	log.Info().Msg("new browser initialized")
 
-	cancel := func() { 
+	cancel := func() {
 		log.Warn().Msg("cancel called: close chromium")
 		cancelCctx()
 		cancelAllocCtx()
@@ -134,13 +134,10 @@ func runWithTimeOut(outerCtx context.Context, tasks chromedp.Tasks) chromedp.Act
 	}
 }
 
-func injectCss(css *string) chromedp.Action {
+func injectCssByScript(css *string) chromedp.Action {
 	if css == nil {
 		log.Warn().Msg("css to inject is nil")
 	}
-
-	// https://github.com/chromedp/chromedp/issues/520#issuecomment-836446035
-	// TODO: a bit hacky .. could be better ...
 
 	const script = `
 	(css) => {

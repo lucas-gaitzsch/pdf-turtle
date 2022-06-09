@@ -44,19 +44,19 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 		if err != nil {
 			panic(err)
 		}
-	
+
 		headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.HeaderModel)
 		if err != nil {
 			panic(err)
 		}
-	
+
 		footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.FooterModel)
 		if err != nil {
 			panic(err)
 		}
 
 		data.HeaderHtml = *headerHtml
-		data.FooterHtml = *footerHtml		
+		data.FooterHtml = *footerHtml
 	})
 
 	pdfData, err := utils.LogExecutionTimeWithResult("render pdf", &ctx, func() (io.Reader, error) {
@@ -67,7 +67,6 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 		panic(err)
 	}
 
-	
 	if err := writePdf(ctx, w, pdfData); err != nil {
 		panic(err)
 	}
@@ -94,7 +93,7 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 
 		templateData.ParseJsonModelDataFromDoubleEncodedString()
-		
+
 		templateEngine := templating.GetTemplateEngineByKey(templateData.TemplateEngine)
 
 		bodyErr := templateEngine.Test(templateData.BodyHtmlTemplate, templateData.BodyModel)
@@ -121,7 +120,7 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		response.IsValid = false
 	}
-	
+
 	if err := writeJson(ctx, w, response); err != nil {
 		panic(err)
 	}

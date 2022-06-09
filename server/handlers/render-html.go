@@ -37,7 +37,7 @@ func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	if err := writePdf(ctx, w, pdfData); err != nil {
 		panic(err)
 	}

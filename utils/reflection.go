@@ -55,7 +55,7 @@ func convertTo(str string, toType reflect.Type) (reflect.Value, bool) {
 			return reflect.Value{}, false
 		}
 	case reflect.Bool:
-		if b, err := strconv.ParseBool(str); err==nil {
+		if b, err := strconv.ParseBool(str); err == nil {
 			return reflect.ValueOf(b), true
 		} else {
 			log.Warn().Err(err).Str("toParse", str).Msg("cant parse default bool")

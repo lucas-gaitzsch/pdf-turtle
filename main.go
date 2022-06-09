@@ -23,7 +23,7 @@ func initConfigByArgs(ctx context.Context) context.Context {
 
 func main() {
 	ctx := initConfigByArgs(context.Background())
-	
+
 	logging.InitLogger(ctx)
 
 	log.Info().Msg("Hey dude 👋 .. I am Karl, your turtle for today 🐢")
@@ -39,9 +39,9 @@ func main() {
 
 	sigint := make(chan os.Signal, 1)
 	signal.Notify(sigint, os.Interrupt)
-	
+
 	<-sigint
-	
+
 	log.Info().Msg("shutting service down...")
 	srv.Close(ctx)
 	pdfService.Close()

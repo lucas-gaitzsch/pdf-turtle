@@ -15,10 +15,10 @@ import (
 // TODO:! Testen was passiert, wenn chromium prozess beendet wurde
 
 type HtmlToPdfRendererChromium struct {
-	ChromiumCtx        context.Context
-	chromiumCancelFunc context.CancelFunc
-	LocalCtx           context.Context
-	PreloadedMergedCss *string
+	ChromiumCtx          context.Context
+	chromiumCancelFunc   context.CancelFunc
+	LocalCtx             context.Context
+	PreloadedMergedCss   *string
 	watcherCtxCancelFunc context.CancelFunc
 }
 
@@ -47,7 +47,7 @@ func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
 
 			r.watcherCtxCancelFunc()
 			r.startWatchingChromiumInstance()
-		}		
+		}
 	}()
 }
 

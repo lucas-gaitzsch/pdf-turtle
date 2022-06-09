@@ -15,7 +15,7 @@ func (te *DjangoTemplateEngine) Execute(templateHtml *string, model interface{})
 		return &empty, err
 	}
 
-	html, err := t.Execute(pongo2.Context{"model": model })
+	html, err := t.Execute(pongo2.Context{"model": model})
 
 	if err != nil {
 		return &empty, err

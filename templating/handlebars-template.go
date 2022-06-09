@@ -21,6 +21,6 @@ func (te *HandlebarsTemplateEngine) Execute(templateHtml *string, model interfac
 
 func (te *HandlebarsTemplateEngine) Test(templateHtml *string, model interface{}) error {
 	_, err := te.Execute(templateHtml, model)
-	
+
 	return err
 }

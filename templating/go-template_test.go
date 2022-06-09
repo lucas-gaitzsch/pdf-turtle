@@ -45,40 +45,40 @@ const goTemplateInvalid = `
 
 func TestGoTemplate(t *testing.T) {
 	templateStr := goTemplate
-	
+
 	htmlBody, err := GetTemplateEngineByKey(GoTemplateEngineKey).Execute(&templateStr, getModel())
 	if err != nil {
-        t.Fatalf("cant generate template %v", err)
-    }
+		t.Fatalf("cant generate template %v", err)
+	}
 
 	if *htmlBody != resultHtml {
-        t.Fatalf("html not equal")
-    }
+		t.Fatalf("html not equal")
+	}
 }
 
 func TestGoTemplateTestValid(t *testing.T) {
 	templateStr := goTemplate
-	
+
 	err := GetTemplateEngineByKey(GoTemplateEngineKey).Test(&templateStr, getModel())
 	if err != nil {
-        t.Fatalf("cant generate template %v", err)
-    }
+		t.Fatalf("cant generate template %v", err)
+	}
 }
 
 func TestGoTemplateTestInvalid(t *testing.T) {
 	templateStr := goTemplateInvalid
-	
+
 	err := GetTemplateEngineByKey(GoTemplateEngineKey).Test(&templateStr, getModel())
 	if err == nil {
-        t.Fatalf("should fail")
-    }
+		t.Fatalf("should fail")
+	}
 }
 
 func TestGoTemplateTestUnknownProperty(t *testing.T) {
 	templateStr := goTemplateUnknownProperty
-	
+
 	err := GetTemplateEngineByKey(GoTemplateEngineKey).Test(&templateStr, getModel())
 	if err == nil {
-        t.Fatalf("should fail")
-    }
+		t.Fatalf("should fail")
+	}
 }
