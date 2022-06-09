@@ -1,0 +1,17 @@
+name: build and test
+on: [push]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    # container:
+    #   image: dockerhub-username:docker-image-tag
+    steps:
+      - uses: actions/checkout@v3
+      # - uses: browser-actions/setup-chrome@latest
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.18.0'
+      - run: go build
+      # - run: go test -timeout 30s -run ^TestRenderHugeHtmlAsPdf$ pdf-turtle/services/renderer
+      # - run: go test -p 1 ./...
+      - run: go test ./...

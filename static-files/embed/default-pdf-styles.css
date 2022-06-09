@@ -1,0 +1,27 @@
+html, body {
+    font-size: 13pt;
+    font-family: 'Open Sans', 'Roboto', 'Inter', 'Verdana', 'Geneva', 'Tahoma', sans-serif;
+    font-weight: normal;
+    -webkit-print-color-adjust: exact;
+}
+
+body {
+    margin: 0;
+}
+
+#footer .default-footer {
+    font-size: 12pt;
+    text-align: right;
+    width: 100%;
+    padding-bottom: 8mm;
+}
+
+.page-break-before {
+    page-break-before: always;
+}
+.page-break-after {
+    page-break-after: always;
+}
+.no-page-break-inside {
+    page-break-inside: avoid;
+}

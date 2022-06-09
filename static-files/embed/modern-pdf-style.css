@@ -1,0 +1,48 @@
+.modern-pdf-style {
+}
+
+.modern-pdf-style table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1pt solid #333;
+}
+
+.modern-pdf-style table tr > * {
+    border-collapse: collapse;
+    border: 0.25mm solid #333;
+    padding: 1.5mm;
+}
+.modern-pdf-style table th {
+    font-weight: bold;
+    background-color: #eee;
+}
+.modern-pdf-style table td {
+}
+
+.modern-pdf-style table.reduced {
+    border: none;
+}
+.modern-pdf-style table.reduced th, .modern-pdf-style table.reduced td {
+    border-collapse: collapse;
+    border: none;
+    border-bottom: 0.5mm solid #333;
+    padding: 1.5mm;
+}
+.modern-pdf-style table.reduced th {
+    font-weight: bold;
+    background-color: unset;
+    border: none;
+    border-bottom: 0.7mm solid #333;
+}
+.modern-pdf-style table.reduced tr:last-child td {
+    border: none;
+}
+
+.modern-pdf-style table.striped tr:nth-child(even) td {
+    background-color: #f6f6f6;
+}
+
+.modern-pdf-style table.no-vertical-borders tr > * {
+    border-right: none;
+    border-left: none;
+}

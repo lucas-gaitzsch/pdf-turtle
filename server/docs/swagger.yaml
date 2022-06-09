@@ -1,0 +1,185 @@
+basePath: /api
+definitions:
+  PageSize:
+    properties:
+      height:
+        description: in mm
+        example: 297
+        type: integer
+      width:
+        description: in mm
+        example: 210
+        type: integer
+    type: object
+  RenderData:
+    properties:
+      bodyHtml:
+        example: <b>Hello World</b>
+        type: string
+      footerHtml:
+        example: <div class="default-footer"><span class="pageNumber"></span> of <span
+          class="totalPages"></span></div>
+        type: string
+      headerHtml:
+        example: <h1>Heading</h1>
+        type: string
+      options:
+        $ref: '#/definitions/RenderOptions'
+    type: object
+  RenderOptions:
+    properties:
+      excludeBuiltinStyles:
+        default: false
+        type: boolean
+      landscape:
+        default: false
+        type: boolean
+      margins:
+        $ref: '#/definitions/RenderOptionsMargins'
+        description: margins in mm; fallback to default if null
+      pageFormat:
+        default: A4
+        enum:
+        - A0
+        - A1
+        - A2
+        - A3
+        - A4
+        - A5
+        - A6
+        - Letter
+        - Legal
+        type: string
+      pageSize:
+        $ref: '#/definitions/PageSize'
+        description: page size in mm; overrides page format
+    type: object
+  RenderOptionsMargins:
+    properties:
+      bottom:
+        default: 20
+        description: margin bottom in mm
+        type: integer
+      left:
+        default: 25
+        description: margin left in mm
+        type: integer
+      right:
+        default: 25
+        description: margin right in mm
+        type: integer
+      top:
+        default: 25
+        description: margin top in mm
+        type: integer
+    type: object
+  RenderTemplateData:
+    properties:
+      bodyHtmlTemplate:
+        type: string
+      bodyModel: {}
+      footerHtmlTemplate:
+        type: string
+      footerModel: {}
+      headerHtmlTemplate:
+        type: string
+      headerModel: {}
+      options:
+        $ref: '#/definitions/RenderOptions'
+      templateEngine:
+        default: golang
+        enum:
+        - golang
+        - handlebars
+        - django
+        type: string
+    type: object
+  TemplateTestResult:
+    properties:
+      bodyTemplateError:
+        type: string
+      footerTemplateError:
+        type: string
+      headerTemplateError:
+        type: string
+      isValid:
+        type: boolean
+    type: object
+info:
+  contact:
+    email: lucas@gaitzsch.dev
+    name: Lucas Gaitzsch
+  description: '#TODO'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: '#TODO'
+  title: PdfTurtle API
+  version: "1.0"
+paths:
+  /pdf/from/html-template/render:
+    post:
+      consumes:
+      - application/json
+      description: Returns PDF file generated from HTML template plus model of body,
+        header and footer
+      parameters:
+      - description: Render Data
+        in: body
+        name: renderTemplateData
+        required: true
+        schema:
+          $ref: '#/definitions/RenderTemplateData'
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: Render PDF from HTML template
+      tags:
+      - render html-template
+  /pdf/from/html-template/test:
+    post:
+      consumes:
+      - application/json
+      description: Returns information about matching model data to template
+      parameters:
+      - description: Render Data
+        in: body
+        name: renderTemplateData
+        required: true
+        schema:
+          $ref: '#/definitions/RenderTemplateData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TemplateTestResult'
+      summary: Test HTML template matching model
+      tags:
+      - test html-template
+  /pdf/from/html/render:
+    post:
+      consumes:
+      - application/json
+      description: Returns PDF file generated from HTML of body, header and footer
+      parameters:
+      - description: Render Data
+        in: body
+        name: renderData
+        required: true
+        schema:
+          $ref: '#/definitions/RenderData'
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: Render PDF from HTML
+      tags:
+      - render html
+schemes:
+- http
+swagger: "2.0"
