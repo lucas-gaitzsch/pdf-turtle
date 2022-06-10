@@ -62,6 +62,11 @@ func (rbs *RendererBackgroundService) Init(outerCtx context.Context) {
 	}
 
 	go rbs.handleRequests(outerCtx)
+
+	log.
+		Info().
+		Int("workerInstances", rbs.workerInstances).
+		Msgf("render service started with %d", rbs.workerInstances)
 }
 
 func (rbs *RendererBackgroundService) preloadCssFilesToCache() {
@@ -197,6 +202,6 @@ func (rbs *RendererBackgroundService) Close() {
 		rbs.releaseWorker()
 	}
 
-	rbs.localCtxCancel()
 	rbs.htmlToPdfRenderer.Close()
+	rbs.localCtxCancel()
 }

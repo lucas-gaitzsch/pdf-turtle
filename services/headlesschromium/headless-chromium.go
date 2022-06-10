@@ -41,7 +41,7 @@ func NewChromiumBrowser(ctx context.Context) (context.Context, context.CancelFun
 	log.Info().Msg("new browser initialized")
 
 	cancel := func() {
-		log.Warn().Msg("cancel called: close chromium")
+		log.Info().Msg("cancel called: close chromium")
 		cancelCctx()
 		cancelAllocCtx()
 	}
@@ -62,7 +62,6 @@ func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context,
 	go func() {
 		select {
 		case <-cctx.Done():
-			log.Debug().Msg("cancel cctx")
 		case <-outerCtx.Done():
 			log.Info().Msg("cancel chromium pdf rendering by outer context")
 			cancel()

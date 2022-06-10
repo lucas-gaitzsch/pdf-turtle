@@ -41,7 +41,7 @@ func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
 		select {
 		case <-watcherCtx.Done():
 		case <-r.ChromiumCtx.Done():
-			log.Warn().Err(r.ChromiumCtx.Err()).Msg("Chromium crashed -> new Chromium instance")
+			log.Warn().Err(r.ChromiumCtx.Err()).Msg("chromium crashed -> new chromium instance")
 			r.chromiumCancelFunc()
 			r.ChromiumCtx, r.chromiumCancelFunc = headlesschromium.NewChromiumBrowser(r.LocalCtx)
 

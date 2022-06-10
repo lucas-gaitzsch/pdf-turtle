@@ -8,6 +8,7 @@ import (
 	"pdf-turtle/server"
 	"pdf-turtle/services/renderer"
 	"pdf-turtle/utils/logging"
+	"syscall"
 
 	"github.com/rs/zerolog/log"
 
@@ -22,32 +23,32 @@ func initConfigByArgs(ctx context.Context) context.Context {
 }
 
 func main() {
-	ctx := initConfigByArgs(context.Background())
+	ctx, cancel := context.WithCancel(context.Background())
+	ctx = initConfigByArgs(ctx)
 
 	logging.InitLogger(ctx)
 
 	log.Info().Msg("Hey dude 👋 .. I am Karl, your turtle for today 🐢")
 
-	ctx, cancel := context.WithCancel(ctx)
-
 	pdfService := renderer.NewRendererBackgroundService(ctx)
 
+	// init server
 	serverCtx := context.WithValue(ctx, config.ContextKeyPdfService, pdfService)
-
 	srv := server.Server{}
 	srv.Serve(serverCtx)
 
-	sigint := make(chan os.Signal, 1)
-	signal.Notify(sigint, os.Interrupt)
+	// listen to os signals
+	osSignals := make(chan os.Signal, 1)
+	signal.Notify(osSignals, syscall.SIGINT, syscall.SIGTERM)
+	<-osSignals
 
-	<-sigint
-
+	// cleanup resources
 	log.Info().Msg("shutting service down...")
 	srv.Close(ctx)
 	pdfService.Close()
 	cancel()
 
+	// exit
 	log.Info().Msg("🐢 bye bye dude.")
-
 	os.Exit(0)
 }

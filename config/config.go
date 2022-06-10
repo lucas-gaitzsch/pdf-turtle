@@ -8,11 +8,11 @@ import (
 )
 
 type Config struct {
-	LogLevelDebug          bool `arg:"env" default:"true"`
-	LogJsonOutput          bool `arg:"env" default:"false"`
-	RenderTimeoutInSeconds int  `arg:"env" default:"30"`
+	LogLevelDebug          bool `arg:"env:LOG_LEVEL_DEBUG" default:"true"`
+	LogJsonOutput          bool `arg:"env:LOG_JSON_OUTPUT" default:"false"`
+	RenderTimeoutInSeconds int  `arg:"env:RENDER_TIMEOUT_IN_SECONDS" default:"30"`
 
-	WorkerInstances              int `arg:"env" default:"30"`
+	WorkerInstances              int `arg:"env:WORKER_INSTANCES" default:"30"`
 	Port                         int `arg:"env" default:"8000"`
 	GracefulShutdownTimeoutInSec int `arg:"env" default:"10"`
 	MaxBodySizeInMb              int `arg:"env" default:"32"`
