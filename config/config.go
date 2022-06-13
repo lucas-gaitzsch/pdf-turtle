@@ -8,14 +8,16 @@ import (
 )
 
 type Config struct {
-	LogLevelDebug          bool `arg:"env:LOG_LEVEL_DEBUG" default:"true"`
-	LogJsonOutput          bool `arg:"env:LOG_JSON_OUTPUT" default:"false"`
-	RenderTimeoutInSeconds int  `arg:"env:RENDER_TIMEOUT_IN_SECONDS" default:"30"`
+	LogLevelDebug          bool `arg:"--logDebug,env:LOG_LEVEL_DEBUG" default:"false" help:"Debug log level active"`
+	LogJsonOutput          bool `arg:"--logJsonOutput,env:LOG_JSON_OUTPUT" default:"false" help:"Json log output"`
+	RenderTimeoutInSeconds int  `arg:"--renderTimeout env:RENDER_TIMEOUT_IN_SECONDS" default:"30" help:"Render timeout in seconds"`
+	WorkerInstances        int  `arg:"--workerInstances,env:WORKER_INSTANCES" default:"30"`
 
-	WorkerInstances              int `arg:"env:WORKER_INSTANCES" default:"30"`
-	Port                         int `arg:"env" default:"8000"`
-	GracefulShutdownTimeoutInSec int `arg:"env" default:"10"`
-	MaxBodySizeInMb              int `arg:"env" default:"32"`
+	Port                         int    `arg:"env" default:"8000" help:"Server port"`
+	GracefulShutdownTimeoutInSec int    `arg:"--GracefulShutdownTimeout,env:GRACEFUL_SHUTDOWN_TIMEOUT" default:"10" help:"Graceful server shutdown timeout in seconds"`
+	MaxBodySizeInMb              int    `arg:"--maxBodySize,env:MAX_BODY_SIZE" default:"32" help:"Max body size in megabyte"`
+	ServePlayground              bool   `arg:"--servePlayground,env:SERVE_PLAYGROUND" default:"false" help:"Serve playground from path './static-files/playground/'"`
+	Secret                       string `arg:"env" default:"" help:"Secret used as bearer token"`
 
 	// CachedAssets []string `arg:"env"` //TODO:!
 }
