@@ -4,7 +4,7 @@
 
 ### A painless html to pdf rendering service
 
-Generate PDF reports from HTML templates or raw HTML.
+Generate PDF reports and documents from HTML templates or raw HTML.
 
 ## How to run
 
@@ -44,12 +44,15 @@ Use Swagger-UI under **/swagger/index.html** as API documentation.
 
 You can use the swagger description to generate a API client for the language of your choice.
 
-### Examples
+### Postman
 
-```bash
-#TODO:!!
-curl ...
-```
+*...COMING SOON*
+<!-- TODO:!! -->
+
+### PdfTurtle Playground
+
+*...COMING SOON*
+<!-- TODO:!! -->
 
 ## Included template engines
 
@@ -70,7 +73,7 @@ go install github.com/swaggo/swag/cmd/swag@latest
 swag init -g "server/server.go" -o "server/docs"
 ```
 
-### Build Binary
+### Build binary
 
 ```bash
 go build -o pdf-turtle
@@ -79,7 +82,7 @@ go build -o pdf-turtle
 ./pdf-turtle
 ```
 
-### Build Docker File
+### Build Docker image
 
 ```bash
 docker build -t pdf-turtle .
