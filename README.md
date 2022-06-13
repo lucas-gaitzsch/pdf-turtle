@@ -7,9 +7,9 @@
 Generate PDF reports from HTML templates or raw HTML.
 
 ## How to run
-<!-- TODO:!! -->
 
 ### With docker
+
 ```bash
 docker pull lucasgaitzsch/pdf-turtle:latest
 
@@ -18,11 +18,38 @@ docker run -d \
     --name pdf-turtle \
     lucasgaitzsch/pdf-turtle:latest
 ```
+
 ### With prebuilt binaries
+
+*...COMING SOON*
 <!-- TODO:!! -->
 
+### Config
+
+| command line argument | environment variable      | type    | default | description                                             |
+| --------------------- | ------------------------- | ------- | ------- | ------------------------------------------------------- |
+| --help                | -                         | -       | -       | Show help                                               |
+| --logDebug            | LOG_LEVEL_DEBUG           | boolean | false   | Debug log level active                                  |
+| --logJsonOutput       | LOG_JSON_OUTPUT           | boolean | false   | Json log output                                         |
+| --renderTimeout       | RENDER_TIMEOUT_IN_SECONDS | boolean | false   | Render timeout in seconds                               |
+| --workerInstances     | WORKER_INSTANCES          | integer | 30      | Count of worker instances                               |
+| --port                | RENDER_TIMEOUT_IN_SECONDS | integer | 8000    | Server port                                             |
+| --maxBodySize         | MAX_BODY_SIZE             | integer | 32      | Max body size in megabyte                               |
+| --servePlayground     | SERVE_PLAYGROUND          | boolean | false   | Serve playground from path "./static-files/playground/" |
+| --secret              | SECRET                    | boolean | false   | Secret used as bearer token                             |
+
 ## How to use
-<!-- TODO:!! -->
+### Swagger
+Use Swagger-UI under **/swagger/index.html** as API documentation.
+
+You can use the swagger description to generate a API client for the language of your choice.
+
+### Examples
+
+```bash
+#TODO:!!
+curl ...
+```
 
 ## Included template engines
 
@@ -33,6 +60,7 @@ docker run -d \
 | Django-syntax like     | pongo2        | **django**     | https://github.com/flosch/pongo2    |
 
 ## Development / Build from source
+
 ### Generate swagger
 
 ```bash
@@ -43,6 +71,7 @@ swag init -g "server/server.go" -o "server/docs"
 ```
 
 ### Build Binary
+
 ```bash
 go build -o pdf-turtle
 
@@ -51,6 +80,7 @@ go build -o pdf-turtle
 ```
 
 ### Build Docker File
+
 ```bash
 docker build -t pdf-turtle .
 
@@ -67,3 +97,13 @@ go test -cover ./...
 ```
 
 <!-- `go test -coverprofile coverage ./...` -->
+
+## Build with
+
+- [go](https://github.com/golang/go)
+- [chromedp (golang chromium driver)](https://github.com/chromedp/chromedp)
+- [chromium (render engine)](https://github.com/chromium/chromium)
+- [raymond (handlebars template engine)](https://github.com/aymerick/raymond)
+- [pongo2 (django template engine)](https://github.com/flosch/pongo2)
+- [zerolog](https://github.com/rs/zerolog)
+<!-- TODO:!! -->
