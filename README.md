@@ -40,9 +40,9 @@ docker run -d \
 
 ## How to use
 ### Swagger
-Use Swagger-UI under **/swagger/index.html** as API documentation.
+Use Swagger-UI under */swagger/index.html* as API documentation.
 
-You can use the swagger description to generate a API client for the language of your choice.
+You can use the swagger description (*/swagger/doc.json* or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
 ### Postman
 
