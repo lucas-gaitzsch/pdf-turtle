@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"pdf-turtle/config"
 	"pdf-turtle/models/dto"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -131,6 +132,32 @@ func recoverMiddleware() func(http.Handler) http.Handler {
 					})
 				}
 			}()
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+// TODO: test
+func secretMiddleware(secret string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
+			ctx := r.Context()
+
+			if len(authHeader) != 2 {
+				log.Ctx(ctx).Debug().Msg("no valid bearer token")
+				w.WriteHeader(http.StatusUnauthorized)
+				panic("no valid bearer token")
+			}
+
+			token := authHeader[1]
+
+			if token != secret {
+				log.Ctx(ctx).Debug().Msg("no valid token")
+				w.WriteHeader(http.StatusUnauthorized)
+				panic("no valid token")
+			}
+
 			next.ServeHTTP(w, r)
 		})
 	}

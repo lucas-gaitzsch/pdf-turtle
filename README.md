@@ -21,37 +21,42 @@ docker run -d \
 
 ### With prebuilt binaries
 
-*...COMING SOON*
+_...COMING SOON_
+
 <!-- TODO:!! -->
 
 ### Config
 
-| command line argument | environment variable      | type    | default | description                                             |
-| --------------------- | ------------------------- | ------- | ------- | ------------------------------------------------------- |
-| --help                | -                         | -       | -       | Show help                                               |
-| --logDebug            | LOG_LEVEL_DEBUG           | boolean | false   | Debug log level active                                  |
-| --logJsonOutput       | LOG_JSON_OUTPUT           | boolean | false   | Json log output                                         |
-| --renderTimeout       | RENDER_TIMEOUT_IN_SECONDS | boolean | false   | Render timeout in seconds                               |
-| --workerInstances     | WORKER_INSTANCES          | integer | 30      | Count of worker instances                               |
-| --port                | RENDER_TIMEOUT_IN_SECONDS | integer | 8000    | Server port                                             |
-| --maxBodySize         | MAX_BODY_SIZE             | integer | 32      | Max body size in megabyte                               |
-| --servePlayground     | SERVE_PLAYGROUND          | boolean | false   | Serve playground from path "./static-files/playground/" |
-| --secret              | SECRET                    | boolean | false   | Secret used as bearer token                             |
+| command line argument | environment variable | type    | default | description                                             |
+| --------------------- | -------------------- | ------- | ------- | ------------------------------------------------------- |
+| --help                | -                    | -       | -       | Show help                                               |
+| --logDebug            | LOG_LEVEL_DEBUG      | boolean | false   | Debug log level active                                  |
+| --logJsonOutput       | LOG_JSON_OUTPUT      | boolean | false   | Json log output                                         |
+| --renderTimeout       | RENDER_TIMEOUT       | integer | 30   | Render timeout in seconds                               |
+| --workerInstances     | WORKER_INSTANCES     | integer | 30      | Count of worker instances                               |
+| --port                | PORT                 | integer | 8000    | Server port                                             |
+| --maxBodySize         | MAX_BODY_SIZE        | integer | 32      | Max body size in megabyte                               |
+| --servePlayground     | SERVE_PLAYGROUND     | boolean | false   | Serve playground from path "./static-files/playground/" |
+| --secret              | SECRET               | string  | ""      | Secret used as bearer token                             |
 
 ## How to use
-### Swagger
-Use Swagger-UI under */swagger/index.html* as API documentation.
 
-You can use the swagger description (*/swagger/doc.json* or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
+### Swagger
+
+Use Swagger-UI under _/swagger/index.html_ as API documentation.
+
+You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
 ### Postman
 
-*...COMING SOON*
+_...COMING SOON_
+
 <!-- TODO:!! -->
 
 ### PdfTurtle Playground
 
-*...COMING SOON*
+_...COMING SOON_
+
 <!-- TODO:!! -->
 
 ## Included template engines

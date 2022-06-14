@@ -37,7 +37,6 @@ jobs:
           tags: |
             lucasgaitzsch/pdf-turtle:latest
           #ghcr.io/lucasgaitzsch/pdf-turtle:latest
-          # build on feature branches, push only on main branch
           push: true
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
@@ -45,3 +44,4 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
           DOCKERHUB_REPOSITORY: lucasgaitzsch/pdf-turtle
+          short-description: ${{ github.event.repository.description }}

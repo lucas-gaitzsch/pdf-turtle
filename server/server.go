@@ -38,7 +38,9 @@ type Server struct {
 // @schemes         http
 // @basePath        /api
 func (s *Server) Serve(ctx context.Context) {
-	servingAddr := fmt.Sprintf(":%d", config.Get(ctx).Port)
+	conf := config.Get(ctx)
+
+	servingAddr := fmt.Sprintf(":%d", conf.Port)
 	localUrl := fmt.Sprintf("http://localhost%s", servingAddr)
 
 	r := mux.NewRouter()
@@ -60,8 +62,35 @@ func (s *Server) Serve(ctx context.Context) {
 		HandlerFunc(handlers.TestHtmlTemplateHandler).
 		Name("Test HTML template")
 
+	api.Use(
+		maxBodySizeMiddleware(conf.MaxBodySizeInMb),
+		loggingMiddleware(),
+		recoverMiddleware(),
+	)
+
+	if conf.Secret != "" {
+		api.Use(secretMiddleware(conf.Secret))
+	}
+
 	// Swagger
 	r.PathPrefix(swaggerRoute).Handler(httpSwagger.WrapHandler)
+
+	if conf.ServePlayground {
+		log.
+			Info().
+			Str("url", localUrl).
+			Msg("serving playground")
+
+		r.PathPrefix("/assets").Handler(http.FileServer(http.Dir("static-files/extern/playground/")))
+
+		r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path == "/favicon.ico" {
+				http.ServeFile(w, r, "static-files/extern/playground/favicon.ico")
+			} else {
+				http.ServeFile(w, r, "static-files/extern/playground/index.html")
+			}
+		})
+	}
 
 	log.
 		Info().
@@ -74,12 +103,6 @@ func (s *Server) Serve(ctx context.Context) {
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost},
 		AllowCredentials: true,
 	})
-
-	r.Use(
-		maxBodySizeMiddleware(config.Get(ctx).MaxBodySizeInMb),
-		loggingMiddleware(),
-		recoverMiddleware(),
-	)
 
 	handler := c.Handler(r)
 

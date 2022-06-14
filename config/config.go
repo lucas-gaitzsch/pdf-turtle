@@ -10,7 +10,7 @@ import (
 type Config struct {
 	LogLevelDebug          bool `arg:"--logDebug,env:LOG_LEVEL_DEBUG" default:"false" help:"Debug log level active"`
 	LogJsonOutput          bool `arg:"--logJsonOutput,env:LOG_JSON_OUTPUT" default:"false" help:"Json log output"`
-	RenderTimeoutInSeconds int  `arg:"--renderTimeout env:RENDER_TIMEOUT_IN_SECONDS" default:"30" help:"Render timeout in seconds"`
+	RenderTimeoutInSeconds int  `arg:"--renderTimeout env:RENDER_TIMEOUT" default:"30" help:"Render timeout in seconds"`
 	WorkerInstances        int  `arg:"--workerInstances,env:WORKER_INSTANCES" default:"30"`
 
 	Port                         int    `arg:"env" default:"8000" help:"Server port"`
