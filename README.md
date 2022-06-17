@@ -5,7 +5,7 @@
 
 ### A painless html to pdf rendering service
 
-Generate PDF reports and documents from HTML templates or raw HTML.
+[PdfTurtle](https://github.com/lucas-gaitzsch/pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
 ## How to run
 
@@ -89,6 +89,9 @@ go build -o pdf-turtle
 ```
 
 ### Build Docker image
+The docker image is hosted on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
+
+With the tag *:playground* you get a bundled image with the web playground.
 
 ```bash
 docker build -t pdf-turtle .
