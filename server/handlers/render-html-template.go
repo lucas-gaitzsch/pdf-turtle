@@ -45,12 +45,12 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 			panic(err)
 		}
 
-		headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.HeaderModel)
+		headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.GetHeaderModel())
 		if err != nil {
 			panic(err)
 		}
 
-		footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.FooterModel)
+		footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.GetFooterModel())
 		if err != nil {
 			panic(err)
 		}

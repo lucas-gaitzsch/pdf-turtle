@@ -33,7 +33,7 @@ _...COMING SOON_
 | --help                | -                    | -       | -       | Show help                                               |
 | --logDebug            | LOG_LEVEL_DEBUG      | boolean | false   | Debug log level active                                  |
 | --logJsonOutput       | LOG_JSON_OUTPUT      | boolean | false   | Json log output                                         |
-| --renderTimeout       | RENDER_TIMEOUT       | integer | 30   | Render timeout in seconds                               |
+| --renderTimeout       | RENDER_TIMEOUT       | integer | 30      | Render timeout in seconds                               |
 | --workerInstances     | WORKER_INSTANCES     | integer | 30      | Count of worker instances                               |
 | --port                | PORT                 | integer | 8000    | Server port                                             |
 | --maxBodySize         | MAX_BODY_SIZE        | integer | 32      | Max body size in megabyte                               |
@@ -62,11 +62,11 @@ _...COMING SOON_
 
 ## Included template engines
 
-| Template style         | Package       | PdfTurtle key  | URL                                 |
-| ---------------------- | ------------- | -------------- | ----------------------------------- |
-| Golang                 | html/template | **golang**     | https://pkg.go.dev/html/template    |
-| Handlebars-syntax like | raymond       | **handlebars** | https://github.com/aymerick/raymond |
-| Django-syntax like     | pongo2        | **django**     | https://github.com/flosch/pongo2    |
+| Template style                               | Package       | PdfTurtle key  | URL                                 |
+| -------------------------------------------- | ------------- | -------------- | ----------------------------------- |
+| Golang                                       | html/template | **golang**     | https://pkg.go.dev/html/template    |
+| Handlebars-syntax like                       | raymond       | **handlebars** | https://github.com/aymerick/raymond |
+| Django-syntax like (require _model._ prefix) | pongo2        | **django**     | https://github.com/flosch/pongo2    |
 
 ## Development / Build from source
 

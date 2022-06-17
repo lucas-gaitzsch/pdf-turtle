@@ -8,6 +8,7 @@ import (
 	"path"
 	"time"
 
+	"github.com/lucas-gaitzsch/pdf-turtle/services/htmlparser"
 	"github.com/rs/zerolog/log"
 
 	"pdf-turtle/config"
@@ -21,9 +22,11 @@ type workerSlots chan workerSlot
 type RendererBackgroundService struct {
 	localCtx          context.Context
 	localCtxCancel    context.CancelFunc
-	workerSlots       workerSlots
+
 	htmlToPdfRenderer HtmlToPdfRendererAbstraction
+
 	Jobs              chan models.Job
+	workerSlots       workerSlots
 
 	StaticFilesBuiltin  []string
 	StaticFilesExternal []string
@@ -156,7 +159,9 @@ func (rbs *RendererBackgroundService) doWork(ctx context.Context, job models.Job
 	go func() {
 		defer func() { done <- true }()
 
-		job.RenderData.RenderOptions.SetDefaults()
+		popHeaderAndFooter(job.RenderData)
+
+		job.RenderData.SetDefaults()
 
 		res, err := rbs.htmlToPdfRenderer.RenderHtmlAsPdf(job.RequestCtx, job.RenderData)
 
@@ -204,4 +209,19 @@ func (rbs *RendererBackgroundService) Close() {
 
 	rbs.htmlToPdfRenderer.Close()
 	rbs.localCtxCancel()
+}
+
+func popHeaderAndFooter(renderData *models.RenderData) {
+	if !renderData.HasHeaderOrFooterHtml() {
+		p := htmlparser.New()
+
+		if err := p.Parse(renderData.BodyHtml); err == nil {
+
+			renderData.HeaderHtml, renderData.FooterHtml = p.PopHeaderAndFooter()
+
+			if body, err := p.GetHtml(); err == nil {
+				renderData.BodyHtml = body
+			}
+		}
+	}
 }

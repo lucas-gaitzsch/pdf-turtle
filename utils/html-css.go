@@ -1,6 +1,8 @@
 package utils
 
-import "strings"
+import (
+	"strings"
+)
 
 func AppendStyleToHtml(html *string, css *string) *string {
 	if html == nil {
