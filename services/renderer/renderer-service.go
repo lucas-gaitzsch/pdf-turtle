@@ -212,7 +212,7 @@ func (rbs *RendererBackgroundService) Close() {
 }
 
 func popHeaderAndFooter(renderData *models.RenderData) {
-	if !renderData.HasHeaderOrFooterHtml() {
+	if !renderData.HasHeaderOrFooterHtml() && renderData.BodyHtml != nil{
 		p := htmlparser.New()
 
 		if err := p.Parse(renderData.BodyHtml); err == nil {
