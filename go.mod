@@ -1,4 +1,4 @@
-module pdf-turtle
+module github.com/lucas-gaitzsch/pdf-turtle
 
 go 1.18
 
