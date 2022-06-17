@@ -81,13 +81,13 @@ func (s *Server) Serve(ctx context.Context) {
 			Str("url", localUrl).
 			Msg("serving playground")
 
-		r.PathPrefix("/assets").Handler(http.FileServer(http.Dir("static-files/extern/playground/")))
+		r.PathPrefix("/assets").Handler(http.FileServer(http.Dir(config.PathStaticExternPlayground)))
 
 		r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Path == "/favicon.ico" {
-				http.ServeFile(w, r, "static-files/extern/playground/favicon.ico")
+				http.ServeFile(w, r, config.PathStaticExternPlayground + "favicon.ico")
 			} else {
-				http.ServeFile(w, r, "static-files/extern/playground/index.html")
+				http.ServeFile(w, r, config.PathStaticExternPlayground + "index.html")
 			}
 		})
 	}

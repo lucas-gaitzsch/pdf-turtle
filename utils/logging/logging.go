@@ -38,7 +38,7 @@ func InitLogger(ctx context.Context) {
 	logger := loggerContext.Logger()
 
 	if !minLevelDebug {
-		logger.Level(zerolog.InfoLevel)
+		logger = logger.Level(zerolog.InfoLevel)
 	}
 
 	stdlog.SetFlags(0)
