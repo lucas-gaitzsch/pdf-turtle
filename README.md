@@ -114,6 +114,7 @@ go test -cover ./...
 
 - [go](https://github.com/golang/go)
 - [chromedp (golang chromium driver)](https://github.com/chromedp/chromedp)
+- [goquery](https://github.com/PuerkitoBio/goquery)
 - [chromium (render engine)](https://github.com/chromium/chromium)
 - [raymond (handlebars template engine)](https://github.com/aymerick/raymond)
 - [pongo2 (django template engine)](https://github.com/flosch/pongo2)
