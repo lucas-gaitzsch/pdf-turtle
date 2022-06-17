@@ -85,9 +85,9 @@ func (s *Server) Serve(ctx context.Context) {
 
 		r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Path == "/favicon.ico" {
-				http.ServeFile(w, r, config.PathStaticExternPlayground + "favicon.ico")
+				http.ServeFile(w, r, config.PathStaticExternPlayground+"favicon.ico")
 			} else {
-				http.ServeFile(w, r, config.PathStaticExternPlayground + "index.html")
+				http.ServeFile(w, r, config.PathStaticExternPlayground+"index.html")
 			}
 		})
 	}

@@ -27,7 +27,10 @@ func InitLogger(ctx context.Context) {
 		}
 	}
 
-	loggerContext := zerolog.New(w).With().Timestamp()
+	loggerContext := zerolog.
+		New(w).
+		With().
+		Timestamp()
 
 	minLevelDebug := conf.LogLevelDebug
 
@@ -38,7 +41,7 @@ func InitLogger(ctx context.Context) {
 	logger := loggerContext.Logger()
 
 	if !minLevelDebug {
-		logger = logger.Level(zerolog.InfoLevel)
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
 	}
 
 	stdlog.SetFlags(0)
@@ -65,5 +68,9 @@ func InitTestLogger(t *testing.T) {
 }
 
 func SetNullLogger() {
-	log.Logger = zerolog.New(ioutil.Discard).With().Logger()
+	log.Logger = zerolog.
+		New(ioutil.Discard).
+		With().
+		Logger().
+		Level(zerolog.Disabled)
 }
