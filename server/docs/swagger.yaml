@@ -17,7 +17,7 @@ definitions:
         example: <b>Hello World</b>
         type: string
       footerHtml:
-        example: <div class="default-footer"><span class="pageNumber"></span> of <span
+        default: <div class="default-footer"><span class="pageNumber"></span> of <span
           class="totalPages"></span></div>
         type: string
       headerHtml:
@@ -80,10 +80,12 @@ definitions:
       bodyModel: {}
       footerHtmlTemplate:
         type: string
-      footerModel: {}
+      footerModel:
+        description: use the getter for this model!
       headerHtmlTemplate:
         type: string
-      headerModel: {}
+      headerModel:
+        description: use the getter for this model!
       options:
         $ref: '#/definitions/RenderOptions'
       templateEngine:

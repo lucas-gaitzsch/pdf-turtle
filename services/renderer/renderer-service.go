@@ -20,13 +20,13 @@ type workerSlot struct{}
 type workerSlots chan workerSlot
 
 type RendererBackgroundService struct {
-	localCtx          context.Context
-	localCtxCancel    context.CancelFunc
+	localCtx       context.Context
+	localCtxCancel context.CancelFunc
 
 	htmlToPdfRenderer HtmlToPdfRendererAbstraction
 
-	Jobs              chan models.Job
-	workerSlots       workerSlots
+	Jobs        chan models.Job
+	workerSlots workerSlots
 
 	StaticFilesBuiltin  []string
 	StaticFilesExternal []string

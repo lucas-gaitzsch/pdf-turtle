@@ -33,7 +33,7 @@ func (p *HtmlParserGoQuery) PopHeaderAndFooter() (header string, footer string) 
 
 	header = ""
 	footer = ""
-	
+
 	headerNode := p.doc.Find(HeaderNodeTag).First()
 	if headerNode != nil {
 		html, _ := headerNode.Html()
@@ -50,7 +50,6 @@ func (p *HtmlParserGoQuery) PopHeaderAndFooter() (header string, footer string) 
 
 	return
 }
-
 
 func (p *HtmlParserGoQuery) GetHtml() (*string, error) {
 	html, err := p.doc.Html()

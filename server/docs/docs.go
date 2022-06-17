@@ -146,7 +146,7 @@ const docTemplate = `{
                 },
                 "footerHtml": {
                     "type": "string",
-                    "example": "\u003cdiv class=\"default-footer\"\u003e\u003cspan class=\"pageNumber\"\u003e\u003c/span\u003e of \u003cspan class=\"totalPages\"\u003e\u003c/span\u003e\u003c/div\u003e"
+                    "default": "\u003cdiv class=\"default-footer\"\u003e\u003cspan class=\"pageNumber\"\u003e\u003c/span\u003e of \u003cspan class=\"totalPages\"\u003e\u003c/span\u003e\u003c/div\u003e"
                 },
                 "headerHtml": {
                     "type": "string",
@@ -228,11 +228,15 @@ const docTemplate = `{
                 "footerHtmlTemplate": {
                     "type": "string"
                 },
-                "footerModel": {},
+                "footerModel": {
+                    "description": "use the getter for this model!"
+                },
                 "headerHtmlTemplate": {
                     "type": "string"
                 },
-                "headerModel": {},
+                "headerModel": {
+                    "description": "use the getter for this model!"
+                },
                 "options": {
                     "$ref": "#/definitions/RenderOptions"
                 },

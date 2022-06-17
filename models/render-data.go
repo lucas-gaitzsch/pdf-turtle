@@ -16,6 +16,6 @@ func (d *RenderData) HasHeaderOrFooterHtml() bool {
 
 func (d *RenderData) SetDefaults() {
 	utils.ReflectDefaultValues(d)
-	
+
 	d.RenderOptions.SetDefaults()
 }

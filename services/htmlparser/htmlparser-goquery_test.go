@@ -32,7 +32,7 @@ func TestParseHeaderAndFooterAndCheckRemaining(t *testing.T) {
 	if header != "Header Content" {
 		t.Fatal("Header content was not parsed correctly")
 	}
-	
+
 	if footer != "Footer Content" {
 		t.Fatal("Footer content was not parsed correctly")
 	}
@@ -41,7 +41,7 @@ func TestParseHeaderAndFooterAndCheckRemaining(t *testing.T) {
 	stripped = strings.ReplaceAll(stripped, " ", "")
 	stripped = strings.ReplaceAll(stripped, "\n", "")
 	stripped = strings.ReplaceAll(stripped, "\t", "")
-	
+
 	if stripped != expectedDocRemaining {
 		t.Fatal("Header and Footer was not removed correctly")
 	}
@@ -64,7 +64,7 @@ func TestParseOnlyHeader(t *testing.T) {
 	if header != "Header Content" {
 		t.Fatal("Header content was not parsed correctly")
 	}
-	
+
 	if footer != "" {
 		t.Fatal("Footer content should be empty")
 	}
