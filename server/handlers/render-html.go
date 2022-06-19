@@ -2,10 +2,10 @@ package handlers
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 	"pdf-turtle/models"
-	"pdf-turtle/utils"
+
+	"pdf-turtle/services/pdf"
 )
 
 const TemplateEngineQueryKey = "template-engine"
@@ -21,7 +21,6 @@ const TemplateEngineQueryKey = "template-engine"
 // @Router       /pdf/from/html/render [post]
 func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	pdfService := getPdfService(ctx)
 
 	data := &models.RenderData{}
 
@@ -31,9 +30,10 @@ func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	pdfData, err := utils.LogExecutionTimeWithResult("render pdf", &ctx, func() (io.Reader, error) {
-		return pdfService.RenderAndReceive(*models.NewJob(ctx, data))
-	})
+	pdfService := pdf.NewPdfService(ctx)
+
+	pdfData, err := pdfService.PdfFromHtml(data)
+
 	if err != nil {
 		panic(err)
 	}

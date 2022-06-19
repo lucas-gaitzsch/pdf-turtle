@@ -1,4 +1,4 @@
-package templating
+package templateengines
 
 import "encoding/json"
 
@@ -24,8 +24,8 @@ const jsonModel = `
 }
 `
 
-func getModel() interface{} {
-	var model interface{}
+func getModel() any {
+	var model any
 	json.Unmarshal([]byte(jsonModel), &model)
 	return model
 }

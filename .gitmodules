@@ -1,0 +1,3 @@
+[submodule "pdf-turtle-playground"]
+	path = pdf-turtle-playground
+	url = git@github.com:lucas-gaitzsch/pdf-turtle-playground.git

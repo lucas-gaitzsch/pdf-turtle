@@ -135,17 +135,19 @@
         "RenderData": {
             "type": "object",
             "properties": {
-                "bodyHtml": {
-                    "type": "string",
-                    "example": "\u003cb\u003eHello World\u003c/b\u003e"
-                },
                 "footerHtml": {
+                    "description": "Optional html for footer. If empty, the footer html will be parsed from main html (\u003cPdfFooter\u003e\u003c/PdfFooter\u003e).",
                     "type": "string",
                     "default": "\u003cdiv class=\"default-footer\"\u003e\u003cspan class=\"pageNumber\"\u003e\u003c/span\u003e of \u003cspan class=\"totalPages\"\u003e\u003c/span\u003e\u003c/div\u003e"
                 },
                 "headerHtml": {
+                    "description": "Optional html for header. If empty, the header html will be parsed from main html (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
                     "type": "string",
                     "example": "\u003ch1\u003eHeading\u003c/h1\u003e"
+                },
+                "html": {
+                    "type": "string",
+                    "example": "\u003cb\u003eHello World\u003c/b\u003e"
                 },
                 "options": {
                     "$ref": "#/definitions/RenderOptions"
@@ -216,28 +218,34 @@
         "RenderTemplateData": {
             "type": "object",
             "properties": {
-                "bodyHtmlTemplate": {
-                    "type": "string"
-                },
-                "bodyModel": {},
                 "footerHtmlTemplate": {
+                    "description": "Optional template for footer. If empty, the footer template will be parsed from main template (\u003cPdfFooter\u003e\u003c/PdfFooter\u003e).",
                     "type": "string"
                 },
                 "footerModel": {
-                    "description": "use the getter for this model!"
+                    "description": "Optional model for footer. If empty or null model was used.",
+                    "type": "any"
                 },
                 "headerHtmlTemplate": {
+                    "description": "Optional template for header. If empty, the header template will be parsed from main template (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
                     "type": "string"
                 },
                 "headerModel": {
-                    "description": "use the getter for this model!"
+                    "description": "Optional model for header. If empty or null model was used.",
+                    "type": "any"
+                },
+                "htmlTemplate": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "any"
                 },
                 "options": {
                     "$ref": "#/definitions/RenderOptions"
                 },
                 "templateEngine": {
                     "type": "string",
-                    "default": "golang",
+                    "default": "handlebars",
                     "enum": [
                         "golang",
                         "handlebars",

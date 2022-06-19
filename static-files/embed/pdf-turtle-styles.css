@@ -1,0 +1,75 @@
+.pdf-turtle {
+}
+
+.pdf-turtle .cards-wrapper {
+    display: flex;
+    flex-wrap: warp;
+    gap: 5mm;
+    padding: 2mm 1mm;
+}
+
+.pdf-turtle .card {
+    border-radius: 2mm;
+    border: 0.5mm solid #eee;
+    padding: 4mm;
+    box-shadow: 0 1mm 2mm rgba(28, 41, 90, .1);
+}
+
+.pdf-turtle .card .card-head {
+    font-size: 1.2rem;
+    padding-bottom: 2mm;
+}
+
+.pdf-turtle table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1pt solid #888;
+}
+
+.pdf-turtle table tr > * {
+    border-collapse: collapse;
+    border: 0.25mm solid #888;
+    padding: 1.5mm;
+}
+.pdf-turtle table th {
+    font-weight: bold;
+    background-color: #eee;
+}
+.pdf-turtle table td {
+}
+
+.pdf-turtle table td.right {
+    text-align: right;
+}
+
+.pdf-turtle table td.nowrap {
+    white-space: nowrap;
+}
+
+.pdf-turtle table.reduced {
+    border: none;
+}
+.pdf-turtle table.reduced th, .pdf-turtle table.reduced td {
+    border-collapse: collapse;
+    border: none;
+    border-bottom: 0.5mm solid #888;
+    padding: 1.5mm;
+}
+.pdf-turtle table.reduced th {
+    font-weight: bold;
+    background-color: unset;
+    border: none;
+    border-bottom: 0.7mm solid #888;
+}
+.pdf-turtle table.reduced tr:last-child td {
+    border: none;
+}
+
+.pdf-turtle table.striped tr:nth-child(even) td {
+    background-color: #f6f6f6;
+}
+
+.pdf-turtle table.no-vertical-borders tr > * {
+    border-right: none;
+    border-left: none;
+}

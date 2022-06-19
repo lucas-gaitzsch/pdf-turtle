@@ -1,10 +1,13 @@
 package htmlparser
 
 import (
+	"pdf-turtle/utils"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/rs/zerolog/log"
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
 
 type HtmlParserGoQuery struct {
@@ -26,25 +29,53 @@ func (p *HtmlParserGoQuery) Parse(document *string) error {
 	return nil
 }
 
+func (p *HtmlParserGoQuery) AddStyles(css *string) {
+	headTag := p.doc.Find("head").First()
+	if headTag == nil {
+		htmlTag := p.doc.Find("html").First()
+		if htmlTag == nil {
+			return
+		}
+
+		headTag = htmlTag.PrependNodes(&html.Node{
+			Type:     html.ElementNode,
+			DataAtom: atom.Head,
+			Data:     "head",
+		})
+	}
+
+	styleNode := &html.Node{
+		Type:     html.ElementNode,
+		DataAtom: atom.Style,
+		Data:     "style",
+	}
+
+	styleNode.AppendChild(&html.Node{
+		Type: html.RawNode,
+		Data: *css,
+	})
+
+	headTag.Nodes[0].AppendChild(styleNode)
+}
+
 func (p *HtmlParserGoQuery) PopHeaderAndFooter() (header string, footer string) {
 	if p.doc == nil {
 		log.Panic().Msg("parsedDoc==nil -> please call .Parse(doc) first")
 	}
-
 	header = ""
 	footer = ""
 
 	headerNode := p.doc.Find(HeaderNodeTag).First()
 	if headerNode != nil {
 		html, _ := headerNode.Html()
-		header = trim(html)
+		header = utils.Trim(html)
 		headerNode.Remove()
 	}
 
 	footerNode := p.doc.Find(FooterNodeTag).First()
 	if footerNode != nil {
 		html, _ := footerNode.Html()
-		footer = trim(html)
+		footer = utils.Trim(html)
 		footerNode.Remove()
 	}
 
@@ -54,8 +85,4 @@ func (p *HtmlParserGoQuery) PopHeaderAndFooter() (header string, footer string) 
 func (p *HtmlParserGoQuery) GetHtml() (*string, error) {
 	html, err := p.doc.Html()
 	return &html, err
-}
-
-func trim(str string) string {
-	return strings.Trim(str, trimCutset)
 }

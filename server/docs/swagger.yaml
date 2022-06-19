@@ -13,15 +13,19 @@ definitions:
     type: object
   RenderData:
     properties:
-      bodyHtml:
-        example: <b>Hello World</b>
-        type: string
       footerHtml:
         default: <div class="default-footer"><span class="pageNumber"></span> of <span
           class="totalPages"></span></div>
+        description: Optional html for footer. If empty, the footer html will be parsed
+          from main html (<PdfFooter></PdfFooter>).
         type: string
       headerHtml:
+        description: Optional html for header. If empty, the header html will be parsed
+          from main html (<PdfHeader></PdfHeader>).
         example: <h1>Heading</h1>
+        type: string
+      html:
+        example: <b>Hello World</b>
         type: string
       options:
         $ref: '#/definitions/RenderOptions'
@@ -75,21 +79,28 @@ definitions:
     type: object
   RenderTemplateData:
     properties:
-      bodyHtmlTemplate:
-        type: string
-      bodyModel: {}
       footerHtmlTemplate:
+        description: Optional template for footer. If empty, the footer template will
+          be parsed from main template (<PdfFooter></PdfFooter>).
         type: string
       footerModel:
-        description: use the getter for this model!
+        description: Optional model for footer. If empty or null model was used.
+        type: any
       headerHtmlTemplate:
+        description: Optional template for header. If empty, the header template will
+          be parsed from main template (<PdfHeader></PdfHeader>).
         type: string
       headerModel:
-        description: use the getter for this model!
+        description: Optional model for header. If empty or null model was used.
+        type: any
+      htmlTemplate:
+        type: string
+      model:
+        type: any
       options:
         $ref: '#/definitions/RenderOptions'
       templateEngine:
-        default: golang
+        default: handlebars
         enum:
         - golang
         - handlebars

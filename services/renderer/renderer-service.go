@@ -4,16 +4,12 @@ import (
 	"context"
 	"errors"
 	"io"
-	"os"
-	"path"
 	"time"
 
-	"github.com/lucas-gaitzsch/pdf-turtle/services/htmlparser"
 	"github.com/rs/zerolog/log"
 
 	"pdf-turtle/config"
 	"pdf-turtle/models"
-	"pdf-turtle/static-files/embed"
 )
 
 type workerSlot struct{}
@@ -28,11 +24,6 @@ type RendererBackgroundService struct {
 	Jobs        chan models.Job
 	workerSlots workerSlots
 
-	StaticFilesBuiltin  []string
-	StaticFilesExternal []string
-
-	preloadedCss []*string
-
 	renderTimeout   time.Duration
 	workerInstances int
 }
@@ -40,28 +31,22 @@ type RendererBackgroundService struct {
 func NewRendererBackgroundService(ctx context.Context) *RendererBackgroundService {
 	rbs := new(RendererBackgroundService)
 
-	rbs.workerInstances = config.Get(ctx).WorkerInstances
-	rbs.renderTimeout = time.Duration(config.Get(ctx).RenderTimeoutInSeconds) * time.Second
-
-	rbs.StaticFilesBuiltin = []string{
-		"default-pdf-styles.css",
-		"modern-pdf-style.css",
-	}
 	rbs.Init(ctx)
 
 	return rbs
 }
 
 func (rbs *RendererBackgroundService) Init(outerCtx context.Context) {
+	rbs.workerInstances = config.Get(outerCtx).WorkerInstances
+	rbs.renderTimeout = time.Duration(config.Get(outerCtx).RenderTimeoutInSeconds) * time.Second
+
 	rbs.workerSlots = make(workerSlots, rbs.workerInstances)
 	rbs.Jobs = make(chan models.Job)
 
 	rbs.localCtx, rbs.localCtxCancel = context.WithCancel(outerCtx)
 
-	rbs.preloadCssFilesToCache()
-
 	if rbs.htmlToPdfRenderer == nil {
-		rbs.htmlToPdfRenderer = NewAsyncHtmlRendererChromium(rbs.localCtx, rbs.preloadedCss)
+		rbs.htmlToPdfRenderer = NewAsyncHtmlRendererChromium(rbs.localCtx)
 	}
 
 	go rbs.handleRequests(outerCtx)
@@ -70,35 +55,6 @@ func (rbs *RendererBackgroundService) Init(outerCtx context.Context) {
 		Info().
 		Int("workerInstances", rbs.workerInstances).
 		Msgf("render service started with %d", rbs.workerInstances)
-}
-
-func (rbs *RendererBackgroundService) preloadCssFilesToCache() {
-	preloadedFiles := make([]*string, 0, len(rbs.StaticFilesBuiltin)+len(rbs.StaticFilesExternal))
-
-	for _, file := range rbs.StaticFilesBuiltin {
-		b, err := embed.BuiltinFS.ReadFile(file)
-		if err != nil {
-			log.Warn().Err(err).Msg("could not load file " + file)
-			continue
-		}
-
-		str := string(b)
-		preloadedFiles = append(preloadedFiles, &str)
-	}
-
-	for _, file := range rbs.StaticFilesExternal {
-		path := path.Join("static-files", "extern", file)
-		b, err := os.ReadFile(path)
-		if err != nil {
-			log.Warn().Err(err).Msg("could not load file " + file)
-			continue
-		}
-
-		str := string(b)
-		preloadedFiles = append(preloadedFiles, &str)
-	}
-
-	rbs.preloadedCss = preloadedFiles
 }
 
 func (rbs *RendererBackgroundService) acquiredWorker() {
@@ -159,10 +115,6 @@ func (rbs *RendererBackgroundService) doWork(ctx context.Context, job models.Job
 	go func() {
 		defer func() { done <- true }()
 
-		popHeaderAndFooter(job.RenderData)
-
-		job.RenderData.SetDefaults()
-
 		res, err := rbs.htmlToPdfRenderer.RenderHtmlAsPdf(job.RequestCtx, job.RenderData)
 
 		if err != nil {
@@ -209,19 +161,4 @@ func (rbs *RendererBackgroundService) Close() {
 
 	rbs.htmlToPdfRenderer.Close()
 	rbs.localCtxCancel()
-}
-
-func popHeaderAndFooter(renderData *models.RenderData) {
-	if !renderData.HasHeaderOrFooterHtml() && renderData.BodyHtml != nil{
-		p := htmlparser.New()
-
-		if err := p.Parse(renderData.BodyHtml); err == nil {
-
-			renderData.HeaderHtml, renderData.FooterHtml = p.PopHeaderAndFooter()
-
-			if body, err := p.GetHtml(); err == nil {
-				renderData.BodyHtml = body
-			}
-		}
-	}
 }

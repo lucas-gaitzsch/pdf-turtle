@@ -45,3 +45,20 @@ jobs:
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
           DOCKERHUB_REPOSITORY: lucasgaitzsch/pdf-turtle
           short-description: ${{ github.event.repository.description }}
+
+      - name: Build and push docker image with playground
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.withPlayground
+          context: ./
+          tags: |
+            lucasgaitzsch/pdf-turtle:latest-playground
+          #ghcr.io/lucasgaitzsch/pdf-turtle:latest-playground
+          push: true
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+          DOCKERHUB_REPOSITORY: lucasgaitzsch/pdf-turtle
+          short-description: ${{ github.event.repository.description }}

@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"pdf-turtle/config"
 	"pdf-turtle/server"
+	"pdf-turtle/services/assetsprovider"
 	"pdf-turtle/services/renderer"
 	"pdf-turtle/utils/logging"
 	"syscall"
@@ -30,12 +31,18 @@ func main() {
 
 	log.Info().Msg("Hey dude 👋 .. I am Karl, your turtle for today 🐢")
 
-	pdfService := renderer.NewRendererBackgroundService(ctx)
+	// init services
+	servicesCtx := ctx
+
+	rendererService := renderer.NewRendererBackgroundService(ctx)
+	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyRendererService, rendererService)
+
+	assetsProviderService := assetsprovider.NewAssetsProviderService()
+	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyAssetsProviderService, assetsProviderService)
 
 	// init server
-	serverCtx := context.WithValue(ctx, config.ContextKeyPdfService, pdfService)
 	srv := server.Server{}
-	srv.Serve(serverCtx)
+	srv.Serve(servicesCtx)
 
 	// listen to os signals
 	osSignals := make(chan os.Signal, 1)
@@ -45,7 +52,7 @@ func main() {
 	// cleanup resources
 	log.Info().Msg("shutting service down...")
 	srv.Close(ctx)
-	pdfService.Close()
+	rendererService.Close()
 	cancel()
 
 	// exit

@@ -78,7 +78,7 @@ func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context,
 
 			done := make(chan bool, 1)
 
-			chromedp.ListenTarget(lctx, func(ev interface{}) {
+			chromedp.ListenTarget(lctx, func(ev any) {
 				if _, ok := ev.(*page.EventLoadEventFired); ok {
 					cancelLctx()
 					done <- true

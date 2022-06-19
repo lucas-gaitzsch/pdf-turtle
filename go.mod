@@ -5,9 +5,10 @@ go 1.18
 replace pdf-turtle => ./
 
 require (
+	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/alexflint/go-arg v1.4.3
 	github.com/aymerick/raymond v2.0.2+incompatible
-	github.com/chromedp/cdproto v0.0.0-20220615221636-d9c8b1f94535
+	github.com/chromedp/cdproto v0.0.0-20220618005332-bed16f03b458
 	github.com/chromedp/chromedp v0.8.2
 	github.com/flosch/pongo2/v5 v5.0.0
 	github.com/google/uuid v1.3.0
@@ -19,9 +20,10 @@ require (
 	pdf-turtle v0.0.0 // local redirect
 )
 
+require golang.org/x/net v0.0.0-20220617184016-355a448f1bc9
+
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/PuerkitoBio/goquery v1.8.0 // indirect
 	github.com/alexflint/go-scalar v1.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
@@ -37,7 +39,6 @@ require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
-	golang.org/x/net v0.0.0-20220615171555-694bf12d69de // indirect
 	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

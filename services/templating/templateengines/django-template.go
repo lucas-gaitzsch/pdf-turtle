@@ -1,4 +1,4 @@
-package templating
+package templateengines
 
 import "github.com/flosch/pongo2/v5"
 
@@ -7,7 +7,7 @@ const DjangoTemplateEngineKey = "django"
 type DjangoTemplateEngine struct {
 }
 
-func (te *DjangoTemplateEngine) Execute(templateHtml *string, model interface{}) (*string, error) {
+func (te *DjangoTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
 	empty := ""
 
 	t, err := pongo2.FromString(*templateHtml)
@@ -24,7 +24,7 @@ func (te *DjangoTemplateEngine) Execute(templateHtml *string, model interface{})
 	return &html, nil
 }
 
-func (te *DjangoTemplateEngine) Test(templateHtml *string, model interface{}) error {
+func (te *DjangoTemplateEngine) Test(templateHtml *string, model any) error {
 	_, err := te.Execute(templateHtml, model)
 
 	return err

@@ -5,7 +5,7 @@ import (
 	"context"
 	"io"
 	"pdf-turtle/models"
-	"pdf-turtle/templating"
+	"pdf-turtle/services/templating/templateengines"
 	"pdf-turtle/utils"
 	"pdf-turtle/utils/logging"
 	"testing"
@@ -19,12 +19,12 @@ func TestRenderHtmlAsPdf(t *testing.T) {
 	defer cancel()
 
 	html := "<b>test"
-	renderer := NewAsyncHtmlRendererChromium(ctx, nil)
+	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
 	reader, err := utils.LogExecutionTimeWithResult("render pdf", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
-			BodyHtml:   &html,
+			Html:       &html,
 			HeaderHtml: html,
 			FooterHtml: html,
 		})
@@ -49,12 +49,12 @@ func TestRenderHtmlAsPdfWithNilPointerBody(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	renderer := NewAsyncHtmlRendererChromium(ctx, nil)
+	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
 	reader, err := utils.LogExecutionTimeWithResult("render pdf", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
-			BodyHtml: nil,
+			Html: nil,
 		})
 	})
 
@@ -87,18 +87,18 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 	</table>`
 
 	htmlBody, err := utils.LogExecutionTimeWithResult("generate html from template", nil, func() (*string, error) {
-		return templating.GetTemplateEngineByKey(templating.GoTemplateEngineKey).Execute(&template, data)
+		return templateengines.GetTemplateEngineByKey(templateengines.GoTemplateEngineKey).Execute(&template, data)
 	})
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
 
-	renderer := NewAsyncHtmlRendererChromium(ctx, nil)
+	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
 	reader, err := utils.LogExecutionTimeWithResult("render pdf", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
-			BodyHtml:   htmlBody,
+			Html:       htmlBody,
 			HeaderHtml: "<h1 id=\"header-template\" style=\"font-size:3mm !important;\">Heading</h1>",
 			RenderOptions: models.RenderOptions{
 				Margins: &models.RenderOptionsMargins{

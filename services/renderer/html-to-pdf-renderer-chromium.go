@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 	"pdf-turtle/models"
-	"pdf-turtle/services/headlesschromium"
+	"pdf-turtle/services/renderer/headlesschromium"
 	"pdf-turtle/utils"
 
 	"github.com/chromedp/cdproto/page"
@@ -18,16 +18,13 @@ type HtmlToPdfRendererChromium struct {
 	ChromiumCtx          context.Context
 	chromiumCancelFunc   context.CancelFunc
 	LocalCtx             context.Context
-	PreloadedMergedCss   *string
 	watcherCtxCancelFunc context.CancelFunc
 }
 
-func NewAsyncHtmlRendererChromium(ctx context.Context, preloadedCss []*string) *HtmlToPdfRendererChromium {
+func NewAsyncHtmlRendererChromium(ctx context.Context) *HtmlToPdfRendererChromium {
 	r := new(HtmlToPdfRendererChromium)
 	r.LocalCtx = ctx
 	r.ChromiumCtx, r.chromiumCancelFunc = headlesschromium.NewChromiumBrowser(r.LocalCtx)
-
-	r.PreloadedMergedCss = utils.MergeCss(preloadedCss)
 
 	r.startWatchingChromiumInstance()
 
@@ -53,7 +50,7 @@ func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
 
 func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *models.RenderData) (io.Reader, error) {
 
-	hasHeaderOrFooter := data.HeaderHtml != "" || data.FooterHtml != ""
+	hasHeaderOrFooter := data.HasHeaderOrFooterHtml()
 
 	paramsFunc := func(params *page.PrintToPDFParams) *page.PrintToPDFParams {
 
@@ -75,9 +72,6 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 			WithMarginLeft(utils.MmToInches(margins.Left))
 
 		if hasHeaderOrFooter {
-			headerHtml := &data.HeaderHtml
-			footerHtml := &data.FooterHtml
-
 			headerFooterAppendCss := fmt.Sprintf(`
 				#header, #footer {
 					padding: 0 !important;
@@ -93,12 +87,8 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 				}
 			`, margins.Left, margins.Right)
 
-			if !data.RenderOptions.ExcludeBuiltinStyles {
-				headerFooterStyle := *r.PreloadedMergedCss + headerFooterAppendCss
-
-				headerHtml = utils.AppendStyleToHtml(headerHtml, &headerFooterStyle)
-				footerHtml = utils.AppendStyleToHtml(footerHtml, &headerFooterStyle)
-			}
+			headerHtml := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)
+			footerHtml := utils.AppendStyleToHtml(&data.FooterHtml, &headerFooterAppendCss)
 
 			params = params.
 				WithHeaderTemplate(*headerHtml).
@@ -108,11 +98,7 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 		return params
 	}
 
-	bodyHtml := data.BodyHtml
-
-	if !data.RenderOptions.ExcludeBuiltinStyles {
-		bodyHtml = utils.AppendStyleToHtml(bodyHtml, r.PreloadedMergedCss)
-	}
+	bodyHtml := data.Html
 
 	return headlesschromium.RenderHtmlAsPdf(r.ChromiumCtx, ctx, bodyHtml, paramsFunc)
 }

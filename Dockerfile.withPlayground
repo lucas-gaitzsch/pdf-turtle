@@ -6,7 +6,7 @@ RUN go build -o pdf-turtle
 
 FROM node:lts as build-playground
 WORKDIR /app
-COPY .playground/. .
+COPY .pdf-turtle-playground/. .
 RUN npm i
 RUN npm run build
 

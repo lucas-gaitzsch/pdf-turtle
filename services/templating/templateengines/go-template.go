@@ -1,4 +1,4 @@
-package templating
+package templateengines
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ const GoTemplateEngineKey = "golang"
 type GoTemplateEngine struct {
 }
 
-func (gte *GoTemplateEngine) Execute(templateHtml *string, model interface{}) (*string, error) {
+func (gte *GoTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
 	t, err := template.New("").Parse(*templateHtml)
 	empty := ""
 	if err != nil {
@@ -27,7 +27,7 @@ func (gte *GoTemplateEngine) Execute(templateHtml *string, model interface{}) (*
 	return &html, nil
 }
 
-func (gte *GoTemplateEngine) Test(templateHtml *string, model interface{}) error {
+func (gte *GoTemplateEngine) Test(templateHtml *string, model any) error {
 	t, err := template.New("").Option("missingkey=error").Parse(*templateHtml)
 	if err != nil {
 		return err

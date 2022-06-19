@@ -1,6 +1,5 @@
 FROM golang as build-service
 WORKDIR /build
-# COPY [^\.playground]* .
 COPY . .
 RUN go build -o pdf-turtle
 

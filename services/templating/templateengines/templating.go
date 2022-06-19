@@ -1,10 +1,10 @@
-package templating
+package templateengines
 
 import "strings"
 
 type TemplateEngine interface {
-	Execute(templateHtml *string, model interface{}) (*string, error)
-	Test(templateHtml *string, model interface{}) error
+	Execute(templateHtml *string, model any) (*string, error)
+	Test(templateHtml *string, model any) error
 }
 
 func GetTemplateEngineByKey(key string) TemplateEngine {

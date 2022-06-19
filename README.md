@@ -1,15 +1,18 @@
 # PdfTurtle 🐢
 
-[![build and test](https://github.com/lucas-gaitzsch/pdf-turtle/actions/workflows/pipeline.yml/badge.svg)](https://github.com/lucas-gaitzsch/pdf-turtle/actions/workflows/pipeline.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/lucas-gaitzsch/pdf-turtle)](https://goreportcard.com/report/github.com/lucas-gaitzsch/pdf-turtle)
+[![build and test](https://pdf-turtle/actions/workflows/pipeline.yml/badge.svg)](https://pdf-turtle/actions/workflows/pipeline.yml)
+[![Go Report Card](https://goreportcard.com/badge/pdf-turtle)](https://goreportcard.com/report/pdf-turtle)
 
 ### A painless html to pdf rendering service
 
-[PdfTurtle](https://github.com/lucas-gaitzsch/pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
+[PdfTurtle](https://pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
 ## How to run
 
-### With docker
+### With docker (recommended)
+The docker image is hosted on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
+
+With the tag *:playground* you get a bundled image with the web playground.
 
 ```bash
 docker pull lucasgaitzsch/pdf-turtle:latest
@@ -89,9 +92,6 @@ go build -o pdf-turtle
 ```
 
 ### Build Docker image
-The docker image is hosted on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
-
-With the tag *:playground* you get a bundled image with the web playground.
 
 ```bash
 docker build -t pdf-turtle .

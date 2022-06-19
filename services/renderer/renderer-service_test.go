@@ -33,10 +33,6 @@ func newTestRenderService(ctx context.Context, workerInstances int) (*RendererBa
 	}
 
 	rbs.htmlToPdfRenderer = rendererMock
-	rbs.StaticFilesBuiltin = []string{
-		"default-pdf-styles.css",
-		"modern-pdf-style.css",
-	}
 
 	rbs.workerInstances = workerInstances
 	rbs.renderTimeout = 5 * time.Second

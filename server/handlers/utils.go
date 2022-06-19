@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"pdf-turtle/config"
-	"pdf-turtle/services/renderer"
 
 	"github.com/rs/zerolog/log"
 )
@@ -30,7 +28,7 @@ func writePdf(ctx context.Context, w http.ResponseWriter, data io.Reader) error 
 	return nil
 }
 
-func writeJson(ctx context.Context, w http.ResponseWriter, data interface{}) error {
+func writeJson(ctx context.Context, w http.ResponseWriter, data any) error {
 	if data == nil {
 		log.Ctx(ctx).Info().Msg("nothing to writeout: json data empty")
 		w.WriteHeader(http.StatusNoContent)
@@ -47,8 +45,4 @@ func writeJson(ctx context.Context, w http.ResponseWriter, data interface{}) err
 	w.Header().Set("Content-Type", "application/json")
 
 	return nil
-}
-
-func getPdfService(ctx context.Context) *renderer.RendererBackgroundService {
-	return ctx.Value(config.ContextKeyPdfService).(*renderer.RendererBackgroundService)
 }

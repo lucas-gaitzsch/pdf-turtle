@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 	"pdf-turtle/models"
 	"pdf-turtle/models/dto"
-	"pdf-turtle/templating"
-	"pdf-turtle/utils"
+
+	"pdf-turtle/services/pdf"
+	"pdf-turtle/services/templating/templateengines"
 )
 
 // RenderPdfFromHtmlFromTemplateHandler godoc
@@ -21,7 +21,6 @@ import (
 // @Router       /pdf/from/html-template/render [post]
 func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	pdfService := getPdfService(ctx)
 
 	templateData := &models.RenderTemplateData{}
 
@@ -31,37 +30,9 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 		panic(err)
 	}
 
-	templateData.ParseJsonModelDataFromDoubleEncodedString()
+	pdfService := pdf.NewPdfService(ctx)
 
-	templateEngine := templating.GetTemplateEngineByKey(templateData.TemplateEngine)
-
-	data := &models.RenderData{
-		RenderOptions: templateData.RenderOptions,
-	}
-
-	utils.LogExecutionTime("exec template", &ctx, func() {
-		data.BodyHtml, err = templateEngine.Execute(templateData.BodyHtmlTemplate, templateData.BodyModel)
-		if err != nil {
-			panic(err)
-		}
-
-		headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.GetHeaderModel())
-		if err != nil {
-			panic(err)
-		}
-
-		footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.GetFooterModel())
-		if err != nil {
-			panic(err)
-		}
-
-		data.HeaderHtml = *headerHtml
-		data.FooterHtml = *footerHtml
-	})
-
-	pdfData, err := utils.LogExecutionTimeWithResult("render pdf", &ctx, func() (io.Reader, error) {
-		return pdfService.RenderAndReceive(*models.NewJob(ctx, data))
-	})
+	pdfData, err := pdfService.PdfFromHtmlTemplate(templateData)
 
 	if err != nil {
 		panic(err)
@@ -94,9 +65,9 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 
 		templateData.ParseJsonModelDataFromDoubleEncodedString()
 
-		templateEngine := templating.GetTemplateEngineByKey(templateData.TemplateEngine)
+		templateEngine := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
 
-		bodyErr := templateEngine.Test(templateData.BodyHtmlTemplate, templateData.BodyModel)
+		bodyErr := templateEngine.Test(templateData.HtmlTemplate, templateData.Model)
 		if bodyErr != nil {
 			strErr := bodyErr.Error()
 			response.BodyTemplateError = &strErr
