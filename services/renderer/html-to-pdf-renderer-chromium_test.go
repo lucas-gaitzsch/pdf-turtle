@@ -58,16 +58,12 @@ func TestRenderHtmlAsPdfWithNilPointerBody(t *testing.T) {
 		})
 	})
 
-	if err != nil {
-		t.Fatalf("RenderHtmlAsPdf with nil-pointer-body fails: %v", err)
+	if err == nil {
+		t.Fatalf("RenderHtmlAsPdf with nil-pointer-body should fail: %v", err)
 	}
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(reader)
-	b := buf.Bytes()
-
-	if len(b) == 0 || err != nil {
-		t.Fatalf("RenderHtmlAsPdf with nil-pointer-body result empty; err: %v", err)
+	if reader != nil {
+		t.Fatal("Reader should be nil")
 	}
 }
 

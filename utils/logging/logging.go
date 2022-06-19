@@ -60,7 +60,7 @@ func InitTestLogger(t *testing.T) {
 
 	loggerContext = loggerContext.Caller()
 
-	logger := loggerContext.Logger()
+	logger := loggerContext.Logger().Level(zerolog.WarnLevel)
 
 	logger.Level(zerolog.InfoLevel)
 

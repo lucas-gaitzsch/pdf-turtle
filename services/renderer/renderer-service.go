@@ -31,15 +31,15 @@ type RendererBackgroundService struct {
 func NewRendererBackgroundService(ctx context.Context) *RendererBackgroundService {
 	rbs := new(RendererBackgroundService)
 
+	rbs.workerInstances = config.Get(ctx).WorkerInstances
+	rbs.renderTimeout = time.Duration(config.Get(ctx).RenderTimeoutInSeconds) * time.Second
+
 	rbs.Init(ctx)
 
 	return rbs
 }
 
 func (rbs *RendererBackgroundService) Init(outerCtx context.Context) {
-	rbs.workerInstances = config.Get(outerCtx).WorkerInstances
-	rbs.renderTimeout = time.Duration(config.Get(outerCtx).RenderTimeoutInSeconds) * time.Second
-
 	rbs.workerSlots = make(workerSlots, rbs.workerInstances)
 	rbs.Jobs = make(chan models.Job)
 

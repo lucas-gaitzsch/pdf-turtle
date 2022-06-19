@@ -74,7 +74,7 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 
 // }
 
-func (ps *PdfService) preProcessHtmlData(data HtmlModels) {
+func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 	if data.GetBodyHtml() == nil {
 		return
 	}
