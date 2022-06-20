@@ -22,8 +22,6 @@ func AppendStyleToHtml(html *string, css *string) *string {
 	}
 }
 
-//TODO: minify? https://github.com/tdewolff/minify
-
 func MergeCss(css []*string) *string {
 	mergedCssBuilder := strings.Builder{}
 

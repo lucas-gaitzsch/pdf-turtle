@@ -19,6 +19,7 @@ type HtmlToPdfRendererChromium struct {
 	chromiumCancelFunc   context.CancelFunc
 	LocalCtx             context.Context
 	watcherCtxCancelFunc context.CancelFunc
+	watcherClosedChan    chan bool
 }
 
 func NewAsyncHtmlRendererChromium(ctx context.Context) *HtmlToPdfRendererChromium {
@@ -37,6 +38,7 @@ func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
 	go func() {
 		select {
 		case <-watcherCtx.Done():
+			r.watcherClosedChan <- true
 		case <-r.ChromiumCtx.Done():
 			log.Warn().Err(r.ChromiumCtx.Err()).Msg("chromium crashed -> new chromium instance")
 			r.chromiumCancelFunc()
@@ -105,5 +107,7 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 
 func (r *HtmlToPdfRendererChromium) Close() {
 	r.watcherCtxCancelFunc()
+	<- r.watcherClosedChan
+	
 	r.chromiumCancelFunc()
 }

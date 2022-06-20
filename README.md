@@ -7,7 +7,7 @@
 
 [PdfTurtle](https://pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
-Try it! There is a [DEMO__🐢__](https://pdfturtle.gaitzsch.dev/).
+Try it! Here's a [**DEMO__🐢__**](https://pdfturtle.gaitzsch.dev/).
 
 ## How to run
 
