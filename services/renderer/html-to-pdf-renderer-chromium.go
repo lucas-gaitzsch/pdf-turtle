@@ -33,6 +33,7 @@ func NewAsyncHtmlRendererChromium(ctx context.Context) *HtmlToPdfRendererChromiu
 }
 
 func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
+	r.watcherClosedChan = make(chan bool, 1)
 	var watcherCtx context.Context
 	watcherCtx, r.watcherCtxCancelFunc = context.WithCancel(r.LocalCtx)
 	go func() {
