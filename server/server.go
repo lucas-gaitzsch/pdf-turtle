@@ -75,6 +75,11 @@ func (s *Server) Serve(ctx context.Context) {
 	// Swagger
 	r.PathPrefix(swaggerRoute).Handler(httpSwagger.WrapHandler)
 
+	log.
+		Info().
+		Str("url", fmt.Sprintf("%s%s/index.html", localUrl, swaggerRoute)).
+		Msg("serving open-api (swagger) description")
+
 	if conf.ServePlayground {
 		log.
 			Info().
@@ -91,11 +96,6 @@ func (s *Server) Serve(ctx context.Context) {
 			}
 		})
 	}
-
-	log.
-		Info().
-		Str("url", fmt.Sprintf("%s%s/index.html", localUrl, swaggerRoute)).
-		Msg("serving open-api (swagger) description")
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

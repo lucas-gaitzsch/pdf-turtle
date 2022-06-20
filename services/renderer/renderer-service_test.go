@@ -22,6 +22,8 @@ func (m *htmlToPdfRendererMock) RenderHtmlAsPdf(ctx context.Context, data *model
 }
 
 func (m *htmlToPdfRendererMock) Close() {
+	close(m.ContinueChan)
+	close(m.HitRenderChan)
 }
 
 func newTestRenderService(ctx context.Context, workerInstances int) (*RendererBackgroundService, *htmlToPdfRendererMock) {

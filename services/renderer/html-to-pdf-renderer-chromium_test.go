@@ -52,7 +52,7 @@ func TestRenderHtmlAsPdfWithNilPointerBody(t *testing.T) {
 	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
-	reader, err := utils.LogExecutionTimeWithResult("render pdf", nil, func() (io.Reader, error) {
+	reader, err := utils.LogExecutionTimeWithResult("render pdf (nil body)", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
 			Html: nil,
 		})
@@ -92,7 +92,7 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
-	reader, err := utils.LogExecutionTimeWithResult("render pdf", nil, func() (io.Reader, error) {
+	reader, err := utils.LogExecutionTimeWithResult("render pdf (huge)", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
 			Html:       htmlBody,
 			HeaderHtml: "<h1 id=\"header-template\" style=\"font-size:3mm !important;\">Heading</h1>",

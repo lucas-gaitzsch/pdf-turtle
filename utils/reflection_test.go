@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const fatalMsgDefaultNotAsExpected = "struct defaults was not set as expected"
+
 type testStruct struct {
 	TestProp1 string  `default:"testteststr"`
 	TestProp2 int     `default:"5"`
@@ -30,7 +32,7 @@ func TestReflectDefaultValuesEmptyStruct(t *testing.T) {
 	ReflectDefaultValues(s)
 
 	if !reflect.DeepEqual(shouldBe, *s) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }
 
@@ -52,28 +54,32 @@ func TestReflectDefaultValuesPartiallyPrefilledStruct(t *testing.T) {
 	ReflectDefaultValues(s)
 
 	if !reflect.DeepEqual(shouldBe, *s) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }
 
 func TestReflectDefaultValuesNoDefaultAnnotation(t *testing.T) {
-	testBool := true
-	testStr := "peter"
-	shouldBe := testStruct{
-		TestProp1: "peter",
-		TestProp2: 5,
-		TestProp3: true,
-		TestProp4: &testBool,
-		TestProp5: &testStr,
+
+	type testStructNoDefaults struct {
+		TestProp1 string
+		TestProp2 int
+		TestProp3 bool
+		TestProp4 *bool
+		TestProp5 *string
+		TestProp6 string
+		testProp7 bool
 	}
 
-	s := &testStruct{
+	shouldBe := testStructNoDefaults{
 		TestProp1: "peter",
-		TestProp5: &testStr,
+	}
+
+	s := &testStructNoDefaults{
+		TestProp1: "peter",
 	}
 	ReflectDefaultValues(s)
 
 	if !reflect.DeepEqual(shouldBe, *s) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }

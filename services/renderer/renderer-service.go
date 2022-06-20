@@ -157,4 +157,7 @@ func (rbs *RendererBackgroundService) RenderAndReceive(job models.Job) (io.Reade
 func (rbs *RendererBackgroundService) Close() {
 	rbs.htmlToPdfRenderer.Close()
 	rbs.localCtxCancel()
+
+	close(rbs.workerSlots)
+	close(rbs.Jobs)
 }

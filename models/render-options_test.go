@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+const fatalMsgDefaultNotAsExpected = "struct defaults was not set as expected"
+
 func TestSetDefaultsEmptyStruct(t *testing.T) {
 	shouldBe := &RenderOptions{
 		PageFormat: "A4",
@@ -26,7 +28,7 @@ func TestSetDefaultsEmptyStruct(t *testing.T) {
 	testObj.SetDefaults()
 
 	if !reflect.DeepEqual(shouldBe, testObj) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }
 
@@ -53,7 +55,7 @@ func TestSetDefaultsPrefilledStruct(t *testing.T) {
 	testObj.SetDefaults()
 
 	if !reflect.DeepEqual(shouldBe, testObj) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }
 
@@ -80,7 +82,7 @@ func TestSetDefaultsWithFormat(t *testing.T) {
 	testObj.SetDefaults()
 
 	if !reflect.DeepEqual(shouldBe, testObj) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }
 
@@ -110,6 +112,6 @@ func TestSetDefaultsWithPageSize(t *testing.T) {
 	testObj.SetDefaults()
 
 	if !reflect.DeepEqual(shouldBe, testObj) {
-		t.Fatal("struct defaults was not set as expected")
+		t.Fatal(fatalMsgDefaultNotAsExpected)
 	}
 }

@@ -7,20 +7,23 @@
 
 [PdfTurtle](https://pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
+Try it! There is a [DEMO__🐢__](https://pdfturtle.gaitzsch.dev/).
+
 ## How to run
 
 ### With docker (recommended)
+
 The docker image is hosted on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
 
-With the tag *:playground* you get a bundled image with the web playground.
+With the tag _\*-playground_ you get a bundled image with the web playground.
 
 ```bash
-docker pull lucasgaitzsch/pdf-turtle:latest
+docker pull lucasgaitzsch/pdf-turtle:latest-playground
 
 docker run -d \
     -p 8000:8000 \
     --name pdf-turtle \
-    lucasgaitzsch/pdf-turtle:latest
+    lucasgaitzsch/pdf-turtle:latest-playground
 ```
 
 ### With prebuilt binaries
@@ -47,7 +50,7 @@ _...COMING SOON_
 
 ### Swagger
 
-Use Swagger-UI under _/swagger/index.html_ as API documentation.
+Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagger/index.html) as API documentation.
 
 You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
