@@ -79,7 +79,6 @@ func (rbs *RendererBackgroundService) releaseWorker() {
 
 func (rbs *RendererBackgroundService) handleRequests(outerCtx context.Context) {
 	defer rbs.localCtxCancel()
-	defer rbs.htmlToPdfRenderer.Close()
 	defer func() {
 		if r := recover(); r != nil {
 			log.

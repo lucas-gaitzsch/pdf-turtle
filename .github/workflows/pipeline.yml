@@ -9,7 +9,7 @@ jobs:
         with:
           go-version: '>=1.18.0'
       - run: go build
-      - run: go test ./...
+      - run: go test -timeout 45s ./...
 
   publish-container:
     runs-on: ubuntu-latest
