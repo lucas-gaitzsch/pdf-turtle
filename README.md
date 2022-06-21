@@ -5,7 +5,7 @@
 
 ### A painless html to pdf rendering service
 
-[PdfTurtle](https://pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
+[PdfTurtle](https://github.com/lucas-gaitzsch/pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
 Try it! Here's a [**DEMO__🐢__**](https://pdfturtle.gaitzsch.dev/).
 
@@ -71,8 +71,8 @@ _...COMING SOON_
 | Template style                               | Package       | PdfTurtle key  | URL                                 |
 | -------------------------------------------- | ------------- | -------------- | ----------------------------------- |
 | Golang                                       | html/template | **golang**     | https://pkg.go.dev/html/template    |
-| Handlebars-syntax like                       | raymond       | **handlebars** | https://github.com/aymerick/raymond |
 | Django-syntax like (require _model._ prefix) | pongo2        | **django**     | https://github.com/flosch/pongo2    |
+| Handlebars-syntax like                       | raymond       | **handlebars** | https://github.com/aymerick/raymond |
 
 ## Development / Build from source
 

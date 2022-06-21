@@ -74,6 +74,16 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 
 // }
 
+func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
+	ps.preProcessHtmlData(data)
+
+	data.SetDefaults()
+
+	return utils.LogExecutionTimeWithResult("render pdf", ps.ctx, func() (io.Reader, error) {
+		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
+	})
+}
+
 func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 	if data.GetBodyHtml() == nil {
 		return
@@ -81,20 +91,27 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 
 	if !data.HasHeaderOrFooterHtml() || !data.HasBuiltinStylesExcluded() {
 
-		ps.htmlParser.Parse(data.GetBodyHtml())
+		
+		utils.LogExecutionTime("parse dom", ps.ctx, func() {
+			ps.htmlParser.Parse(data.GetBodyHtml())
+		})
 
 		if !data.HasHeaderOrFooterHtml() {
 			// parse header and footer from main html
 			ps.popHeaderAndFooter(data)
 		}
 
-		ps.addDefaultStyleToHeaderAndFooter(data)
+		utils.LogExecutionTime("add styles", ps.ctx, func() {
+			ps.addDefaultStyleToHeaderAndFooter(data)
 
-		if !data.HasBuiltinStylesExcluded() {
-			ps.htmlParser.AddStyles(ps.assetsProviderService.GetMergedCss())
-		}
+			if !data.HasBuiltinStylesExcluded() {
+				ps.htmlParser.AddStyles(ps.assetsProviderService.GetMergedCss())
+			}
+		});
 
-		body, err := ps.htmlParser.GetHtml()
+		body, err := utils.LogExecutionTimeWithResult("parse dom", ps.ctx, func() (*string, error) {
+			return ps.htmlParser.GetHtml()
+		})
 
 		if err == nil {
 			data.SetBodyHtml(body)
@@ -123,16 +140,6 @@ func (ps *PdfService) addDefaultStyleToHeaderAndFooter(data HtmlModels) {
 	} else {
 		log.Ctx(ps.ctx).Warn().Msg("could not load default styles")
 	}
-}
-
-func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
-	ps.preProcessHtmlData(data)
-
-	data.SetDefaults()
-
-	return utils.LogExecutionTimeWithResult("render pdf", ps.ctx, func() (io.Reader, error) {
-		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
-	})
 }
 
 func getRendererService(ctx context.Context) *renderer.RendererBackgroundService {

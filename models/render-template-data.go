@@ -11,7 +11,7 @@ type RenderTemplateData struct {
 	HeaderModel any `json:"headerModel,omitempty"` // Optional model for header. If empty or null model was used.
 	FooterModel any `json:"footerModel,omitempty"` // Optional model for footer. If empty or null model was used.
 
-	TemplateEngine string `json:"templateEngine,omitempty" default:"handlebars" enums:"golang,handlebars,django"`
+	TemplateEngine string `json:"templateEngine,omitempty" default:"golang" enums:"golang,handlebars,django"`
 
 	RenderOptions RenderOptions `json:"options,omitempty"`
 } // @name RenderTemplateData
