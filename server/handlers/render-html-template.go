@@ -3,11 +3,12 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"pdf-turtle/models"
-	"pdf-turtle/models/dto"
 
-	"pdf-turtle/services/pdf"
-	"pdf-turtle/services/templating/templateengines"
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/templating/templateengines"
 )
 
 // RenderPdfFromHtmlFromTemplateHandler godoc

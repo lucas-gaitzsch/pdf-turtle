@@ -3,14 +3,15 @@ package pdf
 import (
 	"context"
 	"io"
-	"pdf-turtle/config"
-	"pdf-turtle/models"
-	"pdf-turtle/services/assetsprovider"
-	"pdf-turtle/services/htmlparser"
-	"pdf-turtle/services/renderer"
-	"pdf-turtle/services/templating/templateengines"
-	"pdf-turtle/utils"
 
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/htmlparser"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/services/templating"
 	"github.com/rs/zerolog/log"
 )
 
@@ -18,6 +19,7 @@ type PdfService struct {
 	ctx                   context.Context
 	rendererService       *renderer.RendererBackgroundService
 	assetsProviderService *assetsprovider.AssetsProviderService
+	templateService       templating.TemplateServiceAbstraction
 	htmlParser            htmlparser.HtmlParser
 }
 
@@ -26,6 +28,7 @@ func NewPdfService(requestctx context.Context) *PdfService {
 		ctx:                   requestctx,
 		rendererService:       getRendererService(requestctx),
 		assetsProviderService: getAssetsProviderService(requestctx),
+		templateService:       templating.NewTemplateService(),
 		htmlParser:            htmlparser.New(),
 	}
 }
@@ -39,32 +42,13 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 
 	templateData.ParseJsonModelDataFromDoubleEncodedString()
 
-	templateEngine := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
-
-	data := &models.RenderData{
-		RenderOptions: templateData.RenderOptions,
-	}
-
-	utils.LogExecutionTime("exec template", ps.ctx, func() {
-		html, err := templateEngine.Execute(templateData.HtmlTemplate, templateData.Model)
-		if err != nil {
-			panic(err)
-		}
-
-		headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.GetHeaderModel())
-		if err != nil {
-			panic(err)
-		}
-
-		footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.GetFooterModel())
-		if err != nil {
-			panic(err)
-		}
-
-		data.Html = html
-		data.HeaderHtml = *headerHtml
-		data.FooterHtml = *footerHtml
+	data, err := utils.LogExecutionTimeWithResult("exec template", ps.ctx, func() (*models.RenderData, error) {
+		return ps.templateService.ExecuteTemplate(templateData)
 	})
+
+	if err != nil {
+		panic(err)
+	}
 
 	return ps.renderPdf(data)
 }
@@ -91,7 +75,6 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 
 	if !data.HasHeaderOrFooterHtml() || !data.HasBuiltinStylesExcluded() {
 
-		
 		utils.LogExecutionTime("parse dom", ps.ctx, func() {
 			ps.htmlParser.Parse(data.GetBodyHtml())
 		})
@@ -107,7 +90,7 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 			if !data.HasBuiltinStylesExcluded() {
 				ps.htmlParser.AddStyles(ps.assetsProviderService.GetMergedCss())
 			}
-		});
+		})
 
 		body, err := utils.LogExecutionTimeWithResult("parse dom", ps.ctx, func() (*string, error) {
 			return ps.htmlParser.GetHtml()

@@ -1,8 +1,9 @@
 package htmlparser
 
 import (
-	"pdf-turtle/utils"
 	"strings"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/rs/zerolog/log"
@@ -32,16 +33,7 @@ func (p *HtmlParserGoQuery) Parse(document *string) error {
 func (p *HtmlParserGoQuery) AddStyles(css *string) {
 	headTag := p.doc.Find("head").First()
 	if headTag == nil {
-		htmlTag := p.doc.Find("html").First()
-		if htmlTag == nil {
-			return
-		}
-
-		headTag = htmlTag.PrependNodes(&html.Node{
-			Type:     html.ElementNode,
-			DataAtom: atom.Head,
-			Data:     "head",
-		})
+		log.Panic().Msg("html should have a head")
 	}
 
 	styleNode := &html.Node{

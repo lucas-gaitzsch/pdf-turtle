@@ -1,8 +1,9 @@
 package models
 
 import (
-	"pdf-turtle/utils"
 	"strings"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 )
 
 type RenderOptionsMargins struct {

@@ -3,9 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"pdf-turtle/models"
 
-	"pdf-turtle/services/pdf"
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
 )
 
 const TemplateEngineQueryKey = "template-engine"

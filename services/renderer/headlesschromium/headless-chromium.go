@@ -5,8 +5,9 @@ import (
 	"context"
 	"errors"
 	"io"
-	"pdf-turtle/config"
 	"time"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
 
 	"github.com/rs/zerolog/log"
 

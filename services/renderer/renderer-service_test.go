@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"pdf-turtle/models"
-	"pdf-turtle/utils/logging"
 	"testing"
 	"time"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 )
 
 type htmlToPdfRendererMock struct {
@@ -127,6 +128,8 @@ func TestWorkerBeyondTheLimit(t *testing.T) {
 		rendererMock.ContinueChan <- true
 		<-gotReturn
 	}
+
+	time.Sleep(10 * time.Millisecond)
 
 	if currLen := len(service.workerSlots); currLen != 0 {
 		t.Fatalf("worker slots should have len of 0 after return (curr: %d)", currLen)

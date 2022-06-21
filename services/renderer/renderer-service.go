@@ -8,8 +8,8 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"pdf-turtle/config"
-	"pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
 )
 
 type workerSlot struct{}

@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"pdf-turtle/models"
-	"pdf-turtle/services/templating/templateengines"
-	"pdf-turtle/utils"
-	"pdf-turtle/utils/logging"
 	"testing"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/templating/templateengines"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 )
 
 func TestRenderHtmlAsPdf(t *testing.T) {

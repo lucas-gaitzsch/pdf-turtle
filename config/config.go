@@ -2,7 +2,8 @@ package config
 
 import (
 	"context"
-	"pdf-turtle/utils"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 
 	"github.com/rs/zerolog/log"
 )

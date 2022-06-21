@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"pdf-turtle/config"
-	"pdf-turtle/models/dto"
 	"strings"
 	"time"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
 
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"

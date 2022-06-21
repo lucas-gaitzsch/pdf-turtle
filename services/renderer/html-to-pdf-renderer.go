@@ -3,7 +3,8 @@ package renderer
 import (
 	"context"
 	"io"
-	"pdf-turtle/models"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
 )
 
 type HtmlToPdfRendererAbstraction interface {

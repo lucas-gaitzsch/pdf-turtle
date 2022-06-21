@@ -6,8 +6,9 @@ import (
 	"io/ioutil"
 	stdlog "log"
 	"os"
-	"pdf-turtle/config"
 	"testing"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"

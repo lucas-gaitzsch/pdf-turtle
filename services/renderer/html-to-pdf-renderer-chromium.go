@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"pdf-turtle/models"
-	"pdf-turtle/services/renderer/headlesschromium"
-	"pdf-turtle/utils"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer/headlesschromium"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 
 	"github.com/chromedp/cdproto/page"
 	"github.com/rs/zerolog/log"
@@ -108,7 +109,7 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 
 func (r *HtmlToPdfRendererChromium) Close() {
 	r.watcherCtxCancelFunc()
-	<- r.watcherClosedChan
-	
+	<-r.watcherClosedChan
+
 	r.chromiumCancelFunc()
 }

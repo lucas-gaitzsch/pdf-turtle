@@ -3,9 +3,10 @@ package assetsprovider
 import (
 	"os"
 	"path"
-	"pdf-turtle/utils"
 
-	"pdf-turtle/static-files/embed"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/static-files/embed"
 
 	"github.com/rs/zerolog/log"
 )

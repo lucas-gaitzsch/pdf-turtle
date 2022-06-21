@@ -1,6 +1,6 @@
 html, body {
     font-size: 13pt;
-    font-family: 'Open Sans', 'Roboto', 'Inter', 'Verdana', 'Geneva', 'Tahoma', sans-serif;
+    font-family: 'Open Sans', 'Roboto', 'Inter', 'Verdana', 'Geneva', 'Tahoma', sans-serif, 'Noto Color Emoji';
     font-weight: normal;
     -webkit-print-color-adjust: exact;
 }

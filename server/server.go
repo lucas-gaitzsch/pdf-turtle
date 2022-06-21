@@ -5,16 +5,17 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"pdf-turtle/config"
-	"pdf-turtle/server/handlers"
 	"time"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/server/handlers"
 
 	"github.com/rs/zerolog/log"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 
-	_ "pdf-turtle/server/docs"
+	_ "github.com/lucas-gaitzsch/pdf-turtle/server/docs"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 )

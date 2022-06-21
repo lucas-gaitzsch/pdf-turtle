@@ -1,6 +1,6 @@
 package models
 
-import "pdf-turtle/utils"
+import "github.com/lucas-gaitzsch/pdf-turtle/utils"
 
 type RenderData struct {
 	Html       *string `json:"html" example:"<b>Hello World</b>"`

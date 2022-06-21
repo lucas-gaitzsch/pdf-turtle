@@ -4,12 +4,13 @@ import (
 	"context"
 	"os"
 	"os/signal"
-	"pdf-turtle/config"
-	"pdf-turtle/server"
-	"pdf-turtle/services/assetsprovider"
-	"pdf-turtle/services/renderer"
-	"pdf-turtle/utils/logging"
 	"syscall"
+
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/server"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 
 	"github.com/rs/zerolog/log"
 

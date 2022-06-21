@@ -2,8 +2,6 @@ module github.com/lucas-gaitzsch/pdf-turtle
 
 go 1.18
 
-replace pdf-turtle => ./
-
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/alexflint/go-arg v1.4.3
