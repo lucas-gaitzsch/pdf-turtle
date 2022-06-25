@@ -15,6 +15,8 @@ import (
 
 // TODO:! Testen was passiert, wenn chromium prozess beendet wurde
 
+const headerFooterScaleFactor = 0.75
+
 type HtmlToPdfRendererChromium struct {
 	ChromiumCtx          context.Context
 	chromiumCancelFunc   context.CancelFunc
@@ -76,20 +78,56 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 			WithMarginLeft(utils.MmToInches(margins.Left))
 
 		if hasHeaderOrFooter {
+			var headerFooterWidth int
+
+			if !data.RenderOptions.Landscape {
+				headerFooterWidth = data.RenderOptions.PageSize.Width
+			} else {
+				headerFooterWidth = data.RenderOptions.PageSize.Height
+			}
+
+			scaledHeaderFooterWidth := float64(headerFooterWidth)*headerFooterScaleFactor
+
+			scaledHeaderHeight := float64(data.RenderOptions.Margins.Top)*headerFooterScaleFactor
+			scaledFooterHeight := float64(data.RenderOptions.Margins.Bottom)*headerFooterScaleFactor
+
 			headerFooterAppendCss := fmt.Sprintf(`
 				#header, #footer {
+					box-sizing: border-box;
 					padding: 0 !important;
-					padding-left: %dmm !important;
-					padding-right: %dmm !important;
+					margin:  0 !important;
 					
-					transform: scale(0.75);
-					transform-origin: top left;
-					width: 100%%;
+					width: %fmm !important;
+					height: %fmm !important;
 				}
 				#footer {
-					transform-origin: bottom left;					
+					height: %fmm !important;				
 				}
-			`, margins.Left, margins.Right)
+				#header > div, #footer > div {
+					box-sizing: border-box;
+					transform: scale(%f);
+					transform-origin: top left;
+
+					padding-left: %dmm !important;
+					padding-right: %dmm !important;
+
+					min-width: %dmm;
+					min-height: %dmm;
+				}
+				#footer > div {
+					transform-origin: bottom left;
+					min-height: %dmm;
+				}
+			`, 
+			scaledHeaderFooterWidth,
+			scaledHeaderHeight,
+			scaledFooterHeight,
+			headerFooterScaleFactor,
+			margins.Left,
+			margins.Right,
+			headerFooterWidth,
+			margins.Top,
+			margins.Bottom)
 
 			headerHtml := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)
 			footerHtml := utils.AppendStyleToHtml(&data.FooterHtml, &headerFooterAppendCss)

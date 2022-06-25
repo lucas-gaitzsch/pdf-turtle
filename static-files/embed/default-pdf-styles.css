@@ -10,10 +10,10 @@ body {
 }
 
 #footer .default-footer {
-    font-size: 12pt;
-    text-align: right;
-    width: 100%;
-    padding-bottom: 8mm;
+    font-size: 11pt;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .page-break-before {

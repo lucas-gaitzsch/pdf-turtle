@@ -62,6 +62,16 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 	ps.preProcessHtmlData(data)
 
 	data.SetDefaults()
+	
+	utils.LogExecutionTime("add styles", ps.ctx, func() {
+		ps.addDefaultStyleToHeaderAndFooter(data)
+
+		if !data.HasBuiltinStylesExcluded() {
+			htmlWithStyles := utils.AppendStyleToHtml(data.GetBodyHtml(), ps.assetsProviderService.GetMergedCss())
+			data.SetBodyHtml(htmlWithStyles)
+		}
+	})
+
 
 	return utils.LogExecutionTimeWithResult("render pdf", ps.ctx, func() (io.Reader, error) {
 		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
@@ -83,14 +93,6 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 			// parse header and footer from main html
 			ps.popHeaderAndFooter(data)
 		}
-
-		utils.LogExecutionTime("add styles", ps.ctx, func() {
-			ps.addDefaultStyleToHeaderAndFooter(data)
-
-			if !data.HasBuiltinStylesExcluded() {
-				ps.htmlParser.AddStyles(ps.assetsProviderService.GetMergedCss())
-			}
-		})
 
 		body, err := utils.LogExecutionTimeWithResult("parse dom", ps.ctx, func() (*string, error) {
 			return ps.htmlParser.GetHtml()
@@ -114,12 +116,14 @@ func (ps *PdfService) popHeaderAndFooter(data HtmlModels) {
 
 func (ps *PdfService) addDefaultStyleToHeaderAndFooter(data HtmlModels) {
 	defaultCss, ok := ps.assetsProviderService.GetCssByKey(assetsprovider.DefaultPdfStyles)
-	if ok {
-		headerHtml := data.GetHeaderHtml()
-		data.SetHeaderHtml(*utils.AppendStyleToHtml(&headerHtml, defaultCss))
+	if ok {		
+		if headerHtml := data.GetHeaderHtml(); headerHtml != "" {
+			data.SetHeaderHtml(*utils.AppendStyleToHtml(&headerHtml, defaultCss))
+		}
 
-		footerHtml := data.GetFooterHtml()
-		data.SetFooterHtml(*utils.AppendStyleToHtml(&footerHtml, defaultCss))
+		if footerHtml := data.GetFooterHtml(); footerHtml != "" {
+			data.SetFooterHtml(*utils.AppendStyleToHtml(&footerHtml, defaultCss))
+		}
 	} else {
 		log.Ctx(ps.ctx).Warn().Msg("could not load default styles")
 	}
