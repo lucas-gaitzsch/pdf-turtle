@@ -1,8 +1,10 @@
 html, body {
-    font-size: 13pt;
+    font-size: 12pt;
     font-family: 'Open Sans', 'Roboto', 'Inter', 'Verdana', 'Geneva', 'Tahoma', sans-serif, 'Noto Color Emoji';
     font-weight: normal;
+    print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+    overflow: hidden;
 }
 
 body {
