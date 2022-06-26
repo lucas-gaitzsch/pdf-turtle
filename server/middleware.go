@@ -119,6 +119,7 @@ func recoverMiddleware() func(http.Handler) http.Handler {
 						Error().
 						Err(err).
 						Stack().
+						CallerSkipFrame(2).
 						Interface("err", rec).
 						Msg("err during request")
 

@@ -15,7 +15,6 @@ require (
 	github.com/rs/zerolog v1.27.0
 	github.com/swaggo/http-swagger v1.3.0
 	github.com/swaggo/swag v1.8.3
-	pdf-turtle v0.0.0 // local redirect
 )
 
 require golang.org/x/net v0.0.0-20220617184016-355a448f1bc9

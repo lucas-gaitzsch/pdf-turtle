@@ -8,6 +8,10 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+type ContextKey string
+
+const contextKeySkipFrames = ContextKey("contextKeySkipFrames")
+
 func LogExecutionTime(msg string, ctx context.Context, f func()) {
 	start := time.Now()
 
@@ -22,10 +26,15 @@ func LogExecutionTime(msg string, ctx context.Context, f func()) {
 		logger = log.Ctx(ctx)
 	}
 
+	skipFrames, ok := ctx.Value(contextKeySkipFrames).(int)
+	if !ok {
+		skipFrames = 1
+	}
+
 	logger.
 		Debug().
 		Dur("executionTime", duration).
-		CallerSkipFrame(1).
+		CallerSkipFrame(skipFrames).
 		Msgf("%s: %d ms", msg, duration.Milliseconds())
 }
 
@@ -33,7 +42,7 @@ func LogExecutionTimeWithResult[R any, E error](msg string, ctx context.Context,
 	var res R
 	var err E
 
-	LogExecutionTime(msg, ctx, func() {
+	LogExecutionTime(msg, context.WithValue(ctx, contextKeySkipFrames, 2), func() {
 		res, err = f()
 	})
 

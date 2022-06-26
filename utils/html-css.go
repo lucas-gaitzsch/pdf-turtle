@@ -11,11 +11,12 @@ func AppendStyleToHtml(html *string, css *string) *string {
 	}
 
 	if css != nil {
-		res := *html +
+		styleSection :=
 			"\n<style>" +
-			*css +
-			"</style>"
+				*css +
+				"</style>"
 
+		res := *html + styleSection
 		return &res
 	} else {
 		return html

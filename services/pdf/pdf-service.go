@@ -62,7 +62,7 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 	ps.preProcessHtmlData(data)
 
 	data.SetDefaults()
-	
+
 	utils.LogExecutionTime("add styles", ps.ctx, func() {
 		ps.addDefaultStyleToHeaderAndFooter(data)
 
@@ -71,7 +71,6 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 			data.SetBodyHtml(htmlWithStyles)
 		}
 	})
-
 
 	return utils.LogExecutionTimeWithResult("render pdf", ps.ctx, func() (io.Reader, error) {
 		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
@@ -116,7 +115,7 @@ func (ps *PdfService) popHeaderAndFooter(data HtmlModels) {
 
 func (ps *PdfService) addDefaultStyleToHeaderAndFooter(data HtmlModels) {
 	defaultCss, ok := ps.assetsProviderService.GetCssByKey(assetsprovider.DefaultPdfStyles)
-	if ok {		
+	if ok {
 		if headerHtml := data.GetHeaderHtml(); headerHtml != "" {
 			data.SetHeaderHtml(*utils.AppendStyleToHtml(&headerHtml, defaultCss))
 		}

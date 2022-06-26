@@ -64,6 +64,8 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 
 		if data.RenderOptions.Margins != nil {
 			margins = *data.RenderOptions.Margins
+		} else {
+			data.RenderOptions.Margins = &margins
 		}
 
 		params = params.WithPrintBackground(false).
@@ -86,10 +88,10 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 				headerFooterWidth = data.RenderOptions.PageSize.Height
 			}
 
-			scaledHeaderFooterWidth := float64(headerFooterWidth)*headerFooterScaleFactor
+			scaledHeaderFooterWidth := float64(headerFooterWidth) * headerFooterScaleFactor
 
-			scaledHeaderHeight := float64(data.RenderOptions.Margins.Top)*headerFooterScaleFactor
-			scaledFooterHeight := float64(data.RenderOptions.Margins.Bottom)*headerFooterScaleFactor
+			scaledHeaderHeight := float64(margins.Top) * headerFooterScaleFactor
+			scaledFooterHeight := float64(margins.Bottom) * headerFooterScaleFactor
 
 			headerFooterAppendCss := fmt.Sprintf(`
 				#header, #footer {
@@ -118,16 +120,16 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 					transform-origin: bottom left;
 					min-height: %dmm;
 				}
-			`, 
-			scaledHeaderFooterWidth,
-			scaledHeaderHeight,
-			scaledFooterHeight,
-			headerFooterScaleFactor,
-			margins.Left,
-			margins.Right,
-			headerFooterWidth,
-			margins.Top,
-			margins.Bottom)
+			`,
+				scaledHeaderFooterWidth,
+				scaledHeaderHeight,
+				scaledFooterHeight,
+				headerFooterScaleFactor,
+				margins.Left,
+				margins.Right,
+				headerFooterWidth,
+				margins.Top,
+				margins.Bottom)
 
 			headerHtml := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)
 			footerHtml := utils.AppendStyleToHtml(&data.FooterHtml, &headerFooterAppendCss)
