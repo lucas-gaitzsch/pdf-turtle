@@ -26,9 +26,12 @@ func LogExecutionTime(msg string, ctx context.Context, f func()) {
 		logger = log.Ctx(ctx)
 	}
 
-	skipFrames, ok := ctx.Value(contextKeySkipFrames).(int)
-	if !ok {
-		skipFrames = 1
+	skipFrames := 1
+
+	if ctx != nil {
+		if sf, ok := ctx.Value(contextKeySkipFrames).(int); ok {
+			skipFrames = sf
+		}
 	}
 
 	logger.
@@ -42,7 +45,12 @@ func LogExecutionTimeWithResult[R any, E error](msg string, ctx context.Context,
 	var res R
 	var err E
 
-	LogExecutionTime(msg, context.WithValue(ctx, contextKeySkipFrames, 2), func() {
+	var innerCtx context.Context
+	if ctx != nil {
+		innerCtx = context.WithValue(ctx, contextKeySkipFrames, 2)
+	}
+
+	LogExecutionTime(msg, innerCtx, func() {
 		res, err = f()
 	})
 
