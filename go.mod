@@ -21,8 +21,10 @@ require golang.org/x/net v0.0.0-20220617184016-355a448f1bc9
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b // indirect
 	github.com/alexflint/go-scalar v1.1.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
+	github.com/boombuler/barcode v1.0.1 // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
