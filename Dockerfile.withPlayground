@@ -21,6 +21,7 @@ RUN apt-get -y install fonts-open-sans fonts-roboto fonts-noto-color-emoji
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 
+ENV LANG en-US.UTF-8
 ENV LOG_LEVEL_DEBUG false
 ENV LOG_JSON_OUTPUT false
 ENV WORKER_INSTANCES 40

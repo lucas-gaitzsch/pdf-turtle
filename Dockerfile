@@ -13,6 +13,7 @@ RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
 
+ENV LANG en-US.UTF-8
 ENV LOG_LEVEL_DEBUG false
 ENV LOG_JSON_OUTPUT false
 ENV WORKER_INSTANCES 40
