@@ -15,7 +15,10 @@ func (te *DjangoTemplateEngine) Execute(templateHtml *string, model any) (*strin
 		return &empty, err
 	}
 
-	html, err := t.Execute(pongo2.Context{"model": model})
+	html, err := t.Execute(pongo2.Context{
+		"model": model,
+		"func":  templateFunctions,
+	})
 
 	if err != nil {
 		return &empty, err

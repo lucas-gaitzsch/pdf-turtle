@@ -115,11 +115,15 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 					padding-right: %dmm !important;
 
 					min-width: %dmm;
+					max-width: %dmm;
+
 					min-height: %dmm;
+					max-height: %dmm;
 				}
 				#footer > div {
 					transform-origin: bottom left;
 					min-height: %dmm;
+					max-height: %dmm;
 				}
 			`,
 				scaledHeaderFooterWidth,
@@ -129,7 +133,10 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 				margins.Left,
 				margins.Right,
 				headerFooterWidth,
+				headerFooterWidth,
 				margins.Top,
+				margins.Top,
+				margins.Bottom,
 				margins.Bottom)
 
 			headerHtml := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)

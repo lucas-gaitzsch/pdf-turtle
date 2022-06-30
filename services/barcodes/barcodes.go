@@ -2,29 +2,36 @@ package barcodes
 
 import (
 	"github.com/boombuler/barcode"
+	"github.com/boombuler/barcode/ean"
 	"github.com/boombuler/barcode/qr"
 )
 
-type Barcode interface {
-	GetSvg() string
+type BarcodeSvg interface {
+	Svg() string
 }
 
-type QrCode struct {
-	barcode barcode.Barcode
-}
+func NewBarcodeSvg(barcodeCreationFunc func() (barcode.Barcode, error)) (BarcodeSvg, error) {
+	bc, err := barcodeCreationFunc()
 
-func (qrCode *QrCode) GetSvg() string {
-	return "TODO"
-}
-
-func NewQrCode(content string) (Barcode, error) {
-	qr, err := qr.Encode(content, qr.M, qr.Auto)
-
-	if err!=nil {
+	if err != nil {
 		return nil, err
 	}
 
-	return &QrCode{
-		barcode: qr,
-	}, nil
+	if bc.Metadata().Dimensions == 1 {
+		return &Barcode1D{
+			data: bc,
+		}, nil
+	} else {
+		return &Barcode2D{
+			data: bc,
+		}, nil
+	}
+}
+
+func NewEanCode(content string) (BarcodeSvg, error) {
+	return NewBarcodeSvg(func() (barcode.Barcode, error) { return ean.Encode(content) })
+}
+
+func NewQrCode(content string) (BarcodeSvg, error) {
+	return NewBarcodeSvg(func() (barcode.Barcode, error) { return qr.Encode(content, qr.L, qr.Auto) })
 }

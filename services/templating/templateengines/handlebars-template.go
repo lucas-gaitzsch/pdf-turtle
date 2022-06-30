@@ -10,8 +10,14 @@ type HandlebarsTemplateEngine struct {
 func (te *HandlebarsTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
 	empty := ""
 
-	html, err := raymond.Render(*templateHtml, model)
+	t, err := raymond.Parse(*templateHtml)
+	if err != nil {
+		return &empty, err
+	}
 
+	t.RegisterHelpers(templateFunctions)
+
+	html, err := t.Exec(model)
 	if err != nil {
 		return &empty, err
 	}

@@ -2,7 +2,6 @@ package templateengines
 
 import (
 	"bytes"
-	"encoding/json"
 	"html/template"
 )
 
@@ -13,12 +12,7 @@ type GoTemplateEngine struct {
 
 func (gte *GoTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
 	t, err := template.New("").
-		Funcs(template.FuncMap{
-			"marshal": func(v interface{}) template.JS {
-				a, _ := json.Marshal(v)
-				return template.JS(a)
-			},
-		}).
+		Funcs(templateFunctions).
 		Parse(*templateHtml)
 
 	empty := ""
