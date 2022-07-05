@@ -15,34 +15,47 @@ func ReflectDefaultValues[S any](s *S) *S {
 
 	for i := 0; i < count; i++ {
 		f := t.Field(i)
-		if defaultStr, ok := f.Tag.Lookup("default"); ok {
-			var v reflect.Value
-			if f.Type.Kind() == reflect.Pointer {
-				v, ok = convertTo(defaultStr, f.Type.Elem())
-				if !ok {
-					continue
-				}
-			} else {
-				v, ok = convertTo(defaultStr, f.Type)
-				if !ok {
-					continue
-				}
-			}
+		
+		defaultStr, ok := f.Tag.Lookup("default")
+		if !ok {
+			continue
+		}
 
-			fv := tv.FieldByName(f.Name)
-			if fv.CanSet() && fv.IsZero() {
-				if fv.Kind() == reflect.Pointer {
-					p := reflect.New(f.Type.Elem())
-					p.Elem().Set(v)
+		v, ok := getValueByDefaultStr(f, defaultStr)
+		if !ok {
+			continue
+		}
 
-					fv.Set(p)
-				} else {
-					fv.Set(v)
-				}
-			}
+		fv := tv.FieldByName(f.Name)
+		if !fv.CanSet() || !fv.IsZero() {
+			continue
+		}
+		
+		if fv.Kind() == reflect.Pointer {
+			p := reflect.New(f.Type.Elem())
+			p.Elem().Set(v)
+
+			fv.Set(p)
+		} else {
+			fv.Set(v)
 		}
 	}
 	return s
+}
+
+func getValueByDefaultStr(targetField reflect.StructField, defaultStr string) (v reflect.Value, ok bool) {
+	if targetField.Type.Kind() == reflect.Pointer {
+		v, ok = convertTo(defaultStr, targetField.Type.Elem())
+		if !ok {
+			return
+		}
+	} else {
+		v, ok = convertTo(defaultStr, targetField.Type)
+		if !ok {
+			return
+		}
+	}
+	return
 }
 
 func convertTo(str string, toType reflect.Type) (reflect.Value, bool) {
