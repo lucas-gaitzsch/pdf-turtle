@@ -15,7 +15,7 @@ func ReflectDefaultValues[S any](s *S) *S {
 
 	for i := 0; i < count; i++ {
 		f := t.Field(i)
-		
+
 		defaultStr, ok := f.Tag.Lookup("default")
 		if !ok {
 			continue
@@ -30,7 +30,7 @@ func ReflectDefaultValues[S any](s *S) *S {
 		if !fv.CanSet() || !fv.IsZero() {
 			continue
 		}
-		
+
 		if fv.Kind() == reflect.Pointer {
 			p := reflect.New(f.Type.Elem())
 			p.Elem().Set(v)
