@@ -4,8 +4,10 @@ go 1.18
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/alexflint/go-arg v1.4.3
 	github.com/aymerick/raymond v2.0.2+incompatible
+	github.com/boombuler/barcode v1.0.1
 	github.com/chromedp/cdproto v0.0.0-20220618005332-bed16f03b458
 	github.com/chromedp/chromedp v0.8.2
 	github.com/flosch/pongo2/v5 v5.0.0
@@ -15,11 +17,6 @@ require (
 	github.com/rs/zerolog v1.27.0
 	github.com/swaggo/http-swagger v1.3.0
 	github.com/swaggo/swag v1.8.3
-)
-
-require (
-	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
-	github.com/boombuler/barcode v1.0.1
 	golang.org/x/net v0.0.0-20220617184016-355a448f1bc9
 )
 

@@ -125,4 +125,4 @@ go test -cover ./...
 - [pongo2 (django template engine)](https://github.com/flosch/pongo2)
 - [zerolog](https://github.com/rs/zerolog)
 - [go-arg](https://github.com/alexflint/go-arg)
-<!-- TODO:!! -->
+- [barcode](https://github.com/boombuler/barcode) and [svgo](https://github.com/ajstarks/svgo)
