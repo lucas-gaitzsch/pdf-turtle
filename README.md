@@ -9,6 +9,8 @@
 
 Try it! Here's a [**DEMO__🐢__**](https://pdfturtle.gaitzsch.dev/).
 
+[Screenshot](https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/Screenshot.png?raw=true)
+
 ## How to run
 
 ### With docker (recommended)
