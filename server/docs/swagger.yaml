@@ -14,8 +14,8 @@ definitions:
   RenderData:
     properties:
       footerHtml:
-        default: <div class="default-footer"><span class="pageNumber"></span> of <span
-          class="totalPages"></span></div>
+        default: <div class="default-footer"><div><span class="pageNumber"></span>
+          of <span class="totalPages"></span></div></div>
         description: Optional html for footer. If empty, the footer html will be parsed
           from main html (<PdfFooter></PdfFooter>).
         type: string
@@ -85,22 +85,22 @@ definitions:
         type: string
       footerModel:
         description: Optional model for footer. If empty or null model was used.
-        type: any
+        type: object
       headerHtmlTemplate:
         description: Optional template for header. If empty, the header template will
           be parsed from main template (<PdfHeader></PdfHeader>).
         type: string
       headerModel:
         description: Optional model for header. If empty or null model was used.
-        type: any
+        type: object
       htmlTemplate:
         type: string
       model:
-        type: any
+        type: object
       options:
         $ref: '#/definitions/RenderOptions'
       templateEngine:
-        default: handlebars
+        default: golang
         enum:
         - golang
         - handlebars
@@ -122,11 +122,12 @@ info:
   contact:
     email: lucas@gaitzsch.dev
     name: Lucas Gaitzsch
-  description: '#TODO'
+  description: A painless HTML to PDF rendering service. Generate PDF reports and
+    documents from HTML templates or raw HTML.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: '#TODO'
+  termsOfService: Be nice.
   title: PdfTurtle API
   version: "1.0"
 paths:

@@ -39,5 +39,4 @@ func Get(ctx context.Context) Config {
 		utils.ReflectDefaultValues(c)
 		return *c
 	}
-
 }

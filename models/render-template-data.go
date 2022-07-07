@@ -7,17 +7,14 @@ type RenderTemplateData struct {
 	HeaderHtmlTemplate string  `json:"headerHtmlTemplate,omitempty"` // Optional template for header. If empty, the header template will be parsed from main template (<PdfHeader></PdfHeader>).
 	FooterHtmlTemplate string  `json:"footerHtmlTemplate,omitempty"` // Optional template for footer. If empty, the footer template will be parsed from main template (<PdfFooter></PdfFooter>).
 
-	Model       any `json:"model,omitempty"`
-	HeaderModel any `json:"headerModel,omitempty"` // Optional model for header. If empty or null model was used.
-	FooterModel any `json:"footerModel,omitempty"` // Optional model for footer. If empty or null model was used.
+	Model       any `json:"model,omitempty" swaggertype:"object"`
+	HeaderModel any `json:"headerModel,omitempty" swaggertype:"object"` // Optional model for header. If empty or null model was used.
+	FooterModel any `json:"footerModel,omitempty" swaggertype:"object"` // Optional model for footer. If empty or null model was used.
 
 	TemplateEngine string `json:"templateEngine,omitempty" default:"golang" enums:"golang,handlebars,django"`
 
 	RenderOptions RenderOptions `json:"options,omitempty"`
 } // @name RenderTemplateData
-
-//TODO:!! HtmlTemplate -> example:"<b>Hello {{.name}}</b>"
-//TODO:!! BodyModel -> swaggertype:"object,string" example:"name:Lucas"
 
 func (d *RenderTemplateData) HasHeaderOrFooterHtml() bool {
 	return d.HeaderHtmlTemplate != "" || d.FooterHtmlTemplate != ""

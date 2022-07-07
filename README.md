@@ -78,6 +78,12 @@ _...COMING SOON_
 
 ## Development / Build from source
 
+### Get playground (frontend) submodule if required
+
+```bash
+git submodule update --init
+```
+
 ### Generate swagger
 
 ```bash

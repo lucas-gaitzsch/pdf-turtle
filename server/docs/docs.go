@@ -10,7 +10,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "#TODO",
+        "termsOfService": "Be nice.",
         "contact": {
             "name": "Lucas Gaitzsch",
             "email": "lucas@gaitzsch.dev"
@@ -143,7 +143,7 @@ const docTemplate = `{
                 "footerHtml": {
                     "description": "Optional html for footer. If empty, the footer html will be parsed from main html (\u003cPdfFooter\u003e\u003c/PdfFooter\u003e).",
                     "type": "string",
-                    "default": "\u003cdiv class=\"default-footer\"\u003e\u003cspan class=\"pageNumber\"\u003e\u003c/span\u003e of \u003cspan class=\"totalPages\"\u003e\u003c/span\u003e\u003c/div\u003e"
+                    "default": "\u003cdiv class=\"default-footer\"\u003e\u003cdiv\u003e\u003cspan class=\"pageNumber\"\u003e\u003c/span\u003e of \u003cspan class=\"totalPages\"\u003e\u003c/span\u003e\u003c/div\u003e\u003c/div\u003e"
                 },
                 "headerHtml": {
                     "description": "Optional html for header. If empty, the header html will be parsed from main html (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
@@ -229,7 +229,7 @@ const docTemplate = `{
                 },
                 "footerModel": {
                     "description": "Optional model for footer. If empty or null model was used.",
-                    "type": "any"
+                    "type": "object"
                 },
                 "headerHtmlTemplate": {
                     "description": "Optional template for header. If empty, the header template will be parsed from main template (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
@@ -237,20 +237,20 @@ const docTemplate = `{
                 },
                 "headerModel": {
                     "description": "Optional model for header. If empty or null model was used.",
-                    "type": "any"
+                    "type": "object"
                 },
                 "htmlTemplate": {
                     "type": "string"
                 },
                 "model": {
-                    "type": "any"
+                    "type": "object"
                 },
                 "options": {
                     "$ref": "#/definitions/RenderOptions"
                 },
                 "templateEngine": {
                     "type": "string",
-                    "default": "handlebars",
+                    "default": "golang",
                     "enum": [
                         "golang",
                         "handlebars",
@@ -286,7 +286,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{"http"},
 	Title:            "PdfTurtle API",
-	Description:      "#TODO",
+	Description:      "A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
