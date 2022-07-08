@@ -106,25 +106,25 @@ func recoverMiddleware() func(http.Handler) http.Handler {
 				if rec := recover(); rec != nil {
 					ctx := r.Context()
 
+					logMsgBuilder := log.Ctx(ctx).
+						Error().
+						Stack().
+						CallerSkipFrame(2)
+
 					err, ok := rec.(error)
 
 					errMsg := ""
 					if ok {
 						errMsg = err.Error()
+						logMsgBuilder = logMsgBuilder.Err(err)
 					} else if errStr, ok := rec.(string); ok {
 						errMsg = errStr
+						logMsgBuilder = logMsgBuilder.Interface("err", rec)
 					}
 
-					log.Ctx(ctx).
-						Error().
-						Err(err).
-						Stack().
-						CallerSkipFrame(2).
-						Interface("err", rec).
-						Msg("err during request")
+					logMsgBuilder.Msg("err during request")
 
 					w.WriteHeader(http.StatusInternalServerError)
-
 					w.Header().Set("Content-Type", "application/json")
 
 					json.NewEncoder(w).Encode(dto.RequestError{

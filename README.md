@@ -7,7 +7,7 @@
 
 [PdfTurtle](https://github.com/lucas-gaitzsch/pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
-Try it! Here's a [**DEMO__🐢__**](https://pdfturtle.gaitzsch.dev/).
+Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
 [![Screenshot](https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/Screenshot.png?raw=true)](https://pdfturtle.gaitzsch.dev/)
 
@@ -25,8 +25,15 @@ docker pull lucasgaitzsch/pdf-turtle:latest-playground
 docker run -d \
     -p 8000:8000 \
     --name pdf-turtle \
+    --restart unless-stopped \
     lucasgaitzsch/pdf-turtle:latest-playground
 ```
+
+Included fonts:
+
+- Open Sans
+- Roboto
+- Noto Emoji
 
 ### With prebuilt binaries
 
@@ -75,6 +82,14 @@ _...COMING SOON_
 | Golang                                       | html/template | **golang**     | https://pkg.go.dev/html/template    |
 | Django-syntax like (require _model._ prefix) | pongo2        | **django**     | https://github.com/flosch/pongo2    |
 | Handlebars-syntax like                       | raymond       | **handlebars** | https://github.com/aymerick/raymond |
+
+### Included template functions
+
+| Function name | Parameters | Description                            |
+| ------------- | ---------- | -------------------------------------- |
+| marshal       | object     | Encodes provided object as JSON string |
+| barcodeQr     | content    | Renders a SVG QR code from content     |
+| barcodeEan    | content    | Renders a SVG EAN code from content    |
 
 ## Development / Build from source
 

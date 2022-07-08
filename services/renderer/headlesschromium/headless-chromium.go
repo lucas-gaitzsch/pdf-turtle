@@ -118,7 +118,6 @@ func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context,
 	}
 
 	if err := chromedp.Run(cctx, runWithTimeOut(outerCtx, tasks)); err != nil {
-		log.Error().Err(err).Msg("pdf render err")
 		return nil, err
 	}
 
