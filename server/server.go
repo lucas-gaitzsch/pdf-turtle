@@ -31,7 +31,6 @@ type Server struct {
 // @title           PdfTurtle API
 // @version         1.0
 // @description     A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.
-// @termsOfService  Be nice.
 // @contact.name    Lucas Gaitzsch
 // @contact.email   lucas@gaitzsch.dev
 // @license.name    Apache 2.0

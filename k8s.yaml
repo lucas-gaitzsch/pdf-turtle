@@ -63,7 +63,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - http:
+  - host: pdfturtle.gaitzsch.dev
+    http:
       paths:
       - path: /
         pathType: Prefix
