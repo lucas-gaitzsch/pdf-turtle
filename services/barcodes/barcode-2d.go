@@ -43,9 +43,6 @@ func (bc *Barcode2D) Svg() string {
 				svg.Rect(svgX, startSvgY, blockSize, svgY-startSvgY, svgBlackRectangleAttr)
 			}
 
-			// if bcd.At(x, y) == color.Black {
-			// 	svg.Rect(svgX, svgY, blockSize, blockSize, svgBlackRectangleAttr)
-			// }
 			svgY += blockSize
 		}
 		svgX += blockSize

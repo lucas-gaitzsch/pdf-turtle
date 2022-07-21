@@ -6,7 +6,6 @@
     "info": {
         "description": "A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.",
         "title": "PdfTurtle API",
-        "termsOfService": "Be nice.",
         "contact": {
             "name": "Lucas Gaitzsch",
             "email": "lucas@gaitzsch.dev"
