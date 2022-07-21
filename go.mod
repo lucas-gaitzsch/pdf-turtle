@@ -8,7 +8,7 @@ require (
 	github.com/alexflint/go-arg v1.4.3
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/boombuler/barcode v1.0.1
-	github.com/chromedp/cdproto v0.0.0-20220629234738-4cfc9cdeeb92
+	github.com/chromedp/cdproto v0.0.0-20220720105051-fd2b6dcad39e
 	github.com/chromedp/chromedp v0.8.2
 	github.com/flosch/pongo2/v5 v5.0.0
 	github.com/google/uuid v1.3.0
@@ -16,7 +16,7 @@ require (
 	github.com/rs/cors v1.8.2
 	github.com/rs/zerolog v1.27.0
 	github.com/swaggo/http-swagger v1.3.0
-	github.com/swaggo/swag v1.8.3
+	github.com/swaggo/swag v1.8.4
 	golang.org/x/net v0.0.0-20220708220712-1185a9018129
 )
 
