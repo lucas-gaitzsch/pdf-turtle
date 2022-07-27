@@ -17,8 +17,8 @@ github.com/aymerick/raymond v2.0.2+incompatible h1:VEp3GpgdAnv9B2GFyTvqgcKvY+mfK
 github.com/aymerick/raymond v2.0.2+incompatible/go.mod h1:osfaiScAUVup+UC9Nfq76eWqDhXlp+4UYaA8uhTBO6g=
 github.com/boombuler/barcode v1.0.1 h1:NDBbPmhS+EqABEs5Kg3n/5ZNjy73Pz7SIV+KCeqyXcs=
 github.com/boombuler/barcode v1.0.1/go.mod h1:paBWMcWSl3LHKBqUq+rly7CNSldXjb2rDl3JlRe0mD8=
-github.com/chromedp/cdproto v0.0.0-20220720105051-fd2b6dcad39e h1:AX1yO5n3vfVFvwPtuJAp6ut5qq+MU2Rir5yO9+yk1Mg=
-github.com/chromedp/cdproto v0.0.0-20220720105051-fd2b6dcad39e/go.mod h1:5Y4sD/eXpwrChIuxhSr/G20n9CdbCmoerOHnuAf0Zr0=
+github.com/chromedp/cdproto v0.0.0-20220618005332-bed16f03b458 h1:F4QS8ZtDiVzzIjUTc1Fg1Y1Evr1rDDt4I3dbXeWYMPo=
+github.com/chromedp/cdproto v0.0.0-20220618005332-bed16f03b458 h1:5Y4sD/eXpwrChIuxhSr/G20n9CdbCmoerOHnuAf0Zr0=
 github.com/chromedp/chromedp v0.8.2 h1:EYSsSqWuKYwyHZEJpU00kOGOMz5DE0qDVckelzauMFA=
 github.com/chromedp/chromedp v0.8.2/go.mod h1:vpbCNtfYeOUo2q5reuwX6ZmPpbHRf5PZfAqNR2ObB+g=
 github.com/chromedp/sysutil v1.0.0 h1:+ZxhTpfpZlmchB58ih/LBHX52ky7w2VhQVKQMucy3Ic=
