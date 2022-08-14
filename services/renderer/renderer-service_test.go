@@ -47,7 +47,7 @@ func newTestRenderService(ctx context.Context, workerInstances int) (*RendererBa
 
 func TestWorkerUpAndDown(t *testing.T) {
 	logging.InitTestLogger(t)
-	defer logging.SetNullLogger()
+	// defer logging.SetNullLogger() //TODO:!?
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -58,7 +58,7 @@ func TestWorkerUpAndDown(t *testing.T) {
 	gotReturn := make(chan bool)
 
 	go func() {
-		service.RenderAndReceive(*models.NewJob(context.Background(), &models.RenderData{}))
+		_, _ = service.RenderAndReceive(*models.NewJob(context.Background(), &models.RenderData{}))
 		gotReturn <- true
 	}()
 
@@ -71,6 +71,11 @@ func TestWorkerUpAndDown(t *testing.T) {
 	rendererMock.ContinueChan <- true
 
 	<-gotReturn
+
+	for len(service.workerSlots) > 0 {
+		// busy wait for all workers shutdown
+		<-time.After(10 * time.Millisecond)
+	}
 
 	if len(service.workerSlots) != 0 {
 		t.Fatal("worker slots should have len of 0 after return")

@@ -122,15 +122,13 @@ func (rbs *RendererBackgroundService) doWork(ctx context.Context, job models.Job
 			return
 		}
 
-		select {
-		case job.CallbackChan <- res:
-		case <-time.After(rbs.renderTimeout):
-			log.Ctx(job.RequestCtx).Warn().Msg("render service: cancel pdf callback (timeout)")
-		}
+		job.CallbackChan <- res
 	}()
 
 	select {
 	case <-done:
+	case <-time.After(rbs.renderTimeout):
+		log.Ctx(job.RequestCtx).Warn().Msg("render service: cancel pdf callback (timeout)")
 	case <-ctx.Done():
 		log.Ctx(job.RequestCtx).Info().Msg("cancel render task by global context")
 	case <-job.RequestCtx.Done():

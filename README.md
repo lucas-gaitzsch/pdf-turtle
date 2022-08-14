@@ -64,12 +64,14 @@ Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagge
 You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
 ### Postman
-
-_...COMING SOON_
-
-<!-- TODO:!! -->
+You can import the swagger file to test the service with Postman.
 
 ### PdfTurtle Playground
+You can write and test templates with the [builtin playground](https://pdfturtle.gaitzsch.dev/). 
+
+
+### Client libs
+- [.NET Core](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) **(under development)**
 
 _...COMING SOON_
 
