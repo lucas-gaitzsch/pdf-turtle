@@ -11,11 +11,35 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
 [![Screenshot](https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/Screenshot.png?raw=true)](https://pdfturtle.gaitzsch.dev/)
 
+
+
+## 🎢 Features
+
+- ✅ Free, OpenSource and Self-Hosted
+- 💬 Generate PDFs in a descriptive way from HTML (with JavaScript support)
+- 💫 Supports modern HTML and CSS standards (uses latest Chromium engine)
+- 👻 Builtin template engines (go-template, raymond and django)
+- 🚀 Fast generation with limited resources (limited multithreading)
+- 🔥 Multiple replicas supported (stateless design)
+- 🖥 Frontend ([Playground](https://pdfturtle.gaitzsch.dev/)) for rapid development
+- 🚩 Preoptimized style (CSS) for print and PDF
+- 🔽 Bundled [container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available
+
+## 🚧 Roadmap
+- Preload and cache JavaScript libs
+- Markdown to PDF
+- Clint libs
+  - .NET Core
+  - golang
+  - kotlin
+  - ..?
+- Package support for exchangeable templates
+
 ## How to run
 
-### With docker (recommended)
+### With docker container (recommended)
 
-The docker image is hosted on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
+The docker container image is available on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
 
 With the tag _\*-playground_ you get a bundled image with the web playground.
 
