@@ -132,22 +132,3 @@ func runWithTimeOut(outerCtx context.Context, tasks chromedp.Tasks) chromedp.Act
 		return tasks.Do(timeoutCtx)
 	}
 }
-
-func injectCssByScript(css *string) chromedp.Action {
-	if css == nil {
-		log.Warn().Msg("css to inject is nil")
-	}
-
-	const script = `
-	(css) => {
-		const style = document.createElement('style');
-		style.type = 'text/css';
-		style.appendChild(document.createTextNode(css));
-		document.head.appendChild(style);
-
-		return true;
-	}
-	`
-
-	return chromedp.PollFunction(script, nil, chromedp.WithPollingArgs(css))
-}

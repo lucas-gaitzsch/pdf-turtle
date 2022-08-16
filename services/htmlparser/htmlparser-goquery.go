@@ -34,6 +34,7 @@ func (p *HtmlParserGoQuery) AddStyles(css *string) {
 	headTag := p.doc.Find("head").First()
 	if headTag == nil {
 		log.Panic().Msg("html should have a head")
+		return
 	}
 
 	styleNode := &html.Node{

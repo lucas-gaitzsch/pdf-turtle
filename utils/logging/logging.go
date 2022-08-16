@@ -3,7 +3,6 @@ package logging
 import (
 	"context"
 	"io"
-	"io/ioutil"
 	stdlog "log"
 	"os"
 	"testing"
@@ -70,7 +69,7 @@ func InitTestLogger(t *testing.T) {
 
 func SetNullLogger() {
 	log.Logger = zerolog.
-		New(ioutil.Discard).
+		New(io.Discard).
 		With().
 		Logger().
 		Level(zerolog.Disabled)

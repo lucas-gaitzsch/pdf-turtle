@@ -47,7 +47,6 @@ func newTestRenderService(ctx context.Context, workerInstances int) (*RendererBa
 
 func TestWorkerUpAndDown(t *testing.T) {
 	logging.InitTestLogger(t)
-	// defer logging.SetNullLogger() //TODO:!?
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -72,9 +71,9 @@ func TestWorkerUpAndDown(t *testing.T) {
 
 	<-gotReturn
 
-	for len(service.workerSlots) > 0 {
+	for i := 0; len(service.workerSlots) > 0 || i < 100; i++ {
 		// busy wait for all workers shutdown
-		<-time.After(10 * time.Millisecond)
+		<-time.After(50 * time.Millisecond)
 	}
 
 	if len(service.workerSlots) != 0 {
@@ -84,12 +83,11 @@ func TestWorkerUpAndDown(t *testing.T) {
 
 func TestWorkerBeyondTheLimit(t *testing.T) {
 
+	//TODO:?
+	// logging.InitTestLogger(t)
+
 	const jobCount = 50
 	const workerInstances = 40
-
-	// TODO: eventual panic by logging after test end
-	// logging.InitTestLogger(t)
-	// defer logging.SetNullLogger()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -134,7 +132,10 @@ func TestWorkerBeyondTheLimit(t *testing.T) {
 		<-gotReturn
 	}
 
-	time.Sleep(10 * time.Millisecond)
+	for i := 0; len(service.workerSlots) > 0 || i < 100; i++ {
+		// busy wait for all workers shutdown
+		<-time.After(50 * time.Millisecond)
+	}
 
 	if currLen := len(service.workerSlots); currLen != 0 {
 		t.Fatalf("worker slots should have len of 0 after return (curr: %d)", currLen)
