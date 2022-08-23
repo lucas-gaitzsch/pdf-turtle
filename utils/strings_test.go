@@ -16,10 +16,10 @@ var stringsToTrim = []struct {
 	{" \t\n test \t test ", "test \t test"},
 }
 
-func TestTrim(t *testing.T) {
+func TestTrimStrWhitespace(t *testing.T) {
 	for _, d := range stringsToTrim {
 		t.Run(fmt.Sprintf("trim %s", d.in), func(t *testing.T) {
-			trimmed := Trim(d.in)
+			trimmed := TrimStrWhitespace(d.in)
 
 			if trimmed != d.out {
 				t.Fatalf("%s trimmed should be %s (current: %s)", d.in, d.out, trimmed)

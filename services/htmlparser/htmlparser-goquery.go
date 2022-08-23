@@ -61,14 +61,14 @@ func (p *HtmlParserGoQuery) PopHeaderAndFooter() (header string, footer string) 
 	headerNode := p.doc.Find(HeaderNodeTag).First()
 	if headerNode != nil {
 		html, _ := headerNode.Html()
-		header = utils.Trim(html)
+		header = utils.TrimStrWhitespace(html)
 		headerNode.Remove()
 	}
 
 	footerNode := p.doc.Find(FooterNodeTag).First()
 	if footerNode != nil {
 		html, _ := footerNode.Html()
-		footer = utils.Trim(html)
+		footer = utils.TrimStrWhitespace(html)
 		footerNode.Remove()
 	}
 
