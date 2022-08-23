@@ -20,7 +20,7 @@ type Config struct {
 	ServePlayground              bool   `arg:"--servePlayground,env:SERVE_PLAYGROUND" default:"false" help:"Serve playground from path './static-files/playground/'"`
 	Secret                       string `arg:"env" default:"" help:"Secret used as bearer token"`
 
-	// CachedAssets []string `arg:"env"` //TODO:!
+	PreloadedAssets []string `arg:"env" help:"Preload assets on startup. Example:'bar.js:https://foo.com/bar.js'"` //TODO:!
 }
 
 func ContextWithConfig(parentCtx context.Context, config Config) context.Context {

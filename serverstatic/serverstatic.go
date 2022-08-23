@@ -17,6 +17,8 @@ import (
 	_ "github.com/lucas-gaitzsch/pdf-turtle/server/docs"
 )
 
+const resourceIdKey = "resourceId"
+
 type Server struct {
 	Instance *http.Server
 }
@@ -28,7 +30,7 @@ func (s *Server) Serve(ctx context.Context) {
 
 	r := mux.NewRouter()
 
-	r.Path("/resources/{resourceId}").
+	r.Path(fmt.Sprintf("/resources/{%s}", resourceIdKey)).
 		Methods(http.MethodGet).
 		HandlerFunc(GetRessourceHandler).
 		Name("Get resource")
@@ -75,5 +77,7 @@ func (s *Server) Close(ctx context.Context) {
 // ### Handler ###
 
 func GetRessourceHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+	// vars := mux.Vars(r)
+	// resourceId := vars[resourceIdKey]
+	//TODO:
 }
