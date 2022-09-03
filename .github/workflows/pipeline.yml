@@ -43,9 +43,9 @@ jobs:
           context: ./
           tags: |
             lucasgaitzsch/pdf-turtle:latest
-            lucasgaitzsch/pdf-turtle:v${{ VERSION }}
+            lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}
           #ghcr.io/lucasgaitzsch/pdf-turtle:latest
-          #ghcr.io/lucasgaitzsch/pdf-turtle:v${{ VERSION }}
+          #ghcr.io/lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}
           push: true
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
@@ -62,9 +62,9 @@ jobs:
           context: ./
           tags: |
             lucasgaitzsch/pdf-turtle:latest-playground
-            lucasgaitzsch/pdf-turtle:v${{ VERSION }}-playground
+            lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}-playground
           #ghcr.io/lucasgaitzsch/pdf-turtle:latest-playground
-          #ghcr.io/lucasgaitzsch/pdf-turtle:v${{ VERSION }}-playground
+          #ghcr.io/lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}-playground
           push: true
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
