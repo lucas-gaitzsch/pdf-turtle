@@ -17,6 +17,9 @@ jobs:
     needs: build-and-test
     if: github.ref == 'refs/heads/main'
     steps:
+      - name: Set version to env
+        run: |
+          echo "VERSION=$(date +'%Y.%-m.%-d.%-H%M')" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -40,7 +43,9 @@ jobs:
           context: ./
           tags: |
             lucasgaitzsch/pdf-turtle:latest
+            lucasgaitzsch/pdf-turtle:v${{ VERSION }}
           #ghcr.io/lucasgaitzsch/pdf-turtle:latest
+          #ghcr.io/lucasgaitzsch/pdf-turtle:v${{ VERSION }}
           push: true
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
@@ -57,7 +62,9 @@ jobs:
           context: ./
           tags: |
             lucasgaitzsch/pdf-turtle:latest-playground
+            lucasgaitzsch/pdf-turtle:v${{ VERSION }}-playground
           #ghcr.io/lucasgaitzsch/pdf-turtle:latest-playground
+          #ghcr.io/lucasgaitzsch/pdf-turtle:v${{ VERSION }}-playground
           push: true
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v2
