@@ -7,15 +7,19 @@ type TemplateEngine interface {
 	Test(templateHtml *string, model any) error
 }
 
-func GetTemplateEngineByKey(key string) TemplateEngine {
+func GetTemplateEngineByKey(key string) (TemplateEngine, bool) {
+	var templateEngine TemplateEngine
+
 	switch strings.ToLower(key) {
 	case strings.ToLower(HandlebarsTemplateEngineKey):
-		return &HandlebarsTemplateEngine{}
+		templateEngine = &HandlebarsTemplateEngine{}
 	case strings.ToLower(DjangoTemplateEngineKey):
-		return &DjangoTemplateEngine{}
+		templateEngine = &DjangoTemplateEngine{}
 	case strings.ToLower(GoTemplateEngineKey):
-		return &GoTemplateEngine{}
+		templateEngine = &GoTemplateEngine{}
 	default:
-		return &GoTemplateEngine{}
+		return &GoTemplateEngine{}, false
 	}
+
+	return templateEngine, true
 }

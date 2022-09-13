@@ -84,7 +84,8 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 	</table>`
 
 	htmlBody, err := utils.LogExecutionTimeWithResult("generate html from template", nil, func() (*string, error) {
-		return templateengines.GetTemplateEngineByKey(templateengines.GoTemplateEngineKey).Execute(&template, data)
+		engine, _ := templateengines.GetTemplateEngineByKey(templateengines.GoTemplateEngineKey)
+		return engine.Execute(&template, data)
 	})
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)

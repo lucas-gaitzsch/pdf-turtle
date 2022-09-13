@@ -5,6 +5,7 @@ import (
 
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/templating/templateengines"
+	"github.com/rs/zerolog/log"
 )
 
 type TemplateServiceAbstraction interface {
@@ -23,7 +24,18 @@ func (ts *TemplateService) ExecuteTemplate(templateData *models.RenderTemplateDa
 		return nil, errors.New("template data model should not be nil")
 	}
 
-	templateEngine := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
+	templateEngine, found := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
+	if templateData.TemplateEngine != "" {
+		l := log.
+			Debug().
+			Str("templateEngine", templateData.TemplateEngine).
+			Bool("found", found)
+		if found {
+			l.Msg("given template engine was found")
+		} else {
+			l.Msg("given template engine was not found")
+		}
+	}
 
 	data := &models.RenderData{
 		RenderOptions: templateData.RenderOptions,

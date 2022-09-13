@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/loopback"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/rs/zerolog/log"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/bundleprovider"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
@@ -32,14 +34,20 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	bundleFromForm, ok := r.MultipartForm.File["bundle"]
 
 	if !ok || len(bundleFromForm) != 1 {
-		//TODO:!! err
-		return
+		panic(errors.New("no zip bundle with key 'bundle' was attached in form data"))
 	}
 
 	reader, err := bundleFromForm[0].Open()
+	if err != nil {
+		panic(err)
+	}
 
 	bundle := bundleprovider.Bundle{}
-	bundle.ReadFromZip(reader, bundleFromForm[0].Size)
+	err = bundle.ReadFromZip(reader, bundleFromForm[0].Size)
+
+	if err != nil {
+		panic(err)
+	}
 
 	pdfService := pdf.NewPdfService(ctx)
 
@@ -55,9 +63,18 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	var pdfData io.Reader
 	var errRender error
 
-	modelBody, hasTemplate := getValueFromForm(r.MultipartForm.Value, "model")
-	if hasTemplate {
-		templateEngine, _ := getValueFromForm(r.MultipartForm.Value, "templateEngine")
+	modelBody, hasModel := getValueFromForm(r.MultipartForm.Value, "model")
+	hasModelLoggingPreparation := log.Debug().Bool("hasModel", hasModel)
+	if hasModel {
+		hasModelLoggingPreparation.Msg("got model in form data -> render with template engine")
+
+		templateEngine, hasTemplateEngine := getValueFromForm(r.MultipartForm.Value, "templateEngine")
+		if hasTemplateEngine {
+			log.
+				Debug().
+				Str("templateEngine", templateEngine).
+				Msg("got templateEngine in form data")
+		}
 
 		templateData := &models.RenderTemplateData{
 			HtmlTemplate:       bundle.GetBodyHtml(),
@@ -71,6 +88,8 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 
 		pdfData, errRender = pdfService.PdfFromHtmlTemplate(templateData)
 	} else {
+		hasModelLoggingPreparation.Msg("no model given with key 'model' in form data -> render plain html")
+
 		data := &models.RenderData{
 			Html:          bundle.GetBodyHtml(),
 			HeaderHtml:    bundle.GetHeaderHtml(),

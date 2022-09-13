@@ -6,6 +6,7 @@ import (
 
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
+	"github.com/rs/zerolog/log"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/templating/templateengines"
@@ -66,7 +67,18 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 
 		templateData.ParseJsonModelDataFromDoubleEncodedString()
 
-		templateEngine := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
+		templateEngine, found := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
+		if templateData.TemplateEngine != "" {
+			l := log.
+				Debug().
+				Str("templateEngine", templateData.TemplateEngine).
+				Bool("found", found)
+			if found {
+				l.Msg("given template engine was found")
+			} else {
+				l.Msg("given template engine was not found")
+			}
+		}
 
 		bodyErr := templateEngine.Test(templateData.HtmlTemplate, templateData.Model)
 		if bodyErr != nil {
