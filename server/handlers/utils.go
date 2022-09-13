@@ -46,3 +46,12 @@ func writeJson(ctx context.Context, w http.ResponseWriter, data any) error {
 
 	return nil
 }
+
+func getValueFromForm(formValues map[string][]string, key string) (string, bool) {
+	vals, ok := formValues[key]
+	if !ok || len(vals) != 1 {
+		return "", false
+	}
+
+	return vals[0], true
+}

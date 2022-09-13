@@ -21,6 +21,8 @@ type Config struct {
 	Secret                       string `arg:"env" default:"" help:"Secret used as bearer token"`
 
 	PreloadedAssets []string `arg:"env" help:"Preload assets on startup. Example:'bar.js:https://foo.com/bar.js'"` //TODO:!
+
+	LoopbackPort int `arg:"env" default:"80" help:"Loopback-Server port"`
 }
 
 func ContextWithConfig(parentCtx context.Context, config Config) context.Context {

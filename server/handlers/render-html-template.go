@@ -73,18 +73,6 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 			strErr := bodyErr.Error()
 			response.BodyTemplateError = &strErr
 		}
-
-		headerErr := templateEngine.Test(&templateData.HeaderHtmlTemplate, templateData.HeaderModel)
-		if headerErr != nil {
-			strErr := headerErr.Error()
-			response.HeaderTemplateError = &strErr
-		}
-
-		footerErr := templateEngine.Test(&templateData.FooterHtmlTemplate, templateData.FooterModel)
-		if footerErr != nil {
-			strErr := footerErr.Error()
-			response.FooterTemplateError = &strErr
-		}
 	}
 
 	if response.BodyTemplateError == nil && response.HeaderTemplateError == nil && response.FooterTemplateError == nil {

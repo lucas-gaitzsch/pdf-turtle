@@ -27,6 +27,9 @@ type RenderOptions struct {
 
 	// margins in mm; fallback to default if null
 	Margins *RenderOptionsMargins `json:"margins,omitempty"`
+
+	IsBundle bool   `json:"-"`
+	BasePath string `json:"-"`
 } // @name RenderOptions
 
 func (ro *RenderOptions) SetDefaults() {

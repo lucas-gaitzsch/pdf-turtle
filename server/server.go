@@ -62,6 +62,11 @@ func (s *Server) Serve(ctx context.Context) {
 		HandlerFunc(handlers.TestHtmlTemplateHandler).
 		Name("Test HTML template")
 
+	api.Path("/pdf/from/html-bundle/render").
+		Methods(http.MethodPost).
+		HandlerFunc(handlers.RenderBundleHandler).
+		Name("Render PDF from HTML-Bundle")
+
 	api.Use(
 		maxBodySizeMiddleware(conf.MaxBodySizeInMb),
 		loggingMiddleware(),
@@ -117,20 +122,25 @@ func (s *Server) Serve(ctx context.Context) {
 		},
 	}
 
-	go func() {
-		if err := s.Instance.ListenAndServe(); err != nil {
-			if err != http.ErrServerClosed {
-				log.Error().Err(err).Msg("server serve error")
-				panic(err)
-			}
-		}
-	}()
+	go s.listenAndServe()
+}
+
+func (s *Server) listenAndServe() {
 	log.Info().Msg("server: listens on " + s.Instance.Addr)
+
+	if err := s.Instance.ListenAndServe(); err != nil {
+		if err != http.ErrServerClosed {
+			log.Error().Err(err).Msg("server serve error")
+			panic(err)
+		}
+	}
 }
 
 func (s *Server) Close(ctx context.Context) {
 	log.Info().Msg("server: shutdown gracefully")
-	timeoutCtx, cancel := context.WithTimeout(ctx, time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec)*time.Second)
+
+	gracefullyShutdownTimeout := time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec) * time.Second
+	timeoutCtx, cancel := context.WithTimeout(ctx, gracefullyShutdownTimeout)
 	defer cancel()
 	s.Instance.Shutdown(timeoutCtx)
 }

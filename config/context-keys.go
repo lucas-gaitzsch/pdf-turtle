@@ -6,5 +6,6 @@ const (
 	ContextKeyConfig                = ContextKey("config")
 	ContextKeyRendererService       = ContextKey("rendererService")
 	ContextKeyAssetsProviderService = ContextKey("assetsProviderService")
+	ContextKeyBundleProviderService = ContextKey("bundleProviderService")
 	ContextKeyRequestId             = ContextKey("requestId")
 )

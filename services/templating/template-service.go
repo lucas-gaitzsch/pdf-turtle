@@ -34,12 +34,12 @@ func (ts *TemplateService) ExecuteTemplate(templateData *models.RenderTemplateDa
 		return nil, err
 	}
 
-	headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.GetHeaderModel())
+	headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.Model)
 	if err != nil {
 		return nil, err
 	}
 
-	footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.GetFooterModel())
+	footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.Model)
 	if err != nil {
 		return nil, err
 	}

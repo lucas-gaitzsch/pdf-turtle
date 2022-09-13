@@ -52,9 +52,13 @@ func NewChromiumBrowser(ctx context.Context) (context.Context, context.CancelFun
 
 type OptionsConfigureFunc func(params *page.PrintToPDFParams) *page.PrintToPDFParams
 
-func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context, html *string, optionsConfigureFunc OptionsConfigureFunc) (io.Reader, error) {
-	if html == nil {
+func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context, location string, html *string, optionsConfigureFunc OptionsConfigureFunc) (io.Reader, error) {
+	if html == nil && location == "" {
 		return nil, errors.New("html is nil")
+	}
+
+	if location == "" {
+		location = "about:blank"
 	}
 
 	cctx, cancel := chromedp.NewContext(chromiumAllocCtx)
@@ -71,7 +75,7 @@ func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context,
 
 	var pdfStream io.Reader
 	tasks := chromedp.Tasks{
-		chromedp.Navigate("about:blank"),
+		chromedp.Navigate(location),
 
 		chromedp.ActionFunc(func(cctx context.Context) error {
 			lctx, cancelLctx := context.WithCancel(cctx)
@@ -91,8 +95,10 @@ func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context,
 				return err
 			}
 
-			if err := page.SetDocumentContent(frameTree.Frame.ID, *html).Do(cctx); err != nil {
-				return err
+			if html != nil {
+				if err := page.SetDocumentContent(frameTree.Frame.ID, *html).Do(cctx); err != nil {
+					return err
+				}
 			}
 
 			select {

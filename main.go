@@ -7,8 +7,10 @@ import (
 	"syscall"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/loopback"
 	"github.com/lucas-gaitzsch/pdf-turtle/server"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/bundleprovider"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 
@@ -24,6 +26,21 @@ func initConfigByArgs(ctx context.Context) context.Context {
 	return config.ContextWithConfig(ctx, c)
 }
 
+func initServicesCtx(ctx context.Context) context.Context {
+	servicesCtx := ctx
+
+	rendererService := renderer.NewRendererBackgroundService(ctx)
+	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyRendererService, rendererService)
+
+	assetsProviderService := assetsprovider.NewAssetsProviderService()
+	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyAssetsProviderService, assetsProviderService)
+
+	bundleProviderService := bundleprovider.NewBundleProviderService()
+	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyBundleProviderService, bundleProviderService)
+
+	return servicesCtx
+}
+
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	ctx = initConfigByArgs(ctx)
@@ -33,13 +50,11 @@ func main() {
 	log.Info().Msg("Hey dude 👋 .. I am Karl, your turtle for today 🐢")
 
 	// init services
-	servicesCtx := ctx
+	servicesCtx := initServicesCtx(ctx)
 
-	rendererService := renderer.NewRendererBackgroundService(ctx)
-	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyRendererService, rendererService)
-
-	assetsProviderService := assetsprovider.NewAssetsProviderService()
-	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyAssetsProviderService, assetsProviderService)
+	// init loopback server
+	srvLoopback := loopback.Server{}
+	srvLoopback.Serve(servicesCtx)
 
 	// init server
 	srv := server.Server{}
@@ -53,7 +68,9 @@ func main() {
 	// cleanup resources
 	log.Info().Msg("shutting service down...")
 	srv.Close(ctx)
-	rendererService.Close()
+	servicesCtx.
+		Value(config.ContextKeyRendererService).(*renderer.RendererBackgroundService).
+		Close()
 	cancel()
 
 	// exit

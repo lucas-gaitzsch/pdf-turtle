@@ -152,7 +152,7 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 
 	bodyHtml := data.Html
 
-	return headlesschromium.RenderHtmlAsPdf(r.ChromiumCtx, ctx, bodyHtml, paramsFunc)
+	return headlesschromium.RenderHtmlAsPdf(r.ChromiumCtx, ctx, data.RenderOptions.BasePath, bodyHtml, paramsFunc)
 }
 
 func (r *HtmlToPdfRendererChromium) Close() {

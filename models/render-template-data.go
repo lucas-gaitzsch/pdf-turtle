@@ -8,8 +8,6 @@ type RenderTemplateData struct {
 	FooterHtmlTemplate string  `json:"footerHtmlTemplate,omitempty"` // Optional template for footer. If empty, the footer template will be parsed from main template (<PdfFooter></PdfFooter>).
 
 	Model       any `json:"model,omitempty" swaggertype:"object"`
-	HeaderModel any `json:"headerModel,omitempty" swaggertype:"object"` // Optional model for header. If empty or null model was used.
-	FooterModel any `json:"footerModel,omitempty" swaggertype:"object"` // Optional model for footer. If empty or null model was used.
 
 	TemplateEngine string `json:"templateEngine,omitempty" default:"golang" enums:"golang,handlebars,django"`
 
@@ -52,28 +50,8 @@ func (d *RenderTemplateData) GetBodyModel() any {
 	return d.Model
 }
 
-func (d *RenderTemplateData) HasHeaderOrFooterModel() bool {
-	return d.HeaderModel != nil || d.FooterModel != nil
-}
-
-func (d *RenderTemplateData) GetHeaderModel() any {
-	if !d.HasHeaderOrFooterModel() {
-		return d.Model
-	}
-	return d.HeaderModel
-}
-
-func (d *RenderTemplateData) GetFooterModel() any {
-	if !d.HasHeaderOrFooterModel() {
-		return d.Model
-	}
-	return d.FooterModel
-}
-
 func (d *RenderTemplateData) ParseJsonModelDataFromDoubleEncodedString() {
 	d.Model = parseJsonFieldFromDoubleEncodedString(d.Model)
-	d.HeaderModel = parseJsonFieldFromDoubleEncodedString(d.HeaderModel)
-	d.FooterModel = parseJsonFieldFromDoubleEncodedString(d.FooterModel)
 }
 func parseJsonFieldFromDoubleEncodedString(model any) any {
 	if str, ok := model.(string); ok {
