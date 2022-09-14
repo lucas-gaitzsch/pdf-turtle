@@ -59,7 +59,7 @@ func (s *Server) Serve(ctx context.Context) {
 }
 
 func (s *Server) listenAndServe() {
-	log.Info().Msg("loopback-server: listens on " + s.Instance.Addr)
+	log.Debug().Msg("loopback-server: listens on " + s.Instance.Addr)
 
 	if err := s.Instance.ListenAndServe(); err != nil {
 		if err != http.ErrServerClosed {
@@ -70,7 +70,7 @@ func (s *Server) listenAndServe() {
 }
 
 func (s *Server) Close(ctx context.Context) {
-	log.Info().Msg("loopback-server: shutdown gracefully")
+	log.Debug().Msg("loopback-server: shutdown gracefully")
 
 	gracefullyShutdownTimeout := time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec) * time.Second
 	timeoutCtx, cancel := context.WithTimeout(ctx, gracefullyShutdownTimeout)

@@ -1,6 +1,11 @@
 package templateengines
 
-import "strings"
+import (
+	"reflect"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+)
 
 type TemplateEngine interface {
 	Execute(templateHtml *string, model any) (*string, error)
@@ -22,4 +27,20 @@ func GetTemplateEngineByKey(key string) (TemplateEngine, bool) {
 	}
 
 	return templateEngine, true
+}
+
+func LogParsedTemplateEngine(keyToParse string, templateEngineInstance TemplateEngine,  found bool) {
+	l := log.
+		Debug().
+		Str("givenTemplateEngine", keyToParse).
+		Str("usedTemplateEngine", reflect.TypeOf(templateEngineInstance).String()).
+		Bool("found", found)
+	
+	if keyToParse == "" {
+		l.Msgf("template engine was not given -> fallback to %T", templateEngineInstance)			
+	} else if found {
+		l.Msg("given template engine was found")
+	} else {
+		l.Msg("given template engine was not found")
+	}
 }
