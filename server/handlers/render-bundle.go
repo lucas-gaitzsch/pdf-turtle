@@ -12,26 +12,34 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/rs/zerolog/log"
 
-	"github.com/lucas-gaitzsch/pdf-turtle/services/bundleprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
 )
 
+const (
+	formDataKeyBundle         = "bundle"
+	formDataKeyModel          = "model"
+	formDataKeyTemplateEngine = "templateEngine"
+)
+
 // RenderBundleHandler godoc
-// @Summary      Render PDF from bundle and template provided in form-data (keys: bundle, model)
-// @Description  Returns PDF file generated from HTML of body, header and footer
-// @Tags         render html
+// @Summary      Render PDF from bundle and model provided in form-data (keys: bundle, model)
+// @Description  Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required.
+// @Tags         Render Bundle including HTML(-Template) and assets
 // @Accept       multipart/form-data
 // @Produce      application/pdf
-// @Param        renderData  body  models.RenderData  true  "Render Data"
+// @Param        bundle  formData  file  true  "Bundle Zip-File"
+// @Param        model   formData  string  false  "JSON-Model for template (only required for template)"
+// @Param        templateEngine   formData  string  false  "Template engine to use for template (only required for template)"
 // @Success      200         "PDF File"
 // @Router       /pdf/from/bundle/render [post]
 func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	conf := config.Get(ctx)
 
-	r.ParseMultipartForm(int64(config.Get(ctx).MaxBodySizeInMb * 1024 * 1024))
+	r.ParseMultipartForm(int64(config.Get(ctx).MaxBodySizeInMb) * 1024 * 1024)
 
-	bundleFromForm, ok := r.MultipartForm.File["bundle"]
+	bundleFromForm, ok := r.MultipartForm.File[formDataKeyBundle]
 
 	if !ok || len(bundleFromForm) != 1 {
 		panic(errors.New("no zip bundle with key 'bundle' was attached in form data"))
@@ -42,7 +50,7 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	bundle := bundleprovider.Bundle{}
+	bundle := bundles.Bundle{}
 	err = bundle.ReadFromZip(reader, bundleFromForm[0].Size)
 
 	if err != nil {
@@ -51,27 +59,25 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdfService := pdf.NewPdfService(ctx)
 
-	bundleProviderService := ctx.Value(config.ContextKeyBundleProviderService).(*bundleprovider.BundleProviderService)
+	bundleProviderService := ctx.Value(config.ContextKeyBundleProviderService).(*bundles.BundleProviderService)
 
 	id, cleanup := bundleProviderService.Provide(bundle)
 	defer cleanup()
 
 	opt := bundle.GetOptions()
-	opt.IsBundle = true
 	opt.BasePath = fmt.Sprintf("http://127.0.0.1:%d%s/%s/", conf.LoopbackPort, loopback.BundlePath, id)
 
 	var pdfData io.Reader
 	var errRender error
 
-	modelBody, hasModel := getValueFromForm(r.MultipartForm.Value, "model")
+	modelBody, hasModel := getValueFromForm(r.MultipartForm.Value, formDataKeyModel)
 	hasModelLoggingPreparation := log.Debug().Bool("hasModel", hasModel)
 	if hasModel {
 		hasModelLoggingPreparation.Msg("got model in form data -> render with template engine")
 
-		templateEngine, hasTemplateEngine := getValueFromForm(r.MultipartForm.Value, "templateEngine")
+		templateEngine, hasTemplateEngine := getValueFromForm(r.MultipartForm.Value, formDataKeyTemplateEngine)
 		if hasTemplateEngine {
-			log.
-				Debug().
+			log.Debug().
 				Str("templateEngine", templateEngine).
 				Msg("got templateEngine in form data")
 		}

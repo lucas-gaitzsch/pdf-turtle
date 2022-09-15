@@ -1,4 +1,4 @@
-package bundleprovider
+package bundles
 
 import (
 	"sync"

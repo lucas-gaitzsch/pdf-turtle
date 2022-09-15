@@ -29,15 +29,15 @@ func GetTemplateEngineByKey(key string) (TemplateEngine, bool) {
 	return templateEngine, true
 }
 
-func LogParsedTemplateEngine(keyToParse string, templateEngineInstance TemplateEngine,  found bool) {
+func LogParsedTemplateEngine(keyToParse string, templateEngineInstance TemplateEngine, found bool) {
 	l := log.
 		Debug().
 		Str("givenTemplateEngine", keyToParse).
 		Str("usedTemplateEngine", reflect.TypeOf(templateEngineInstance).String()).
 		Bool("found", found)
-	
+
 	if keyToParse == "" {
-		l.Msgf("template engine was not given -> fallback to %T", templateEngineInstance)			
+		l.Msgf("template engine was not given -> fallback to %T", templateEngineInstance)
 	} else if found {
 		l.Msg("given template engine was found")
 	} else {

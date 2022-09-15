@@ -23,6 +23,47 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/pdf/from/bundle/render": {
+            "post": {
+                "description": "Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render Bundle including HTML(-Template) and assets"
+                ],
+                "summary": "Render PDF from bundle and model provided in form-data (keys: bundle, model)",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Bundle Zip-File",
+                        "name": "bundle",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JSON-Model for template (only required for template)",
+                        "name": "model",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Template engine to use for template (only required for template)",
+                        "name": "templateEngine",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
         "/pdf/from/html-template/render": {
             "post": {
                 "description": "Returns PDF file generated from HTML template plus model of body, header and footer",
@@ -33,7 +74,7 @@ const docTemplate = `{
                     "application/pdf"
                 ],
                 "tags": [
-                    "render html-template"
+                    "Render HTML-Template"
                 ],
                 "summary": "Render PDF from HTML template",
                 "parameters": [
@@ -64,7 +105,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "test html-template"
+                    "Render HTML-Template"
                 ],
                 "summary": "Test HTML template matching model",
                 "parameters": [
@@ -98,7 +139,7 @@ const docTemplate = `{
                     "application/pdf"
                 ],
                 "tags": [
-                    "render html"
+                    "Render HTML"
                 ],
                 "summary": "Render PDF from HTML",
                 "parameters": [
@@ -226,17 +267,9 @@ const docTemplate = `{
                     "description": "Optional template for footer. If empty, the footer template will be parsed from main template (\u003cPdfFooter\u003e\u003c/PdfFooter\u003e).",
                     "type": "string"
                 },
-                "footerModel": {
-                    "description": "Optional model for footer. If empty or null model was used.",
-                    "type": "object"
-                },
                 "headerHtmlTemplate": {
                     "description": "Optional template for header. If empty, the header template will be parsed from main template (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
                     "type": "string"
-                },
-                "headerModel": {
-                    "description": "Optional model for header. If empty or null model was used.",
-                    "type": "object"
                 },
                 "htmlTemplate": {
                     "type": "string"
@@ -282,7 +315,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/api",
+	BasePath:         "",
 	Schemes:          []string{"http"},
 	Title:            "PdfTurtle API",
 	Description:      "A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.",

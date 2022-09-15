@@ -10,7 +10,7 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/loopback"
 	"github.com/lucas-gaitzsch/pdf-turtle/server"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
-	"github.com/lucas-gaitzsch/pdf-turtle/services/bundleprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 
@@ -35,7 +35,7 @@ func initServicesCtx(ctx context.Context) context.Context {
 	assetsProviderService := assetsprovider.NewAssetsProviderService()
 	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyAssetsProviderService, assetsProviderService)
 
-	bundleProviderService := bundleprovider.NewBundleProviderService()
+	bundleProviderService := bundles.NewBundleProviderService()
 	servicesCtx = context.WithValue(servicesCtx, config.ContextKeyBundleProviderService, bundleProviderService)
 
 	return servicesCtx

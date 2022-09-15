@@ -1,4 +1,4 @@
-package bundleprovider
+package bundles
 
 import (
 	"archive/zip"
@@ -96,6 +96,8 @@ func (b *Bundle) GetOptions() models.RenderOptions {
 	defer f.Close()
 
 	json.NewDecoder(f).Decode(&opt)
+
+	opt.IsBundle = true
 
 	return opt
 }

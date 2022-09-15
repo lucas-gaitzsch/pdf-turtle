@@ -36,7 +36,6 @@ type Server struct {
 // @license.name    Apache 2.0
 // @license.url     http://www.apache.org/licenses/LICENSE-2.0.html
 // @schemes         http
-// @basePath        /api
 func (s *Server) Serve(ctx context.Context) {
 	conf := config.Get(ctx)
 

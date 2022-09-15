@@ -18,14 +18,6 @@ func (d *RenderTemplateData) HasHeaderOrFooterHtml() bool {
 	return d.HeaderHtmlTemplate != "" || d.FooterHtmlTemplate != ""
 }
 
-func (d *RenderTemplateData) GetBodyHtml() *string {
-	return d.HtmlTemplate
-}
-
-func (d *RenderTemplateData) SetBodyHtml(html *string) {
-	d.HtmlTemplate = html
-}
-
 func (d *RenderTemplateData) GetHeaderHtml() string {
 	return d.HeaderHtmlTemplate
 }
@@ -40,14 +32,6 @@ func (d *RenderTemplateData) GetFooterHtml() string {
 
 func (d *RenderTemplateData) SetFooterHtml(html string) {
 	d.FooterHtmlTemplate = html
-}
-
-func (d *RenderTemplateData) HasBuiltinStylesExcluded() bool {
-	return d.RenderOptions.ExcludeBuiltinStyles
-}
-
-func (d *RenderTemplateData) GetBodyModel() any {
-	return d.Model
 }
 
 func (d *RenderTemplateData) ParseJsonModelDataFromDoubleEncodedString() {

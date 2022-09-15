@@ -28,7 +28,9 @@ type RenderOptions struct {
 	// margins in mm; fallback to default if null
 	Margins *RenderOptionsMargins `json:"margins,omitempty"`
 
-	IsBundle bool   `json:"-"`
+	// true if options was parsed from bundle
+	IsBundle bool `json:"-"`
+	// base path is required for accessing bundle assets from loopback
 	BasePath string `json:"-"`
 } // @name RenderOptions
 

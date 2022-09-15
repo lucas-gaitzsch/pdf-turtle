@@ -14,7 +14,7 @@ import (
 // RenderPdfFromHtmlFromTemplateHandler godoc
 // @Summary      Render PDF from HTML template
 // @Description  Returns PDF file generated from HTML template plus model of body, header and footer
-// @Tags         render html-template
+// @Tags         Render HTML-Template
 // @Accept       json
 // @Produce      application/pdf
 // @Param        renderTemplateData  body      models.RenderTemplateData  true  "Render Data"
@@ -47,7 +47,7 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 // TestHtmlTemplateHandler godoc
 // @Summary      Test HTML template matching model
 // @Description  Returns information about matching model data to template
-// @Tags         test html-template
+// @Tags         Render HTML-Template
 // @Accept       json
 // @Produce      json
 // @Param        renderTemplateData  body  models.RenderTemplateData  true  "Render Data"
@@ -67,7 +67,7 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 		templateData.ParseJsonModelDataFromDoubleEncodedString()
 
 		templateEngine, found := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
-		
+
 		templateengines.LogParsedTemplateEngine(templateData.TemplateEngine, templateEngine, found)
 
 		bodyErr := templateEngine.Test(templateData.HtmlTemplate, templateData.Model)

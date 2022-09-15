@@ -12,7 +12,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
-	"github.com/lucas-gaitzsch/pdf-turtle/services/bundleprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 
 	"github.com/rs/zerolog/log"
 
@@ -112,7 +112,7 @@ func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bundleProvider := ctx.Value(config.ContextKeyBundleProviderService).(*bundleprovider.BundleProviderService)
+	bundleProvider := ctx.Value(config.ContextKeyBundleProviderService).(*bundles.BundleProviderService)
 
 	b, ok := bundleProvider.GetById(bundleId)
 
