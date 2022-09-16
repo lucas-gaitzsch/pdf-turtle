@@ -19,7 +19,9 @@ type Bundle struct {
 }
 
 func (b *Bundle) ReadFromZip(file io.ReaderAt, size int64) error {
-	b.files = make(map[string]Opener)
+	if b.files == nil {
+		b.files = make(map[string]Opener)
+	}
 
 	z, err := zip.NewReader(file, size)
 

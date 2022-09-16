@@ -23,6 +23,11 @@ func (ts *TemplateService) ExecuteTemplate(templateData *models.RenderTemplateDa
 		return nil, errors.New("template data model should not be nil")
 	}
 
+	if templateData.HtmlTemplate == nil {
+		empty := ""
+		templateData.HtmlTemplate = &empty
+	}
+
 	templateEngine, found := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
 
 	templateengines.LogParsedTemplateEngine(templateData.TemplateEngine, templateEngine, found)

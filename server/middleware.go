@@ -109,7 +109,7 @@ func recoverMiddleware() func(http.Handler) http.Handler {
 					logMsgBuilder := log.Ctx(ctx).
 						Error().
 						Stack().
-						CallerSkipFrame(2)
+						CallerSkipFrame(4)
 
 					err, ok := rec.(error)
 

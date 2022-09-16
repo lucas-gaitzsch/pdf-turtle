@@ -42,7 +42,7 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 
 	templateData.ParseJsonModelDataFromDoubleEncodedString()
 
-	data, err := utils.LogExecutionTimeWithResult("exec template", ps.ctx, func() (*models.RenderData, error) {
+	data, err := utils.LogExecutionTimeWithResults("exec template", ps.ctx, func() (*models.RenderData, error) {
 		return ps.templateService.ExecuteTemplate(templateData)
 	})
 
@@ -66,7 +66,7 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 		}
 	})
 
-	return utils.LogExecutionTimeWithResult("render pdf", ps.ctx, func() (io.Reader, error) {
+	return utils.LogExecutionTimeWithResults("render pdf", ps.ctx, func() (io.Reader, error) {
 		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
 	})
 }
@@ -87,7 +87,7 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 			ps.popHeaderAndFooter(data)
 		}
 
-		body, err := utils.LogExecutionTimeWithResult("parse dom", ps.ctx, func() (*string, error) {
+		body, err := utils.LogExecutionTimeWithResults("parse dom", ps.ctx, func() (*string, error) {
 			return ps.htmlParser.GetHtml()
 		})
 

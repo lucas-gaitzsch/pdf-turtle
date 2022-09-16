@@ -23,7 +23,7 @@ func TestRenderHtmlAsPdf(t *testing.T) {
 	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
-	reader, err := utils.LogExecutionTimeWithResult("render pdf", nil, func() (io.Reader, error) {
+	reader, err := utils.LogExecutionTimeWithResults("render pdf", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
 			Html:       &html,
 			HeaderHtml: html,
@@ -53,7 +53,7 @@ func TestRenderHtmlAsPdfWithNilPointerBody(t *testing.T) {
 	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
-	reader, err := utils.LogExecutionTimeWithResult("render pdf (nil body)", nil, func() (io.Reader, error) {
+	reader, err := utils.LogExecutionTimeWithResults("render pdf (nil body)", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
 			Html: nil,
 		})
@@ -83,7 +83,7 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 		{{end}}
 	</table>`
 
-	htmlBody, err := utils.LogExecutionTimeWithResult("generate html from template", nil, func() (*string, error) {
+	htmlBody, err := utils.LogExecutionTimeWithResults("generate html from template", nil, func() (*string, error) {
 		engine, _ := templateengines.GetTemplateEngineByKey(templateengines.GoTemplateEngineKey)
 		return engine.Execute(&template, data)
 	})
@@ -94,7 +94,7 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
 
-	reader, err := utils.LogExecutionTimeWithResult("render pdf (huge)", nil, func() (io.Reader, error) {
+	reader, err := utils.LogExecutionTimeWithResults("render pdf (huge)", nil, func() (io.Reader, error) {
 		return renderer.RenderHtmlAsPdf(ctx, &models.RenderData{
 			Html:       htmlBody,
 			HeaderHtml: "<h1 id=\"header-template\" style=\"font-size:3mm !important;\">Heading</h1>",

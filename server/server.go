@@ -28,14 +28,14 @@ type Server struct {
 	Instance *http.Server
 }
 
-// @title           PdfTurtle API
-// @version         1.0
-// @description     A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.
-// @contact.name    Lucas Gaitzsch
-// @contact.email   lucas@gaitzsch.dev
-// @license.name    Apache 2.0
-// @license.url     http://www.apache.org/licenses/LICENSE-2.0.html
-// @schemes         http
+// @title          PdfTurtle API
+// @version        1.1
+// @description    A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.
+// @contact.name   Lucas Gaitzsch
+// @contact.email  lucas@gaitzsch.dev
+// @license.name   AGPL-3.0
+// @license.url    https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE
+// @schemes        http
 func (s *Server) Serve(ctx context.Context) {
 	conf := config.Get(ctx)
 

@@ -1,6 +1,10 @@
 package templateengines
 
-import "github.com/aymerick/raymond"
+import (
+	"errors"
+
+	"github.com/aymerick/raymond"
+)
 
 const HandlebarsTemplateEngineKey = "handlebars"
 
@@ -9,6 +13,10 @@ type HandlebarsTemplateEngine struct {
 
 func (te *HandlebarsTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
 	empty := ""
+
+	if templateHtml == nil {
+		return &empty, errors.New("templateHtml is nil")
+	}
 
 	t, err := raymond.Parse(*templateHtml)
 	if err != nil {
