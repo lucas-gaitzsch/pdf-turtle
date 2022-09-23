@@ -33,7 +33,9 @@ const djangoTemplateInvalid = `
 func TestDjangoTemplate(t *testing.T) {
 	templateStr := djangoTemplate
 
-	htmlBody, err := GetTemplateEngineByKey(DjangoTemplateEngineKey).Execute(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(DjangoTemplateEngineKey)
+
+	htmlBody, err := engine.Execute(&templateStr, getModel())
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
@@ -46,7 +48,9 @@ func TestDjangoTemplate(t *testing.T) {
 func TestDjangoTemplateTestValid(t *testing.T) {
 	templateStr := djangoTemplate
 
-	err := GetTemplateEngineByKey(DjangoTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(DjangoTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
@@ -55,7 +59,9 @@ func TestDjangoTemplateTestValid(t *testing.T) {
 func TestDjangoTemplateTestInvalid(t *testing.T) {
 	templateStr := djangoTemplateInvalid
 
-	err := GetTemplateEngineByKey(DjangoTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(DjangoTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err == nil {
 		t.Fatalf("should fail")
 	}

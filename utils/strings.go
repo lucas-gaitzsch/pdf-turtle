@@ -4,6 +4,6 @@ import "strings"
 
 const trimCutset = "\t\n "
 
-func Trim(str string) string {
+func TrimStrWhitespace(str string) string {
 	return strings.Trim(str, trimCutset)
 }

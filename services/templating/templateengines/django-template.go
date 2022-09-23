@@ -1,6 +1,10 @@
 package templateengines
 
-import "github.com/flosch/pongo2/v5"
+import (
+	"errors"
+
+	"github.com/flosch/pongo2/v5"
+)
 
 const DjangoTemplateEngineKey = "django"
 
@@ -9,6 +13,10 @@ type DjangoTemplateEngine struct {
 
 func (te *DjangoTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
 	empty := ""
+
+	if templateHtml == nil {
+		return &empty, errors.New("templateHtml is nil")
+	}
 
 	t, err := pongo2.FromString(*templateHtml)
 	if err != nil {

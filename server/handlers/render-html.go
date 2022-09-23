@@ -14,12 +14,12 @@ const TemplateEngineQueryKey = "template-engine"
 // RenderPdfFromHtmlHandler godoc
 // @Summary      Render PDF from HTML
 // @Description  Returns PDF file generated from HTML of body, header and footer
-// @Tags         render html
+// @Tags         Render HTML
 // @Accept       json
 // @Produce      application/pdf
 // @Param        renderData  body  models.RenderData  true  "Render Data"
 // @Success      200         "PDF File"
-// @Router       /pdf/from/html/render [post]
+// @Router       /api/pdf/from/html/render [post]
 func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

@@ -20,27 +20,28 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 - 💬 Generate PDFs in a descriptive way from HTML (with JavaScript support)
 - 💫 Supports modern HTML and CSS standards (uses latest Chromium engine)
 - 👻 Builtin template engines (go-template, raymond and django)
+- 💼 Bundle template and assets in ZIP file 
 - 🚀 Fast generation with limited resources (limited multithreading)
-- 🔥 Multiple replicas supported (stateless design)
+- 🔥 Multiple replicas supported (stateless service design)
 - 🖥 Frontend ([Playground](https://pdfturtle.gaitzsch.dev/)) for rapid development
 - 🚩 Preoptimized style (CSS) for print and PDF
-- 🔽 Bundled [container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available
+- 📦 [Container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available (see  [Run with docker](#with-docker-container-recommended))
 
 ## 🚧 Roadmap
-- Preload and cache JavaScript libs
-- Markdown to PDF
+- [x] Bundle/Package support for exchangeable templates
+- [ ] Preload and cache JavaScript libs
+- [ ] Markdown to PDF
 - Clint libs
-  - .NET Core
-  - golang
-  - kotlin
+  - [ ] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) (WIP)
+  - [ ] golang
+  - [ ] Kotlin, Java (JVM languages)
   - ..?
-- Package support for exchangeable templates
 
-## How to run
+## 💥 How to run
 
 ### With docker container (recommended)
 
-The docker container image is available on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
+The container image is available on [Docker Hub](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle).
 
 With the tag _\*-playground_ you get a bundled image with the web playground.
 
@@ -55,7 +56,6 @@ docker run -d \
 ```
 
 Included fonts:
-
 - Open Sans
 - Roboto
 - Noto Emoji
@@ -80,7 +80,7 @@ _...COMING SOON_
 | --servePlayground     | SERVE_PLAYGROUND     | boolean | false   | Serve playground from path "./static-files/playground/" |
 | --secret              | SECRET               | string  | ""      | Secret used as bearer token                             |
 
-## How to use
+## 🚀 How to use
 
 ### Swagger
 
@@ -88,19 +88,17 @@ Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagge
 
 You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
-### Postman
-You can import the swagger file to test the service with Postman.
-
 ### PdfTurtle Playground
 You can write and test templates with the [builtin playground](https://pdfturtle.gaitzsch.dev/). 
 
-
 ### Client libs
-- [.NET Core](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) **(under development)**
-
-_...COMING SOON_
-
+- [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) **(under development)**
+- _...COMING SOON_
 <!-- TODO:!! -->
+
+### Postman
+You can import the swagger file to test the service with Postman or an alternative.
+
 
 ## Included template engines
 
@@ -163,7 +161,7 @@ go test -cover ./...
 
 <!-- `go test -coverprofile coverage ./...` -->
 
-## Build with
+## ☢ Build with
 
 - [go](https://github.com/golang/go)
 - [chromedp (golang chromium driver)](https://github.com/chromedp/chromedp)
@@ -174,3 +172,8 @@ go test -cover ./...
 - [zerolog](https://github.com/rs/zerolog)
 - [go-arg](https://github.com/alexflint/go-arg)
 - [barcode](https://github.com/boombuler/barcode) and [svgo](https://github.com/ajstarks/svgo)
+
+## 🔨 Contribution
+Contributors are welcome! Feel you free to fork the project and open a pull request. 
+
+If you wrote a client lib for a uncovered language please contact me. I will create a repo for you or link your client lib in this readme file.

@@ -14,14 +14,6 @@ func (d *RenderData) HasHeaderOrFooterHtml() bool {
 	return d.HeaderHtml != "" || d.FooterHtml != ""
 }
 
-func (d *RenderData) GetBodyHtml() *string {
-	return d.Html
-}
-
-func (d *RenderData) SetBodyHtml(html *string) {
-	d.Html = html
-}
-
 func (d *RenderData) GetHeaderHtml() string {
 	return d.HeaderHtml
 }
@@ -36,10 +28,6 @@ func (d *RenderData) GetFooterHtml() string {
 
 func (d *RenderData) SetFooterHtml(html string) {
 	d.FooterHtml = html
-}
-
-func (d *RenderData) HasBuiltinStylesExcluded() bool {
-	return d.RenderOptions.ExcludeBuiltinStyles
 }
 
 func (d *RenderData) SetDefaults() {

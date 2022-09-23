@@ -23,7 +23,14 @@ func (ts *TemplateService) ExecuteTemplate(templateData *models.RenderTemplateDa
 		return nil, errors.New("template data model should not be nil")
 	}
 
-	templateEngine := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
+	if templateData.HtmlTemplate == nil {
+		empty := ""
+		templateData.HtmlTemplate = &empty
+	}
+
+	templateEngine, found := templateengines.GetTemplateEngineByKey(templateData.TemplateEngine)
+
+	templateengines.LogParsedTemplateEngine(templateData.TemplateEngine, templateEngine, found)
 
 	data := &models.RenderData{
 		RenderOptions: templateData.RenderOptions,
@@ -34,12 +41,12 @@ func (ts *TemplateService) ExecuteTemplate(templateData *models.RenderTemplateDa
 		return nil, err
 	}
 
-	headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.GetHeaderModel())
+	headerHtml, err := templateEngine.Execute(&templateData.HeaderHtmlTemplate, templateData.Model)
 	if err != nil {
 		return nil, err
 	}
 
-	footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.GetFooterModel())
+	footerHtml, err := templateEngine.Execute(&templateData.FooterHtmlTemplate, templateData.Model)
 	if err != nil {
 		return nil, err
 	}

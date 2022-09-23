@@ -1,4 +1,3 @@
-basePath: /api
 definitions:
   PageSize:
     properties:
@@ -83,16 +82,10 @@ definitions:
         description: Optional template for footer. If empty, the footer template will
           be parsed from main template (<PdfFooter></PdfFooter>).
         type: string
-      footerModel:
-        description: Optional model for footer. If empty or null model was used.
-        type: object
       headerHtmlTemplate:
         description: Optional template for header. If empty, the header template will
           be parsed from main template (<PdfHeader></PdfHeader>).
         type: string
-      headerModel:
-        description: Optional model for header. If empty or null model was used.
-        type: object
       htmlTemplate:
         type: string
       model:
@@ -125,12 +118,42 @@ info:
   description: A painless HTML to PDF rendering service. Generate PDF reports and
     documents from HTML templates or raw HTML.
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: AGPL-3.0
+    url: https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE
   title: PdfTurtle API
-  version: "1.0"
+  version: "1.1"
 paths:
-  /pdf/from/html-template/render:
+  /api/pdf/from/html-bundle/render:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Returns PDF file generated from bundle (Zip-File) of HTML or HTML
+        template of body, header, footer and assets. The index.html file in the Zip-Bundle
+        is required.
+      parameters:
+      - description: Bundle Zip-File
+        in: formData
+        name: bundle
+        required: true
+        type: file
+      - description: JSON-Model for template (only required for template)
+        in: formData
+        name: model
+        type: string
+      - description: Template engine to use for template (only required for template)
+        in: formData
+        name: templateEngine
+        type: string
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: 'Render PDF from bundle including HTML(-Template) with model and assets
+        provided in form-data (keys: bundle, model)'
+      tags:
+      - Render HTML-Bundle
+  /api/pdf/from/html-template/render:
     post:
       consumes:
       - application/json
@@ -150,8 +173,8 @@ paths:
           description: PDF File
       summary: Render PDF from HTML template
       tags:
-      - render html-template
-  /pdf/from/html-template/test:
+      - Render HTML-Template
+  /api/pdf/from/html-template/test:
     post:
       consumes:
       - application/json
@@ -172,8 +195,8 @@ paths:
             $ref: '#/definitions/TemplateTestResult'
       summary: Test HTML template matching model
       tags:
-      - test html-template
-  /pdf/from/html/render:
+      - Render HTML-Template
+  /api/pdf/from/html/render:
     post:
       consumes:
       - application/json
@@ -192,7 +215,7 @@ paths:
           description: PDF File
       summary: Render PDF from HTML
       tags:
-      - render html
+      - Render HTML
 schemes:
 - http
 swagger: "2.0"

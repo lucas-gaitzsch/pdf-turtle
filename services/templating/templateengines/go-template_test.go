@@ -46,7 +46,9 @@ const goTemplateInvalid = `
 func TestGoTemplate(t *testing.T) {
 	templateStr := goTemplate
 
-	htmlBody, err := GetTemplateEngineByKey(GoTemplateEngineKey).Execute(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(GoTemplateEngineKey)
+
+	htmlBody, err := engine.Execute(&templateStr, getModel())
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
@@ -59,7 +61,9 @@ func TestGoTemplate(t *testing.T) {
 func TestGoTemplateTestValid(t *testing.T) {
 	templateStr := goTemplate
 
-	err := GetTemplateEngineByKey(GoTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(GoTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
@@ -68,7 +72,9 @@ func TestGoTemplateTestValid(t *testing.T) {
 func TestGoTemplateTestInvalid(t *testing.T) {
 	templateStr := goTemplateInvalid
 
-	err := GetTemplateEngineByKey(GoTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(GoTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err == nil {
 		t.Fatalf("should fail")
 	}
@@ -77,7 +83,9 @@ func TestGoTemplateTestInvalid(t *testing.T) {
 func TestGoTemplateTestUnknownProperty(t *testing.T) {
 	templateStr := goTemplateUnknownProperty
 
-	err := GetTemplateEngineByKey(GoTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(GoTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err == nil {
 		t.Fatalf("should fail")
 	}

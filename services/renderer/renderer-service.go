@@ -54,7 +54,7 @@ func (rbs *RendererBackgroundService) Init(outerCtx context.Context) {
 	log.
 		Info().
 		Int("workerInstances", rbs.workerInstances).
-		Msgf("render service started with %d", rbs.workerInstances)
+		Msgf("render service started with %d worker", rbs.workerInstances)
 }
 
 func (rbs *RendererBackgroundService) acquiredWorker() {

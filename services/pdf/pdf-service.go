@@ -42,7 +42,7 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 
 	templateData.ParseJsonModelDataFromDoubleEncodedString()
 
-	data, err := utils.LogExecutionTimeWithResult("exec template", ps.ctx, func() (*models.RenderData, error) {
+	data, err := utils.LogExecutionTimeWithResults("exec template", ps.ctx, func() (*models.RenderData, error) {
 		return ps.templateService.ExecuteTemplate(templateData)
 	})
 
@@ -53,11 +53,6 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 	return ps.renderPdf(data)
 }
 
-//TODO:!
-// func (ps *PdfService) PdfFromMarkdown() (io.Reader, error) {
-
-// }
-
 func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 	ps.preProcessHtmlData(data)
 
@@ -66,26 +61,25 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 	utils.LogExecutionTime("add styles", ps.ctx, func() {
 		ps.addDefaultStyleToHeaderAndFooter(data)
 
-		if !data.HasBuiltinStylesExcluded() {
-			htmlWithStyles := utils.AppendStyleToHtml(data.GetBodyHtml(), ps.assetsProviderService.GetMergedCss())
-			data.SetBodyHtml(htmlWithStyles)
+		if !data.RenderOptions.ExcludeBuiltinStyles {
+			data.Html = utils.AppendStyleToHtml(data.Html, ps.assetsProviderService.GetMergedCss())
 		}
 	})
 
-	return utils.LogExecutionTimeWithResult("render pdf", ps.ctx, func() (io.Reader, error) {
+	return utils.LogExecutionTimeWithResults("render pdf", ps.ctx, func() (io.Reader, error) {
 		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
 	})
 }
 
 func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
-	if data.GetBodyHtml() == nil {
+	if data.Html == nil {
 		return
 	}
 
-	if !data.HasHeaderOrFooterHtml() || !data.HasBuiltinStylesExcluded() {
+	if !data.HasHeaderOrFooterHtml() || !data.RenderOptions.ExcludeBuiltinStyles {
 
 		utils.LogExecutionTime("parse dom", ps.ctx, func() {
-			ps.htmlParser.Parse(data.GetBodyHtml())
+			ps.htmlParser.Parse(data.Html)
 		})
 
 		if !data.HasHeaderOrFooterHtml() {
@@ -93,12 +87,12 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 			ps.popHeaderAndFooter(data)
 		}
 
-		body, err := utils.LogExecutionTimeWithResult("parse dom", ps.ctx, func() (*string, error) {
+		body, err := utils.LogExecutionTimeWithResults("parse dom", ps.ctx, func() (*string, error) {
 			return ps.htmlParser.GetHtml()
 		})
 
 		if err == nil {
-			data.SetBodyHtml(body)
+			data.Html = body
 		} else {
 			log.Ctx(ps.ctx).Warn().Err(err).Msg("cant get html from parsed dom")
 		}

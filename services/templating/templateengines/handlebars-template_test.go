@@ -31,7 +31,9 @@ const handlebarsTemplateInvalid = `
 func TestHandlebarsTemplate(t *testing.T) {
 	templateStr := handlebarsTemplate
 
-	htmlBody, err := GetTemplateEngineByKey(HandlebarsTemplateEngineKey).Execute(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(HandlebarsTemplateEngineKey)
+
+	htmlBody, err := engine.Execute(&templateStr, getModel())
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
@@ -44,7 +46,9 @@ func TestHandlebarsTemplate(t *testing.T) {
 func TestHandlebarsTemplateTestValid(t *testing.T) {
 	templateStr := handlebarsTemplate
 
-	err := GetTemplateEngineByKey(HandlebarsTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(HandlebarsTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err != nil {
 		t.Fatalf("cant generate template %v", err)
 	}
@@ -53,7 +57,9 @@ func TestHandlebarsTemplateTestValid(t *testing.T) {
 func TestHandlebarsTemplateTestInvalid(t *testing.T) {
 	templateStr := handlebarsTemplateInvalid
 
-	err := GetTemplateEngineByKey(HandlebarsTemplateEngineKey).Test(&templateStr, getModel())
+	engine, _ := GetTemplateEngineByKey(HandlebarsTemplateEngineKey)
+
+	err := engine.Test(&templateStr, getModel())
 	if err == nil {
 		t.Fatalf("should fail")
 	}

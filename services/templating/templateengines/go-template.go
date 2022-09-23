@@ -2,6 +2,7 @@ package templateengines
 
 import (
 	"bytes"
+	"errors"
 	"html/template"
 )
 
@@ -11,11 +12,16 @@ type GoTemplateEngine struct {
 }
 
 func (gte *GoTemplateEngine) Execute(templateHtml *string, model any) (*string, error) {
+	empty := ""
+
+	if templateHtml == nil {
+		return &empty, errors.New("templateHtml is nil")
+	}
+
 	t, err := template.New("").
 		Funcs(templateFunctions).
 		Parse(*templateHtml)
 
-	empty := ""
 	if err != nil {
 		return &empty, err
 	}

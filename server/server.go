@@ -28,15 +28,14 @@ type Server struct {
 	Instance *http.Server
 }
 
-// @title           PdfTurtle API
-// @version         1.0
-// @description     A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.
-// @contact.name    Lucas Gaitzsch
-// @contact.email   lucas@gaitzsch.dev
-// @license.name    Apache 2.0
-// @license.url     http://www.apache.org/licenses/LICENSE-2.0.html
-// @schemes         http
-// @basePath        /api
+// @title          PdfTurtle API
+// @version        1.1
+// @description    A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.
+// @contact.name   Lucas Gaitzsch
+// @contact.email  lucas@gaitzsch.dev
+// @license.name   AGPL-3.0
+// @license.url    https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE
+// @schemes        http
 func (s *Server) Serve(ctx context.Context) {
 	conf := config.Get(ctx)
 
@@ -62,6 +61,11 @@ func (s *Server) Serve(ctx context.Context) {
 		HandlerFunc(handlers.TestHtmlTemplateHandler).
 		Name("Test HTML template")
 
+	api.Path("/pdf/from/html-bundle/render").
+		Methods(http.MethodPost).
+		HandlerFunc(handlers.RenderBundleHandler).
+		Name("Render PDF from HTML-Bundle")
+
 	api.Use(
 		maxBodySizeMiddleware(conf.MaxBodySizeInMb),
 		loggingMiddleware(),
@@ -80,21 +84,13 @@ func (s *Server) Serve(ctx context.Context) {
 		Str("url", fmt.Sprintf("%s%s/index.html", localUrl, swaggerRoute)).
 		Msg("serving open-api (swagger) description")
 
+	// Serve playground vue frontend if required
 	if conf.ServePlayground {
 		log.
 			Info().
 			Str("url", localUrl).
 			Msg("serving playground")
-
-		r.PathPrefix("/assets").Handler(http.FileServer(http.Dir(config.PathStaticExternPlayground)))
-
-		r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path == "/favicon.ico" {
-				http.ServeFile(w, r, config.PathStaticExternPlayground+"favicon.ico")
-			} else {
-				http.ServeFile(w, r, config.PathStaticExternPlayground+"index.html")
-			}
-		})
+		servePlaygroundFronted(r)
 	}
 
 	c := cors.New(cors.Options{
@@ -117,20 +113,37 @@ func (s *Server) Serve(ctx context.Context) {
 		},
 	}
 
-	go func() {
-		if err := s.Instance.ListenAndServe(); err != nil {
-			if err != http.ErrServerClosed {
-				log.Error().Err(err).Msg("server serve error")
-				panic(err)
-			}
-		}
-	}()
+	go s.listenAndServe()
+}
+
+func (s *Server) listenAndServe() {
 	log.Info().Msg("server: listens on " + s.Instance.Addr)
+
+	if err := s.Instance.ListenAndServe(); err != nil {
+		if err != http.ErrServerClosed {
+			log.Error().Err(err).Msg("server serve error")
+			panic(err)
+		}
+	}
 }
 
 func (s *Server) Close(ctx context.Context) {
 	log.Info().Msg("server: shutdown gracefully")
-	timeoutCtx, cancel := context.WithTimeout(ctx, time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec)*time.Second)
+
+	gracefullyShutdownTimeout := time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec) * time.Second
+	timeoutCtx, cancel := context.WithTimeout(ctx, gracefullyShutdownTimeout)
 	defer cancel()
 	s.Instance.Shutdown(timeoutCtx)
+}
+
+func servePlaygroundFronted(r *mux.Router) {
+	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir(config.PathStaticExternPlayground)))
+
+	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/favicon.ico" {
+			http.ServeFile(w, r, config.PathStaticExternPlayground+"favicon.ico")
+		} else {
+			http.ServeFile(w, r, config.PathStaticExternPlayground+"index.html")
+		}
+	})
 }
