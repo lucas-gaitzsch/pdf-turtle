@@ -10,6 +10,13 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 )
 
+const (
+	BundleIndexFile   = "index.html"
+	BundleHeaderFile  = "header.html"
+	BundleFooterFile  = "footer.html"
+	BundleOptionsFile = "options.json"
+)
+
 type Opener interface {
 	Open() (io.ReadCloser, error)
 }
@@ -18,6 +25,8 @@ type Bundle struct {
 	files map[string]Opener
 }
 
+// Read files from zip to intern map (path to file).
+// This method can be called multiple times to assemble multiple zip bundles to one bundle.
 func (b *Bundle) ReadFromZip(file io.ReaderAt, size int64) error {
 	if b.files == nil {
 		b.files = make(map[string]Opener)
@@ -31,6 +40,10 @@ func (b *Bundle) ReadFromZip(file io.ReaderAt, size int64) error {
 
 	for _, f := range z.File {
 		b.files[f.Name] = f
+	}
+
+	if _, hasIndexFile := b.files[BundleIndexFile]; !hasIndexFile {
+		return errors.New("no index.html file was found on root of bundle")
 	}
 
 	return nil
@@ -67,12 +80,12 @@ func (b *Bundle) GetFileAsStringByPath(path string) (*string, error) {
 }
 
 func (b *Bundle) GetBodyHtml() *string {
-	s, _ := b.GetFileAsStringByPath("index.html")
+	s, _ := b.GetFileAsStringByPath(BundleIndexFile)
 	return s
 }
 
 func (b *Bundle) GetHeaderHtml() string {
-	s, _ := b.GetFileAsStringByPath("header.html")
+	s, _ := b.GetFileAsStringByPath(BundleHeaderFile)
 	if s == nil {
 		return ""
 	}
@@ -80,7 +93,7 @@ func (b *Bundle) GetHeaderHtml() string {
 }
 
 func (b *Bundle) GetFooterHtml() string {
-	s, _ := b.GetFileAsStringByPath("footer.html")
+	s, _ := b.GetFileAsStringByPath(BundleFooterFile)
 	if s == nil {
 		return ""
 	}
@@ -88,10 +101,9 @@ func (b *Bundle) GetFooterHtml() string {
 }
 
 func (b *Bundle) GetOptions() models.RenderOptions {
-	f, err := b.GetFileByPath("options.json")
-
 	opt := models.RenderOptions{}
 
+	f, err := b.GetFileByPath(BundleOptionsFile)
 	if err != nil {
 		return opt
 	}

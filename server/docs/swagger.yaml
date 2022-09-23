@@ -118,12 +118,12 @@ info:
   description: A painless HTML to PDF rendering service. Generate PDF reports and
     documents from HTML templates or raw HTML.
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: AGPL-3.0
+    url: https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE
   title: PdfTurtle API
-  version: "1.0"
+  version: "1.1"
 paths:
-  /pdf/from/bundle/render:
+  /api/pdf/from/html-bundle/render:
     post:
       consumes:
       - multipart/form-data
@@ -149,11 +149,11 @@ paths:
       responses:
         "200":
           description: PDF File
-      summary: 'Render PDF from bundle and model provided in form-data (keys: bundle,
-        model)'
+      summary: 'Render PDF from bundle including HTML(-Template) with model and assets
+        provided in form-data (keys: bundle, model)'
       tags:
-      - Render Bundle including HTML(-Template) and assets
-  /pdf/from/html-template/render:
+      - Render HTML-Bundle
+  /api/pdf/from/html-template/render:
     post:
       consumes:
       - application/json
@@ -174,7 +174,7 @@ paths:
       summary: Render PDF from HTML template
       tags:
       - Render HTML-Template
-  /pdf/from/html-template/test:
+  /api/pdf/from/html-template/test:
     post:
       consumes:
       - application/json
@@ -196,7 +196,7 @@ paths:
       summary: Test HTML template matching model
       tags:
       - Render HTML-Template
-  /pdf/from/html/render:
+  /api/pdf/from/html/render:
     post:
       consumes:
       - application/json

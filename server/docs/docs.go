@@ -15,15 +15,15 @@ const docTemplate = `{
             "email": "lucas@gaitzsch.dev"
         },
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "AGPL-3.0",
+            "url": "https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/pdf/from/bundle/render": {
+        "/api/pdf/from/html-bundle/render": {
             "post": {
                 "description": "Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required.",
                 "consumes": [
@@ -33,9 +33,9 @@ const docTemplate = `{
                     "application/pdf"
                 ],
                 "tags": [
-                    "Render Bundle including HTML(-Template) and assets"
+                    "Render HTML-Bundle"
                 ],
-                "summary": "Render PDF from bundle and model provided in form-data (keys: bundle, model)",
+                "summary": "Render PDF from bundle including HTML(-Template) with model and assets provided in form-data (keys: bundle, model)",
                 "parameters": [
                     {
                         "type": "file",
@@ -64,7 +64,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/pdf/from/html-template/render": {
+        "/api/pdf/from/html-template/render": {
             "post": {
                 "description": "Returns PDF file generated from HTML template plus model of body, header and footer",
                 "consumes": [
@@ -95,7 +95,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/pdf/from/html-template/test": {
+        "/api/pdf/from/html-template/test": {
             "post": {
                 "description": "Returns information about matching model data to template",
                 "consumes": [
@@ -129,7 +129,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/pdf/from/html/render": {
+        "/api/pdf/from/html/render": {
             "post": {
                 "description": "Returns PDF file generated from HTML of body, header and footer",
                 "consumes": [
@@ -313,7 +313,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "1.1",
 	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{"http"},

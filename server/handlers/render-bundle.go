@@ -23,16 +23,16 @@ const (
 )
 
 // RenderBundleHandler godoc
-// @Summary      Render PDF from bundle and model provided in form-data (keys: bundle, model)
+// @Summary      Render PDF from bundle including HTML(-Template) with model and assets provided in form-data (keys: bundle, model)
 // @Description  Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required.
-// @Tags         Render Bundle including HTML(-Template) and assets
+// @Tags         Render HTML-Bundle
 // @Accept       multipart/form-data
 // @Produce      application/pdf
-// @Param        bundle                                   formData  file  true  "Bundle Zip-File"
+// @Param        bundle          formData  file    true   "Bundle Zip-File"
 // @Param        model           formData  string  false  "JSON-Model for template (only required for template)"
 // @Param        templateEngine  formData  string  false  "Template engine to use for template (only required for template)"
 // @Success      200             "PDF File"
-// @Router       /pdf/from/bundle/render [post]
+// @Router       /api/pdf/from/html-bundle/render [post]
 func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	conf := config.Get(ctx)
@@ -47,13 +47,14 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 
 	bundle := bundles.Bundle{}
 
-	for _, b := range bundleFromForm {
-		reader, err := b.Open()
+	for _, fb := range bundleFromForm {
+		reader, err := fb.Open()
 		if err != nil {
 			panic(err)
 		}
+		defer reader.Close()
 
-		err = bundle.ReadFromZip(reader, b.Size)
+		err = bundle.ReadFromZip(reader, fb.Size)
 
 		if err != nil {
 			panic(err)

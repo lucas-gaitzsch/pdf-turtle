@@ -84,21 +84,13 @@ func (s *Server) Serve(ctx context.Context) {
 		Str("url", fmt.Sprintf("%s%s/index.html", localUrl, swaggerRoute)).
 		Msg("serving open-api (swagger) description")
 
+	// Serve playground vue frontend if required
 	if conf.ServePlayground {
 		log.
 			Info().
 			Str("url", localUrl).
 			Msg("serving playground")
-
-		r.PathPrefix("/assets").Handler(http.FileServer(http.Dir(config.PathStaticExternPlayground)))
-
-		r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path == "/favicon.ico" {
-				http.ServeFile(w, r, config.PathStaticExternPlayground+"favicon.ico")
-			} else {
-				http.ServeFile(w, r, config.PathStaticExternPlayground+"index.html")
-			}
-		})
+		servePlaygroundFronted(r)
 	}
 
 	c := cors.New(cors.Options{
@@ -142,4 +134,16 @@ func (s *Server) Close(ctx context.Context) {
 	timeoutCtx, cancel := context.WithTimeout(ctx, gracefullyShutdownTimeout)
 	defer cancel()
 	s.Instance.Shutdown(timeoutCtx)
+}
+
+func servePlaygroundFronted(r *mux.Router) {
+	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir(config.PathStaticExternPlayground)))
+
+	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/favicon.ico" {
+			http.ServeFile(w, r, config.PathStaticExternPlayground+"favicon.ico")
+		} else {
+			http.ServeFile(w, r, config.PathStaticExternPlayground+"index.html")
+		}
+	})
 }

@@ -19,7 +19,7 @@ const TemplateEngineQueryKey = "template-engine"
 // @Produce      application/pdf
 // @Param        renderData  body  models.RenderData  true  "Render Data"
 // @Success      200         "PDF File"
-// @Router       /pdf/from/html/render [post]
+// @Router       /api/pdf/from/html/render [post]
 func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

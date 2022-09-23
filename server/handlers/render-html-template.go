@@ -19,7 +19,7 @@ import (
 // @Produce      application/pdf
 // @Param        renderTemplateData  body      models.RenderTemplateData  true  "Render Data"
 // @Success      200                 "PDF File"
-// @Router       /pdf/from/html-template/render [post]
+// @Router       /api/pdf/from/html-template/render [post]
 func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -52,7 +52,7 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 // @Produce      json
 // @Param        renderTemplateData  body  models.RenderTemplateData  true  "Render Data"
 // @Success      200                 {object}  dto.TemplateTestResult
-// @Router       /pdf/from/html-template/test [post]
+// @Router       /api/pdf/from/html-template/test [post]
 func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
