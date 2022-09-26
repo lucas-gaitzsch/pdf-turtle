@@ -32,7 +32,7 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 - [ ] Preload and cache JavaScript libs
 - [ ] Markdown to PDF
 - Clint libs
-  - [ ] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) (WIP)
+  - [ ] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) (Beta)
   - [ ] golang
   - [ ] Kotlin, Java (JVM languages)
   - ..?
