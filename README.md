@@ -29,13 +29,13 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
 ## 🚧 Roadmap
 - [x] Bundle/Package support for exchangeable templates
-- [ ] Preload and cache JavaScript libs
-- [ ] Markdown to PDF
 - Clint libs
-  - [ ] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) (Beta)
+  - [x] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
   - [ ] golang
   - [ ] Kotlin, Java (JVM languages)
   - ..?
+- [ ] Preload and cache JavaScript libs
+- [ ] Markdown to PDF
 
 ## 💥 How to run
 
@@ -62,8 +62,7 @@ Included fonts:
 
 ### With prebuilt binaries
 
-_...COMING SOON_
-
+_...COMING SOON (?)_
 <!-- TODO:!! -->
 
 ### Config
@@ -92,7 +91,7 @@ You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagg
 You can write and test templates with the [builtin playground](https://pdfturtle.gaitzsch.dev/). 
 
 ### Client libs
-- [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet) **(under development)**
+- [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
 - _...COMING SOON_
 <!-- TODO:!! -->
 
@@ -118,48 +117,12 @@ You can import the swagger file to test the service with Postman or an alternati
 
 ## Development / Build from source
 
-### Get playground (frontend) submodule if required
+See [README_DEV.md](./README_DEV.md).
 
-```bash
-git submodule update --init
-```
+## 🔨 Contribution
+Contributors are welcome! Feel you free to fork the project and open a pull request. 
 
-### Generate swagger
-
-```bash
-# install swagger cli (only once)
-go install github.com/swaggo/swag/cmd/swag@latest
-
-swag init -g "server/server.go" -o "server/docs"
-```
-
-### Build binary
-
-```bash
-go build -o pdf-turtle
-
-# run binary
-./pdf-turtle
-```
-
-### Build Docker image
-
-```bash
-docker build -t pdf-turtle .
-
-# run docker image
-docker run -d -p 8000:8000 --name pdf-turtle pdf-turtle
-```
-
-### Test
-
-<!-- `go test -race ./...` -->
-
-```
-go test -cover ./...
-```
-
-<!-- `go test -coverprofile coverage ./...` -->
+If you wrote a client lib for a uncovered language please contact me. I will create a repo for you or link your client lib in this readme file.
 
 ## ☢ Build with
 
@@ -172,8 +135,3 @@ go test -cover ./...
 - [zerolog](https://github.com/rs/zerolog)
 - [go-arg](https://github.com/alexflint/go-arg)
 - [barcode](https://github.com/boombuler/barcode) and [svgo](https://github.com/ajstarks/svgo)
-
-## 🔨 Contribution
-Contributors are welcome! Feel you free to fork the project and open a pull request. 
-
-If you wrote a client lib for a uncovered language please contact me. I will create a repo for you or link your client lib in this readme file.
