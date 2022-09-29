@@ -12,15 +12,13 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
 [![Screenshot](https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/Screenshot.png?raw=true)](https://pdfturtle.gaitzsch.dev/)
 
-
-
 ## 🎢 Features
 
 - ✅ Free, OpenSource and Self-Hosted
-- 💬 Generate PDFs in a descriptive way from HTML (with JavaScript support)
+- 💬 Generate PDFs in a descriptive way from HTML and CSS (with JavaScript support)
 - 💫 Supports modern HTML and CSS standards (uses latest Chromium engine)
 - 👻 Builtin template engines (go-template, raymond and django)
-- 💼 Bundle template and assets in ZIP file 
+- 💼 Bundle template and assets in ZIP file (see  [Bundle workflow](#bundle-workflow))
 - 🚀 Fast generation with limited resources (limited multithreading)
 - 🔥 Multiple replicas supported (stateless service design)
 - 🖥 Frontend ([Playground](https://pdfturtle.gaitzsch.dev/)) for rapid development
@@ -34,10 +32,10 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
   - [ ] golang
   - [ ] Kotlin, Java (JVM languages)
   - ..?
-- [ ] Preload and cache JavaScript libs
 - [ ] Markdown to PDF
+- [ ] Preload and cache JavaScript libs
 
-## 💥 How to run
+## 💥 How to run the service
 
 ### With docker container (recommended)
 
@@ -81,6 +79,61 @@ _...COMING SOON (?)_
 
 ## 🚀 How to use
 
+### Bundle Workflow (recommended)
+
+
+```mermaid
+flowchart LR
+    subgraph PG[PdfTurtle-Playground]
+        direction LR
+        O(go to<br>pdfturtle.gaitzsch.dev) --> |go to model tab| MO(paste an<br> example model)
+        click O href "https://pdfturtle.gaitzsch.dev" "https://pdfturtle.gaitzsch.dev"
+        O --> |go to body tab| B(design the body)
+        O --> |go to header tab| H(design the header)
+        O --> |go to footer tab| F(design the footer)
+        O --> |go in asstes menu| A(put your assets)
+
+        OPT(set your<br> options)
+        MO --> OPT
+        B --> OPT
+        H --> OPT
+        F --> OPT
+        A --> OPT
+        OPT --> S(fa:fa-file-zipper save as<br> ZIP bundle)
+    end
+    
+    subgraph YP[your fancy project]
+        direction TB
+        PA(provide as asset)
+        PA-->CL(use clent lib)
+        PA-->SGC(use swagger to<br> build or generate client)
+        R(render PDF with<br> bundle and your model)
+        CL-->R
+        SGC-->R
+        R-->BH(fa:fa-smile be happy!)
+    end
+
+    S-->|copy zip bundle<br> to your project|YP
+    %%PG-->YP  
+```
+
+#### 1. Prepare project
+Choose the fitting client lib for your language or generate / build your own by the OpenApi (Swagger) description.
+#### 2. Design your PDF in the playground
+Go to [🐢PdfTurtle-Playground](https://pdfturtle.gaitzsch.dev/), put an example model as JSON and design your PDF.
+Download the bundle as ZIP file and put it in your resources/assets.
+
+#### 3. Call the service with the client and your data
+Send a request to a PdfTurtle instance with your bundle and your model.
+You will get a rendered PDF.
+
+**And thats it.**
+
+#### Hint: You can split your bundle
+If you want to have the same header for all documents, you can create a ZIP file with with only the header.html file. Now you can call the Service with multiple bundle files. The service will assemble the files together.
+
+... <!-- TODO:!! -->
+
 ### Swagger
 
 Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagger/index.html) as API documentation.
@@ -111,9 +164,9 @@ You can import the swagger file to test the service with Postman or an alternati
 
 | Function name | Parameters | Description                            |
 | ------------- | ---------- | -------------------------------------- |
-| marshal       | object     | Encodes provided object as JSON string |
-| barcodeQr     | content    | Renders a SVG QR code from content     |
-| barcodeEan    | content    | Renders a SVG EAN code from content    |
+| **marshal**       | object     | Encodes provided object as JSON string |
+| **barcodeQr**     | content    | Renders a SVG QR code from content     |
+| **barcodeEan**    | content    | Renders a SVG EAN code from content    |
 
 ## Development / Build from source
 
