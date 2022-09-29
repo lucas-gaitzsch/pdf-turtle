@@ -10,7 +10,7 @@
 
 Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
-[![Screenshot](https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/Screenshot.png?raw=true)](https://pdfturtle.gaitzsch.dev/)
+![Screenshot](https://user-images.githubusercontent.com/6965260/193090816-1f605691-1281-44db-9d33-eb6591a5236f.png)
 
 ## 🎢 Features
 
@@ -22,7 +22,7 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 - 🚀 Fast generation with limited resources (limited multithreading)
 - 🔥 Multiple replicas supported (stateless service design)
 - 🖥 Frontend ([Playground](https://pdfturtle.gaitzsch.dev/)) for rapid development
-- 🚩 Preoptimized style (CSS) for print and PDF
+- 💫 Beautiful fonts included and preoptimized style (CSS) for PDF or print
 - 📦 [Container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available (see  [Run with docker](#with-docker-container-recommended))
 
 ## 🚧 Roadmap
@@ -119,9 +119,12 @@ flowchart LR
 
 #### 1. Prepare project
 Choose the fitting client lib for your language or generate / build your own by the OpenApi (Swagger) description.
+
 #### 2. Design your PDF in the playground
 Go to [🐢PdfTurtle-Playground](https://pdfturtle.gaitzsch.dev/), put an example model as JSON and design your PDF.
 Download the bundle as ZIP file and put it in your resources/assets.
+
+![PdfTurtleBundle-Workflow](https://user-images.githubusercontent.com/6965260/193107092-8b4bc533-9af9-4fe5-b47f-c9d9d23ef908.gif)
 
 #### 3. Call the service with the client and your data
 Send a request to a PdfTurtle instance with your bundle and your model.
@@ -131,8 +134,6 @@ You will get a rendered PDF.
 
 #### Hint: You can split your bundle
 If you want to have the same header for all documents, you can create a ZIP file with with only the header.html file. Now you can call the Service with multiple bundle files. The service will assemble the files together.
-
-... <!-- TODO:!! -->
 
 ### Swagger
 
