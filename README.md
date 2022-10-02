@@ -29,7 +29,7 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 - [x] Bundle/Package support for exchangeable templates
 - Clint libs
   - [x] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
-  - [ ] golang
+  - [x] [Golang](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
   - [ ] Kotlin, Java (JVM languages)
   - ..?
 - [ ] Markdown to PDF
@@ -146,8 +146,7 @@ You can write and test templates with the [builtin playground](https://pdfturtle
 
 ### Client libs
 - [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
-- _...COMING SOON_
-<!-- TODO:!! -->
+- [Golang](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
 
 ### Postman
 You can import the swagger file to test the service with Postman or an alternative.
