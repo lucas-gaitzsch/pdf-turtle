@@ -27,11 +27,11 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
 ## 🚧 Roadmap
 - [x] Bundle/Package support for exchangeable templates
-- Clint libs
+- [ ] Client libs
   - [x] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
   - [x] [Golang](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
   - [ ] Kotlin, Java (JVM languages)
-  - ..?
+  - [ ] ..?
 - [ ] Markdown to PDF
 - [ ] Preload and cache JavaScript libs
 
