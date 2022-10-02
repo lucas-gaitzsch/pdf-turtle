@@ -16,7 +16,7 @@ type AssetsProviderService interface {
 
 type BundleProviderService interface {
 	Provide(bundle *bundles.Bundle) (id uuid.UUID, cleanup bundles.CleanupFunc)
-	Remove(id uuid.UUID) 
+	Remove(id uuid.UUID)
 	GetById(id uuid.UUID) (bundles.BundleReader, bool)
 }
 

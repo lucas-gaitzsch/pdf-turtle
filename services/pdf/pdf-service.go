@@ -15,8 +15,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-
-
 type PdfServiceAbstraction interface {
 	PdfFromHtml(data *models.RenderData) (io.Reader, error)
 	PdfFromHtmlTemplate(templateData *models.RenderTemplateData) (io.Reader, error)
