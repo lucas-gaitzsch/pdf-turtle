@@ -18,7 +18,7 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 - 💬 Generate PDFs in a descriptive way from HTML and CSS (with JavaScript support)
 - 💫 Supports modern HTML and CSS standards (uses latest Chromium engine)
 - 👻 Builtin template engines (go-template, raymond and django)
-- 💼 Bundle template and assets in ZIP file (see  [Bundle workflow](#bundle-workflow))
+- 💼 Bundle template and assets in ZIP file (see  [Bundle workflow](#bundle-workflow-recommended))
 - 🚀 Fast generation with limited resources (limited multithreading)
 - 🔥 Multiple replicas supported (stateless service design)
 - 🖥 Frontend ([Playground](https://pdfturtle.gaitzsch.dev/)) for rapid development
