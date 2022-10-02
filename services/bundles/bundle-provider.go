@@ -10,17 +10,21 @@ type CleanupFunc = func()
 
 func NewBundleProviderService() *BundleProviderService {
 	bps := &BundleProviderService{
-		bundles: make(map[uuid.UUID]Bundle),
+		bundles: make(map[uuid.UUID]*Bundle),
 	}
 	return bps
 }
 
 type BundleProviderService struct {
-	bundles map[uuid.UUID]Bundle
+	bundles map[uuid.UUID]*Bundle
 	lock    sync.RWMutex
 }
 
-func (bps *BundleProviderService) Provide(bundle Bundle) (id uuid.UUID, cleanup CleanupFunc) {
+func (bps *BundleProviderService) Provide(bundle *Bundle) (id uuid.UUID, cleanup CleanupFunc) {
+	if bundle == nil {
+		bundle = &Bundle{}
+	}
+
 	bps.lock.Lock()
 	defer bps.lock.Unlock()
 
@@ -41,7 +45,7 @@ func (bps *BundleProviderService) Remove(id uuid.UUID) {
 	delete(bps.bundles, id)
 }
 
-func (bps *BundleProviderService) GetById(id uuid.UUID) (Bundle, bool) {
+func (bps *BundleProviderService) GetById(id uuid.UUID) (BundleReader, bool) {
 	bps.lock.RLock()
 	defer bps.lock.RUnlock()
 

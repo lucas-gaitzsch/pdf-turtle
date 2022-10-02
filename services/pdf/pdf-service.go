@@ -6,24 +6,31 @@ import (
 
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/services"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/htmlparser"
-	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/templating"
 	"github.com/rs/zerolog/log"
 )
 
+
+
+type PdfServiceAbstraction interface {
+	PdfFromHtml(data *models.RenderData) (io.Reader, error)
+	PdfFromHtmlTemplate(templateData *models.RenderTemplateData) (io.Reader, error)
+}
+
 type PdfService struct {
 	ctx                   context.Context
-	rendererService       *renderer.RendererBackgroundService
-	assetsProviderService *assetsprovider.AssetsProviderService
+	rendererService       services.RendererBackgroundService
+	assetsProviderService services.AssetsProviderService
 	templateService       templating.TemplateServiceAbstraction
 	htmlParser            htmlparser.HtmlParser
 }
 
-func NewPdfService(requestctx context.Context) *PdfService {
+func NewPdfService(requestctx context.Context) PdfServiceAbstraction {
 	return &PdfService{
 		ctx:                   requestctx,
 		rendererService:       getRendererService(requestctx),
@@ -122,10 +129,10 @@ func (ps *PdfService) addDefaultStyleToHeaderAndFooter(data HtmlModels) {
 	}
 }
 
-func getRendererService(ctx context.Context) *renderer.RendererBackgroundService {
-	return ctx.Value(config.ContextKeyRendererService).(*renderer.RendererBackgroundService)
+func getRendererService(ctx context.Context) services.RendererBackgroundService {
+	return ctx.Value(config.ContextKeyRendererService).(services.RendererBackgroundService)
 }
 
-func getAssetsProviderService(ctx context.Context) *assetsprovider.AssetsProviderService {
-	return ctx.Value(config.ContextKeyAssetsProviderService).(*assetsprovider.AssetsProviderService)
+func getAssetsProviderService(ctx context.Context) services.AssetsProviderService {
+	return ctx.Value(config.ContextKeyAssetsProviderService).(services.AssetsProviderService)
 }

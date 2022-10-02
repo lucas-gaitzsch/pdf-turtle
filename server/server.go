@@ -35,7 +35,7 @@ type Server struct {
 // @contact.email  lucas@gaitzsch.dev
 // @license.name   AGPL-3.0
 // @license.url    https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE
-// @schemes        http
+
 func (s *Server) Serve(ctx context.Context) {
 	conf := config.Get(ctx)
 

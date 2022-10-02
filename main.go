@@ -9,6 +9,7 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/loopback"
 	"github.com/lucas-gaitzsch/pdf-turtle/server"
+	"github.com/lucas-gaitzsch/pdf-turtle/services"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer"
@@ -69,7 +70,7 @@ func main() {
 	log.Info().Msg("shutting service down...")
 	srv.Close(ctx)
 	servicesCtx.
-		Value(config.ContextKeyRendererService).(*renderer.RendererBackgroundService).
+		Value(config.ContextKeyRendererService).(services.RendererBackgroundService).
 		Close()
 	cancel()
 

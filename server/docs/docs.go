@@ -316,7 +316,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.1",
 	Host:             "",
 	BasePath:         "",
-	Schemes:          []string{"http"},
+	Schemes:          []string{},
 	Title:            "PdfTurtle API",
 	Description:      "A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.",
 	InfoInstanceName: "swagger",

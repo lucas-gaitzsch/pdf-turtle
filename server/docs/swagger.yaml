@@ -216,6 +216,4 @@ paths:
       summary: Render PDF from HTML
       tags:
       - Render HTML
-schemes:
-- http
 swagger: "2.0"

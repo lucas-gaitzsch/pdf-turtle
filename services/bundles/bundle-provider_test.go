@@ -8,7 +8,7 @@ import (
 
 func TestProvide(t *testing.T) {
 	bps := NewBundleProviderService()
-	id, cleanup := bps.Provide(Bundle{})
+	id, cleanup := bps.Provide(&Bundle{})
 
 	if _, ok := bps.bundles[id]; !ok {
 		t.Fatal("no bundle with returned id was provided in map")
@@ -25,7 +25,7 @@ func TestRemove(t *testing.T) {
 	bps := NewBundleProviderService()
 
 	id := uuid.New()
-	bps.bundles[id] = Bundle{}
+	bps.bundles[id] = &Bundle{}
 
 	bps.Remove(id)
 
@@ -37,7 +37,7 @@ func TestRemove(t *testing.T) {
 func TestGetById(t *testing.T) {
 	bps := NewBundleProviderService()
 
-	b := Bundle{
+	b := &Bundle{
 		files: make(map[string]Opener),
 	}
 
@@ -46,7 +46,7 @@ func TestGetById(t *testing.T) {
 
 	bGot, ok := bps.GetById(id)
 
-	if !ok || bGot.files == nil {
+	if !ok || bGot.(*Bundle).files == nil {
 		t.Fatal("bundle should be removed but already exists in map")
 	}
 }

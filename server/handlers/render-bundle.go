@@ -10,6 +10,7 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/loopback"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
+	"github.com/lucas-gaitzsch/pdf-turtle/services"
 	"github.com/rs/zerolog/log"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
@@ -45,7 +46,7 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 		panic(errors.New("no zip bundle with key 'bundle' was attached in form data"))
 	}
 
-	bundle := bundles.Bundle{}
+	bundle := &bundles.Bundle{}
 
 	for _, fb := range bundleFromForm {
 		reader, err := fb.Open()
@@ -63,7 +64,7 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 
 	pdfService := pdf.NewPdfService(ctx)
 
-	bundleProviderService := ctx.Value(config.ContextKeyBundleProviderService).(*bundles.BundleProviderService)
+	bundleProviderService := ctx.Value(config.ContextKeyBundleProviderService).(services.BundleProviderService)
 
 	id, cleanup := bundleProviderService.Provide(bundle)
 	defer cleanup()

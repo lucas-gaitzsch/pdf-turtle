@@ -21,6 +21,15 @@ type Opener interface {
 	Open() (io.ReadCloser, error)
 }
 
+type BundleReader interface {
+	GetFileByPath(path string) (io.ReadCloser, error)
+	GetFileAsStringByPath(path string) (*string, error)
+	GetBodyHtml() *string
+	GetHeaderHtml() string
+	GetFooterHtml() string
+	GetOptions() models.RenderOptions
+}
+
 type Bundle struct {
 	files map[string]Opener
 }
