@@ -45,3 +45,13 @@ docker run -d -p 8000:8000 --name pdf-turtle pdf-turtle
 ```
 go test -race -cover ./...
 ```
+
+## Update all dependencies
+
+```
+go get -u
+go mod tidy
+
+# verify functionality
+go test ./...
+```

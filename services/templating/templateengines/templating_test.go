@@ -36,71 +36,60 @@ func getModel() any {
 }
 
 func TestGetTemplateEngineByKeyGo(t *testing.T) {
-	templateStr := GoTemplateEngineKey
+	engine:= getTemplateEngineByKey(t, GoTemplateEngineKey)
 
-	engine, found := GetTemplateEngineByKey(HandlebarsTemplateEngineKey)
-
-	if !found {
-		t.Fatalf("cant find templateengine by key %s", templateStr)
-	}
-
-	if reflect.TypeOf(engine).Name() != reflect.TypeOf(&GoTemplateEngine{}).Name() {
-		t.Fatalf("html not equal")
+	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
+		t.Fatalf("wrong template engine was loaded")
 	}
 }
 
 func TestGetTemplateEngineByKeyHandlebars(t *testing.T) {
-	templateStr := HandlebarsTemplateEngineKey
+	engine:= getTemplateEngineByKey(t, HandlebarsTemplateEngineKey)
 
-	engine, found := GetTemplateEngineByKey(templateStr)
-
-	if !found {
-		t.Fatalf("cant find templateengine by key %s", templateStr)
-	}
-
-	if reflect.TypeOf(engine).Name() != reflect.TypeOf(&HandlebarsTemplateEngine{}).Name() {
-		t.Fatalf("html not equal")
+	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(HandlebarsTemplateEngine{}).Name() {
+		t.Fatalf("wrong template engine was loaded")
 	}
 }
 
 func TestGetTemplateEngineByKeyDjango(t *testing.T) {
-	templateStr := DjangoTemplateEngineKey
+	engine:= getTemplateEngineByKey(t, DjangoTemplateEngineKey)
 
-	engine, found := GetTemplateEngineByKey(templateStr)
-
-	if !found {
-		t.Fatalf("cant find templateengine by key %s", templateStr)
-	}
-
-	if reflect.TypeOf(engine).Name() != reflect.TypeOf(&DjangoTemplateEngine{}).Name() {
-		t.Fatalf("html not equal")
+	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(DjangoTemplateEngine{}).Name() {
+		t.Fatalf("wrong template engine was loaded")
 	}
 }
 
 func TestGetTemplateEngineByKeyEmpty(t *testing.T) {
-	templateStr := ""
-
-	engine, found := GetTemplateEngineByKey(templateStr)
+	engine, found := GetTemplateEngineByKey("")
 
 	if found {
-		t.Fatalf("empty key should not find any templateengine")
+		t.Fatal("found templateengine by empty key")
 	}
 
-	if reflect.TypeOf(engine).Name() != reflect.TypeOf(&DjangoTemplateEngine{}).Name() {
-		t.Fatalf("html not equal")
+
+	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
+		t.Fatalf("wrong template engine was loaded")
 	}
 }
 
 func TestGetTemplateEngineByKeyBullshit(t *testing.T) {
-	templateStr := "assdfjkp"
-
-	engine, found := GetTemplateEngineByKey(templateStr)
+	engine, found := GetTemplateEngineByKey("bullshit")
 
 	if found {
 		t.Fatalf("bullshit key should not find any templateengine")
 	}
 
-	if reflect.TypeOf(engine).Name() != reflect.TypeOf(&DjangoTemplateEngine{}).Name() {
-		t.Fatalf("html not equal")
+	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
+		t.Fatalf("wrong template engine was loaded")
 	}
+}
+
+func getTemplateEngineByKey(t *testing.T, key string) TemplateEngine{
+	engine, found := GetTemplateEngineByKey(key)
+
+	if !found {
+		t.Fatalf("cant find templateengine by key '%s'", key)
+	}
+
+	return engine
 }
