@@ -25,7 +25,7 @@ const (
 
 // RenderBundleHandler godoc
 // @Summary      Render PDF from bundle including HTML(-Template) with model and assets provided in form-data (keys: bundle, model)
-// @Description  Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required.
+// @Description  Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required
 // @Tags         Render HTML-Bundle
 // @Accept       multipart/form-data
 // @Produce      application/pdf
