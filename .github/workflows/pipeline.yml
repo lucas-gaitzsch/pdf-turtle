@@ -3,7 +3,7 @@ on:
   push:
     paths-ignore:
       - '**/README.md'
-      - '**/README_DEV.md
+      - '**/README_DEV.md'
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
