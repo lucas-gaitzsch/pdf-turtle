@@ -1,6 +1,3 @@
-.pdf-turtle {
-}
-
 .pdf-turtle .cards-wrapper {
     display: flex;
     flex-wrap: warp;
@@ -35,8 +32,6 @@
 .pdf-turtle table th {
     font-weight: bold;
     background-color: #eee;
-}
-.pdf-turtle table td {
 }
 
 .pdf-turtle table td.right {

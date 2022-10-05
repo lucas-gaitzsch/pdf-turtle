@@ -82,10 +82,6 @@ func TestWorkerUpAndDown(t *testing.T) {
 }
 
 func TestWorkerBeyondTheLimit(t *testing.T) {
-
-	//TODO:?
-	// logging.InitTestLogger(t)
-
 	const jobCount = 50
 	const workerInstances = 40
 

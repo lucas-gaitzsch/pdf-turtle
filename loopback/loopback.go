@@ -34,11 +34,6 @@ func (s *Server) Serve(ctx context.Context) {
 
 	r := mux.NewRouter()
 
-	r.Path(fmt.Sprintf("/preloaded/{%s}", resourceIdKey)).
-		Methods(http.MethodGet).
-		HandlerFunc(GetPreloadedRessourceHandler).
-		Name("Get preloaded resource")
-
 	r.PathPrefix(fmt.Sprintf("%s/{%s}", BundlePath, bundleIdKey)).
 		Methods(http.MethodGet).
 		HandlerFunc(GetBundleFileHandler).
@@ -80,12 +75,6 @@ func (s *Server) Close(ctx context.Context) {
 
 // ### Handler ###
 
-func GetPreloadedRessourceHandler(w http.ResponseWriter, r *http.Request) {
-	// vars := mux.Vars(r)
-	// resourceId := vars[resourceIdKey]
-	//TODO:
-}
-
 func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -121,7 +110,8 @@ func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 			Ctx(ctx).
 			Error().
 			Msg("cant find bundle")
-		//TODO:!! http err code
+		
+		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 

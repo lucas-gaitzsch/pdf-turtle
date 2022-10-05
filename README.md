@@ -25,16 +25,6 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 - 💫 Beautiful fonts included and preoptimized style (CSS) for PDF or print
 - 📦 [Container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available (see  [Run with docker](#with-docker-container-recommended))
 
-## 🚧 Roadmap
-- [x] Bundle/Package support for exchangeable templates
-- [ ] Client libs
-  - [x] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
-  - [x] [Golang](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
-  - [ ] Kotlin, Java (JVM languages)
-  - [ ] ..?
-- [ ] Markdown to PDF
-- [ ] Preload and cache JavaScript libs
-
 ## 💥 How to run the service
 
 ### With docker container (recommended)
@@ -58,11 +48,6 @@ Included fonts:
 - Roboto
 - Noto Emoji
 
-### With prebuilt binaries
-
-_...COMING SOON (?)_
-<!-- TODO:!! -->
-
 ### Config
 
 | command line argument | environment variable | type    | default | description                                             |
@@ -80,7 +65,6 @@ _...COMING SOON (?)_
 ## 🚀 How to use
 
 ### Bundle Workflow (recommended)
-
 
 ```mermaid
 flowchart LR
@@ -135,18 +119,17 @@ You will get a rendered PDF.
 #### Hint: You can split your bundle
 If you want to have the same header for all documents, you can create a ZIP file with with only the header.html file. Now you can call the Service with multiple bundle files. The service will assemble the files together.
 
-### Swagger
-
-Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagger/index.html) as API documentation.
-
-You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
-
 ### PdfTurtle Playground
 You can write and test templates with the [builtin playground](https://pdfturtle.gaitzsch.dev/). 
 
 ### Client libs
-- [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
-- [Golang](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
+- [📦 .NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+) Client](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
+- [📦 Golang (Go) Client](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
+
+### Swagger
+Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagger/index.html) as API documentation.
+
+You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
 ### Postman
 You can import the swagger file to test the service with Postman or an alternative.
@@ -171,6 +154,17 @@ You can import the swagger file to test the service with Postman or an alternati
 ## Development / Build from source
 
 See [README_DEV.md](./README_DEV.md).
+
+## 🚧 Roadmap
+- [x] Bundle/Package support for exchangeable templates
+- [x] Client libs
+  - [x] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
+  - [x] [Golang](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
+  - [ ] Kotlin, Java (JVM languages)
+  - [ ] ..?
+- [ ] Markdown to PDF
+- [ ] Preload and cache JavaScript libs
+
 
 ## 🔨 Contribution
 Contributors are welcome! Feel you free to fork the project and open a pull request. 

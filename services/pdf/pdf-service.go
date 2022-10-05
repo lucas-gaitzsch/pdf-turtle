@@ -10,6 +10,7 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/htmlparser"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/templating"
 	"github.com/rs/zerolog/log"
@@ -47,7 +48,7 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 
 	templateData.ParseJsonModelDataFromDoubleEncodedString()
 
-	data, err := utils.LogExecutionTimeWithResults("exec template", ps.ctx, func() (*models.RenderData, error) {
+	data, err := logging.LogExecutionTimeWithResults("exec template", ps.ctx, func() (*models.RenderData, error) {
 		return ps.templateService.ExecuteTemplate(templateData)
 	})
 
@@ -63,7 +64,7 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 
 	data.SetDefaults()
 
-	utils.LogExecutionTime("add styles", ps.ctx, func() {
+	logging.LogExecutionTime("add styles", ps.ctx, func() {
 		ps.addDefaultStyleToHeaderAndFooter(data)
 
 		if !data.RenderOptions.ExcludeBuiltinStyles {
@@ -71,7 +72,7 @@ func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
 		}
 	})
 
-	return utils.LogExecutionTimeWithResults("render pdf", ps.ctx, func() (io.Reader, error) {
+	return logging.LogExecutionTimeWithResults("render pdf", ps.ctx, func() (io.Reader, error) {
 		return ps.rendererService.RenderAndReceive(*models.NewJob(ps.ctx, data))
 	})
 }
@@ -83,7 +84,7 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 
 	if !data.HasHeaderOrFooterHtml() || !data.RenderOptions.ExcludeBuiltinStyles {
 
-		utils.LogExecutionTime("parse dom", ps.ctx, func() {
+		logging.LogExecutionTime("parse dom", ps.ctx, func() {
 			ps.htmlParser.Parse(data.Html)
 		})
 
@@ -92,7 +93,7 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 			ps.popHeaderAndFooter(data)
 		}
 
-		body, err := utils.LogExecutionTimeWithResults("parse dom", ps.ctx, func() (*string, error) {
+		body, err := logging.LogExecutionTimeWithResults("parse dom", ps.ctx, func() (*string, error) {
 			return ps.htmlParser.GetHtml()
 		})
 
@@ -105,7 +106,7 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 }
 
 func (ps *PdfService) popHeaderAndFooter(data HtmlModels) {
-	utils.LogExecutionTime("pop header and footer from html", ps.ctx, func() {
+	logging.LogExecutionTime("pop header and footer from html", ps.ctx, func() {
 		headerHtml, footerHtml := ps.htmlParser.PopHeaderAndFooter()
 		data.SetHeaderHtml(headerHtml)
 		data.SetFooterHtml(footerHtml)

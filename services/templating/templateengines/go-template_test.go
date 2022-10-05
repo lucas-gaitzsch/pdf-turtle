@@ -54,7 +54,7 @@ func TestGoTemplate(t *testing.T) {
 	}
 
 	if *htmlBody != resultHtml {
-		t.Fatalf("html not equal")
+		t.Fatal("html not equal")
 	}
 }
 
@@ -76,7 +76,7 @@ func TestGoTemplateTestInvalid(t *testing.T) {
 
 	err := engine.Test(&templateStr, getModel())
 	if err == nil {
-		t.Fatalf("should fail")
+		t.Fatal("should fail")
 	}
 }
 
@@ -87,6 +87,6 @@ func TestGoTemplateTestUnknownProperty(t *testing.T) {
 
 	err := engine.Test(&templateStr, getModel())
 	if err == nil {
-		t.Fatalf("should fail")
+		t.Fatal("should fail")
 	}
 }

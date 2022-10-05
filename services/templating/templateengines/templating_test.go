@@ -39,7 +39,7 @@ func TestGetTemplateEngineByKeyGo(t *testing.T) {
 	engine:= getTemplateEngineByKey(t, GoTemplateEngineKey)
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
-		t.Fatalf("wrong template engine was loaded")
+		fatalWrongTemplateEngine(t)
 	}
 }
 
@@ -47,7 +47,7 @@ func TestGetTemplateEngineByKeyHandlebars(t *testing.T) {
 	engine:= getTemplateEngineByKey(t, HandlebarsTemplateEngineKey)
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(HandlebarsTemplateEngine{}).Name() {
-		t.Fatalf("wrong template engine was loaded")
+		fatalWrongTemplateEngine(t)
 	}
 }
 
@@ -55,7 +55,7 @@ func TestGetTemplateEngineByKeyDjango(t *testing.T) {
 	engine:= getTemplateEngineByKey(t, DjangoTemplateEngineKey)
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(DjangoTemplateEngine{}).Name() {
-		t.Fatalf("wrong template engine was loaded")
+		fatalWrongTemplateEngine(t)
 	}
 }
 
@@ -68,7 +68,7 @@ func TestGetTemplateEngineByKeyEmpty(t *testing.T) {
 
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
-		t.Fatalf("wrong template engine was loaded")
+		fatalWrongTemplateEngine(t)
 	}
 }
 
@@ -80,7 +80,7 @@ func TestGetTemplateEngineByKeyBullshit(t *testing.T) {
 	}
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
-		t.Fatalf("wrong template engine was loaded")
+		fatalWrongTemplateEngine(t)
 	}
 }
 
@@ -92,4 +92,8 @@ func getTemplateEngineByKey(t *testing.T, key string) TemplateEngine{
 	}
 
 	return engine
+}
+
+func fatalWrongTemplateEngine(t *testing.T) {
+	t.Fatal("wrong template engine was loaded")
 }

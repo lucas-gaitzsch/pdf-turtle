@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"runtime"
 	"strings"
 	"time"
 
@@ -108,8 +109,13 @@ func recoverMiddleware() func(http.Handler) http.Handler {
 
 					logMsgBuilder := log.Ctx(ctx).
 						Error().
-						Stack().
-						CallerSkipFrame(4)
+						Stack()
+
+					if runtime.GOOS == "windows" {
+						logMsgBuilder.CallerSkipFrame(4)
+					} else {
+						logMsgBuilder.CallerSkipFrame(2)
+					}
 
 					err, ok := rec.(error)
 
