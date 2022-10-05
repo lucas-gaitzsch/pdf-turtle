@@ -2,13 +2,19 @@
 
 [![build and test](https://github.com/lucas-gaitzsch/pdf-turtle/actions/workflows/pipeline.yml/badge.svg)](https://github.com/lucas-gaitzsch/pdf-turtle/actions/workflows/pipeline.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lucas-gaitzsch/pdf-turtle)](https://goreportcard.com/report/github.com/lucas-gaitzsch/pdf-turtle)
-![Docker Pulls](https://img.shields.io/docker/pulls/lucasgaitzsch/pdf-turtle)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
+[![Docker Pulls](https://img.shields.io/docker/pulls/lucasgaitzsch/pdf-turtle)](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle)
+
+
 
 ### A painless html to pdf rendering service
 
 [PdfTurtle](https://github.com/lucas-gaitzsch/pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
 
-Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
+Try it! Here's a [**DEMO**\_\_🐢\_\_](https://pdfturtle.gaitzsch.dev/).
 
 ![Screenshot](https://user-images.githubusercontent.com/6965260/193090816-1f605691-1281-44db-9d33-eb6591a5236f.png)
 
@@ -16,7 +22,7 @@ Try it! Here's a [**DEMO**🐢****](https://pdfturtle.gaitzsch.dev/).
 
 - ✅ Free, OpenSource and Self-Hosted
 - 💬 Generate PDFs in a descriptive way from HTML and CSS (with JavaScript support)
-- 💫 Supports modern HTML and CSS standards (uses latest Chromium engine)
+- ✨ Supports modern HTML and CSS standards (uses latest Chromium engine)
 - 👻 Builtin template engines (go-template, raymond and django)
 - 💼 Bundle template and assets in ZIP file (see  [Bundle workflow](#bundle-workflow-recommended))
 - 🚀 Fast generation with limited resources (limited multithreading)
