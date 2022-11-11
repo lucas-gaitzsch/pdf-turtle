@@ -12,6 +12,7 @@ import (
 	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
 
 	"github.com/google/uuid"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -82,7 +83,15 @@ func loggingMiddleware() func(http.Handler) http.Handler {
 				status := wm.GetStatus()
 				dur := time.Since(begin)
 
-				requestLogger.Info().
+				var logMessage *zerolog.Event
+
+				if strings.HasSuffix(r.RequestURI, "/api/health") {
+					logMessage = requestLogger.Debug()
+				} else {
+					logMessage = requestLogger.Info()
+				}
+
+				logMessage.
 					Dur("executionTime", dur).
 					Int("statusCode", status).
 					Msgf(
