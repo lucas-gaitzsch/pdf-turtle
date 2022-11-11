@@ -46,6 +46,11 @@ func (s *Server) Serve(ctx context.Context) {
 
 	api := r.PathPrefix("/api").Subrouter()
 
+	api.Path("/health").
+		Methods(http.MethodGet).
+		HandlerFunc(handlers.HealthCheckHandler).
+		Name("Render PDF from HTML")
+
 	api.Path("/pdf/from/html/render").
 		Methods(http.MethodPost).
 		HandlerFunc(handlers.RenderPdfFromHtmlHandler).

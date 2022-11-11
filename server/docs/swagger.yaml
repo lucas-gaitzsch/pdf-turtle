@@ -89,6 +89,7 @@ definitions:
       htmlTemplate:
         type: string
       model:
+        description: Model with your data matching to the templates
         type: object
       options:
         $ref: '#/definitions/RenderOptions'
@@ -123,13 +124,25 @@ info:
   title: PdfTurtle API
   version: "1.1"
 paths:
+  /api/health:
+    get:
+      consumes:
+      - multipart/form-data
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: ""
+      summary: Liveness probe for this service
+      tags:
+      - Internals
   /api/pdf/from/html-bundle/render:
     post:
       consumes:
       - multipart/form-data
       description: Returns PDF file generated from bundle (Zip-File) of HTML or HTML
         template of body, header, footer and assets. The index.html file in the Zip-Bundle
-        is required.
+        is required
       parameters:
       - description: Bundle Zip-File
         in: formData
