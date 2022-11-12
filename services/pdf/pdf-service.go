@@ -2,12 +2,16 @@ package pdf
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"io"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/loopback"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/assetsprovider"
+	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/htmlparser"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
@@ -19,12 +23,14 @@ import (
 type PdfServiceAbstraction interface {
 	PdfFromHtml(data *models.RenderData) (io.Reader, error)
 	PdfFromHtmlTemplate(templateData *models.RenderTemplateData) (io.Reader, error)
+	PdfFromBundle(bundle *bundles.Bundle, jsonModel string, templateEngine string) (io.Reader, error)
 }
 
 type PdfService struct {
 	ctx                   context.Context
 	rendererService       services.RendererBackgroundService
 	assetsProviderService services.AssetsProviderService
+	bundleProviderService services.BundleProviderService
 	templateService       templating.TemplateServiceAbstraction
 	htmlParser            htmlparser.HtmlParser
 }
@@ -34,6 +40,7 @@ func NewPdfService(requestctx context.Context) PdfServiceAbstraction {
 		ctx:                   requestctx,
 		rendererService:       getRendererService(requestctx),
 		assetsProviderService: getAssetsProviderService(requestctx),
+		bundleProviderService: getBundleProviderService(requestctx),
 		templateService:       templating.NewTemplateService(),
 		htmlParser:            htmlparser.New(),
 	}
@@ -57,6 +64,57 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 	}
 
 	return ps.renderPdf(data)
+}
+
+func (ps *PdfService) PdfFromBundle(bundle *bundles.Bundle, jsonModel string, templateEngine string) (io.Reader, error) {
+	conf := config.Get(ps.ctx)
+
+	id, cleanup := ps.bundleProviderService.Provide(bundle)
+	defer cleanup()
+
+	opt := bundle.GetOptions()
+	opt.BasePath = fmt.Sprintf("http://127.0.0.1:%d%s/%s/", conf.LoopbackPort, loopback.BundlePath, id)
+
+	var pdfData io.Reader
+	var errRender error
+
+	hasModel := jsonModel != ""
+	hasModelLoggingPreparation := log.Debug().Bool("hasModel", hasModel)
+
+	if hasModel {
+		hasModelLoggingPreparation.Msg("got model in form data -> render with template engine")
+
+		if templateEngine != "" {
+			log.Debug().
+				Str("templateEngine", templateEngine).
+				Msg("got templateEngine in form data")
+		}
+
+		templateData := &models.RenderTemplateData{
+			HtmlTemplate:       bundle.GetBodyHtml(),
+			HeaderHtmlTemplate: bundle.GetHeaderHtml(),
+			FooterHtmlTemplate: bundle.GetFooterHtml(),
+			TemplateEngine:     templateEngine,
+			RenderOptions:      opt,
+		}
+
+		json.Unmarshal([]byte(jsonModel), &templateData.Model)
+
+		pdfData, errRender = ps.PdfFromHtmlTemplate(templateData)
+	} else {
+		hasModelLoggingPreparation.Msg("no model given with key 'model' in form data -> render plain html")
+
+		data := &models.RenderData{
+			Html:          bundle.GetBodyHtml(),
+			HeaderHtml:    bundle.GetHeaderHtml(),
+			FooterHtml:    bundle.GetFooterHtml(),
+			RenderOptions: opt,
+		}
+
+		pdfData, errRender = ps.PdfFromHtml(data)
+	}
+
+	return pdfData, errRender
 }
 
 func (ps *PdfService) renderPdf(data *models.RenderData) (io.Reader, error) {
@@ -90,7 +148,11 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 
 		if !data.HasHeaderOrFooterHtml() {
 			// parse header and footer from main html
-			ps.popHeaderAndFooter(data)
+			logging.LogExecutionTime("pop header and footer from html", ps.ctx, func() {
+				headerHtml, footerHtml := ps.htmlParser.PopHeaderAndFooter()
+				data.SetHeaderHtml(headerHtml)
+				data.SetFooterHtml(footerHtml)
+			})
 		}
 
 		body, err := logging.LogExecutionTimeWithResults("parse dom", ps.ctx, func() (*string, error) {
@@ -103,14 +165,6 @@ func (ps *PdfService) preProcessHtmlData(data *models.RenderData) {
 			log.Ctx(ps.ctx).Warn().Err(err).Msg("cant get html from parsed dom")
 		}
 	}
-}
-
-func (ps *PdfService) popHeaderAndFooter(data HtmlModels) {
-	logging.LogExecutionTime("pop header and footer from html", ps.ctx, func() {
-		headerHtml, footerHtml := ps.htmlParser.PopHeaderAndFooter()
-		data.SetHeaderHtml(headerHtml)
-		data.SetFooterHtml(footerHtml)
-	})
 }
 
 func (ps *PdfService) addDefaultStyleToHeaderAndFooter(data HtmlModels) {
@@ -134,4 +188,8 @@ func getRendererService(ctx context.Context) services.RendererBackgroundService 
 
 func getAssetsProviderService(ctx context.Context) services.AssetsProviderService {
 	return ctx.Value(config.ContextKeyAssetsProviderService).(services.AssetsProviderService)
+}
+
+func getBundleProviderService(ctx context.Context) services.BundleProviderService {
+	return ctx.Value(config.ContextKeyBundleProviderService).(services.BundleProviderService)
 }
