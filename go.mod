@@ -1,6 +1,6 @@
 module github.com/lucas-gaitzsch/pdf-turtle
 
-go 1.18
+go 1.19
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
@@ -8,7 +8,7 @@ require (
 	github.com/alexflint/go-arg v1.4.3
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/boombuler/barcode v1.0.1
-	github.com/chromedp/cdproto v0.0.0-20221108233440-fad8339618ab
+	github.com/chromedp/cdproto v0.0.0-20221126224343-3a0787b8dd28
 	github.com/chromedp/chromedp v0.8.6
 	github.com/flosch/pongo2/v5 v5.0.0
 	github.com/google/uuid v1.3.0
@@ -16,7 +16,7 @@ require (
 	github.com/rs/cors v1.8.2
 	github.com/rs/zerolog v1.28.0
 	github.com/swaggo/http-swagger v1.3.3
-	github.com/swaggo/swag v1.8.7
+	github.com/swaggo/swag v1.8.8
 	golang.org/x/net v0.2.0
 )
 
@@ -37,7 +37,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a // indirect
-	golang.org/x/sys v0.2.0 // indirect
+	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/tools v0.3.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
