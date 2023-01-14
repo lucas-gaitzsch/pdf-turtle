@@ -14,7 +14,18 @@ jobs:
         with:
           go-version: '>=1.18.0'
       - run: go build
-      - run: go test -timeout 120s ./...
+      #- run: go test -timeout 120s ./...
+      - run: go test -race -coverprofile=coverage.txt -covermode=atomic
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+      # - uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+      #     files: ./coverage1.xml,./coverage2.xml # optional
+      #     flags: unittests # optional
+      #     name: codecov-umbrella # optional
+      #     fail_ci_if_error: true # optional (default = false)
+      #     verbose: true # optional (default = false)
 
   publish-container:
     runs-on: ubuntu-latest
