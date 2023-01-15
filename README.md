@@ -2,6 +2,7 @@
 
 [![build and test](https://github.com/lucas-gaitzsch/pdf-turtle/actions/workflows/pipeline.yml/badge.svg)](https://github.com/lucas-gaitzsch/pdf-turtle/actions/workflows/pipeline.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/lucas-gaitzsch/pdf-turtle)](https://goreportcard.com/report/github.com/lucas-gaitzsch/pdf-turtle)
+[![codecov](https://codecov.io/gh/lucas-gaitzsch/pdf-turtle/branch/main/graph/badge.svg?token=EBFJ819FU8)](https://codecov.io/gh/lucas-gaitzsch/pdf-turtle)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
