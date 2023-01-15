@@ -13,11 +13,19 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '>=1.18.0'
+      - name: Install dependencies
+        run: go get -u golang.org/x/lint/golint
+      - name: run vet and lint
+        run: |
+          go vet .
+          golint -set_exit_status=1 .
       - run: go build
       #- run: go test -timeout 120s ./...
-      - run: go test -race -coverprofile=coverage.txt -covermode=atomic
+      - run: go test -race -coverprofile=coverage.out -covermode=atomic -timeout 120s ./...
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        # with:
+        #   files: ./coverage.out
       # - uses: codecov/codecov-action@v3
       #   with:
       #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
@@ -76,7 +84,7 @@ jobs:
           push: true
           
       - name: Docker Hub Description
-        uses: peter-evans/dockerhub-description@v2
+        uses: peter-evans/dockerhub-description@v3
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
