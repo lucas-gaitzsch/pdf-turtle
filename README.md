@@ -9,8 +9,6 @@
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=lucas-gaitzsch_pdf-turtle&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=lucas-gaitzsch_pdf-turtle)
 [![Docker Pulls](https://img.shields.io/docker/pulls/lucasgaitzsch/pdf-turtle)](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle)
 
-
-
 ### A painless html to pdf rendering service
 
 [PdfTurtle](https://github.com/lucas-gaitzsch/pdf-turtle) generates PDF reports and documents from HTML templates or raw HTML.
@@ -25,12 +23,12 @@ Try it! Here's a [**DEMO**\_\_🐢\_\_](https://pdfturtle.gaitzsch.dev/).
 - 💬 Generate PDFs in a descriptive way from HTML and CSS (with JavaScript support)
 - ✨ Supports modern HTML and CSS standards (uses latest Chromium engine)
 - 👻 Builtin template engines (go-template, raymond and django)
-- 💼 Bundle template and assets in ZIP file (see  [Bundle workflow](#bundle-workflow-recommended))
+- 💼 Bundle template and assets in ZIP file (see [Bundle workflow](#bundle-workflow-recommended))
 - 🚀 Fast generation with limited resources (limited multithreading)
 - 🔥 Multiple replicas supported (stateless service design)
 - 🖥 Frontend ([Playground](https://pdfturtle.gaitzsch.dev/)) for rapid development
 - 💫 Beautiful fonts included and preoptimized style (CSS) for PDF or print
-- 📦 [Container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available (see  [Run with docker](#with-docker-container-recommended))
+- 📦 [Container image](https://hub.docker.com/r/lucasgaitzsch/pdf-turtle) available (see [Run with docker](#with-docker-container-recommended))
 
 ## 💥 How to run the service
 
@@ -51,6 +49,7 @@ docker run -d \
 ```
 
 Included fonts:
+
 - Open Sans
 - Roboto
 - Noto Emoji
@@ -92,7 +91,7 @@ flowchart LR
         A --> OPT
         OPT --> S(fa:fa-file-zipper save as<br> ZIP bundle)
     end
-    
+
     subgraph YP[your fancy project]
         direction TB
         PA(provide as asset)
@@ -105,42 +104,49 @@ flowchart LR
     end
 
     S-->|copy zip bundle<br> to your project|YP
-    %%PG-->YP  
+    %%PG-->YP
 ```
 
 #### 1. Prepare project
+
 Choose the fitting client lib for your language or generate / build your own by the OpenApi (Swagger) description.
 
 #### 2. Design your PDF in the playground
+
 Go to [🐢PdfTurtle-Playground](https://pdfturtle.gaitzsch.dev/), put an example model as JSON and design your PDF.
 Download the bundle as ZIP file and put it in your resources/assets.
 
 ![PdfTurtleBundle-Workflow](https://user-images.githubusercontent.com/6965260/193107092-8b4bc533-9af9-4fe5-b47f-c9d9d23ef908.gif)
 
 #### 3. Call the service with the client and your data
+
 Send a request to a PdfTurtle instance with your bundle and your model.
 You will get a rendered PDF.
 
 **And thats it.**
 
 #### Hint: You can split your bundle
+
 If you want to have the same header for all documents, you can create a ZIP file with with only the header.html file. Now you can call the Service with multiple bundle files. The service will assemble the files together.
 
 ### PdfTurtle Playground
-You can write and test templates with the [builtin playground](https://pdfturtle.gaitzsch.dev/). 
+
+You can write and test templates with the [builtin playground](https://pdfturtle.gaitzsch.dev/).
 
 ### Client libs
+
 - [📦 .NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+) Client](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
 - [📦 Golang (Go) Client](https://github.com/lucas-gaitzsch/pdf-turtle-client-golang)
 
 ### Swagger
+
 Use Swagger-UI under [/swagger/index.html](https://pdfturtle.gaitzsch.dev/swagger/index.html) as API documentation.
 
 You can use the swagger description (_/swagger/doc.json_ or [./server/docs/swagger.json](./server/docs/swagger.json)) to generate a API client for the language of your choice.
 
 ### Postman
-You can import the swagger file to test the service with Postman or an alternative.
 
+You can import the swagger file to test the service with Postman or an alternative.
 
 ## Included template engines
 
@@ -152,17 +158,21 @@ You can import the swagger file to test the service with Postman or an alternati
 
 ### Included template functions
 
-| Function name | Parameters | Description                            |
-| ------------- | ---------- | -------------------------------------- |
-| **marshal**       | object     | Encodes provided object as JSON string |
-| **barcodeQr**     | content    | Renders a SVG QR code from content     |
-| **barcodeEan**    | content    | Renders a SVG EAN code from content    |
+| Function name  | Parameters       | Description                            |
+| -------------- | ---------------- | -------------------------------------- |
+| **marshal**    | object           | Encodes provided object as JSON string |
+| **barcodeQr**  | content          | Renders a SVG QR code from content     |
+| **barcodeEan** | content          | Renders a SVG EAN code from content    |
+| **contains**   | haystack, needle | Renders a SVG EAN code from content    |
+| **hasPrefix**  | haystack, needle | Renders a SVG EAN code from content    |
+| **hasSuffix**  | haystack, needle | Renders a SVG EAN code from content    |
 
 ## Development / Build from source
 
 See [README_DEV.md](./README_DEV.md).
 
 ## 🚧 Roadmap
+
 - [x] Bundle/Package support for exchangeable templates
 - [x] Client libs
   - [x] [.NET Standard 2.0 (.NET Core 2.0+ & .NET Framework 4.6.1+)](https://github.com/lucas-gaitzsch/pdf-turtle-client-dotnet)
@@ -172,9 +182,9 @@ See [README_DEV.md](./README_DEV.md).
 - [ ] Markdown to PDF
 - [ ] Preload and cache JavaScript libs
 
-
 ## 🔨 Contribution
-Contributors are welcome! Feel you free to fork the project and open a pull request. 
+
+Contributors are welcome! Feel you free to fork the project and open a pull request.
 
 If you wrote a client lib for a uncovered language please contact me. I will create a repo for you or link your client lib in this readme file.
 

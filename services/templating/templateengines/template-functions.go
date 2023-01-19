@@ -3,6 +3,7 @@ package templateengines
 import (
 	"encoding/json"
 	"html/template"
+	"strings"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/barcodes"
 )
@@ -20,4 +21,7 @@ var templateFunctions = template.FuncMap{
 		qr, _ := barcodes.NewEanCode(content)
 		return template.HTML(qr.Svg())
 	},
+	"contains":  strings.Contains,
+    "hasPrefix": strings.HasPrefix,
+    "hasSuffix": strings.HasSuffix,
 }

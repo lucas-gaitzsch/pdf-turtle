@@ -37,6 +37,10 @@ func NewAsyncHtmlRendererChromium(ctx context.Context) *HtmlToPdfRendererChromiu
 
 func (r *HtmlToPdfRendererChromium) init() {
 	defer func() {
+		if (r.LocalCtx.Err() != nil) {
+			return
+		}
+		
 		if err := recover(); err != nil {
 			log.Warn().Interface("Err", err).Msg("chromium crashed with panic -> new chromium instance")
 
@@ -54,7 +58,7 @@ func (r *HtmlToPdfRendererChromium) init() {
 }
 
 func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
-	
+
 	r.watcherClosedChan = make(chan bool, 1)
 	var watcherCtx context.Context
 	watcherCtx, r.watcherCtxCancelFunc = context.WithCancel(r.LocalCtx)
