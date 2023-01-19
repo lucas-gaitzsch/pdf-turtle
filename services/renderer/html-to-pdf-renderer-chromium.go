@@ -29,28 +29,48 @@ type HtmlToPdfRendererChromium struct {
 func NewAsyncHtmlRendererChromium(ctx context.Context) *HtmlToPdfRendererChromium {
 	r := new(HtmlToPdfRendererChromium)
 	r.LocalCtx = ctx
-	r.ChromiumCtx, r.chromiumCancelFunc = headlesschromium.NewChromiumBrowser(r.LocalCtx)
-
-	r.startWatchingChromiumInstance()
+	
+	r.init()
 
 	return r
 }
 
+func (r *HtmlToPdfRendererChromium) init() {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Warn().Interface("Err", err).Msg("chromium crashed with panic -> new chromium instance")
+
+			r.chromiumCancelFunc()
+			r.watcherCtxCancelFunc()
+
+			// re-init
+			r.init()
+		}
+	}()
+
+	r.ChromiumCtx, r.chromiumCancelFunc = headlesschromium.NewChromiumBrowser(r.LocalCtx)
+
+	r.startWatchingChromiumInstance()
+}
+
 func (r *HtmlToPdfRendererChromium) startWatchingChromiumInstance() {
+	
 	r.watcherClosedChan = make(chan bool, 1)
 	var watcherCtx context.Context
 	watcherCtx, r.watcherCtxCancelFunc = context.WithCancel(r.LocalCtx)
+
 	go func() {
 		select {
 		case <-watcherCtx.Done():
 			r.watcherClosedChan <- true
 		case <-r.ChromiumCtx.Done():
-			log.Warn().Err(r.ChromiumCtx.Err()).Msg("chromium crashed -> new chromium instance")
+			log.Warn().Err(r.ChromiumCtx.Err()).Msg("chromium crashed with err -> new chromium instance")
+			
 			r.chromiumCancelFunc()
-			r.ChromiumCtx, r.chromiumCancelFunc = headlesschromium.NewChromiumBrowser(r.LocalCtx)
-
 			r.watcherCtxCancelFunc()
-			r.startWatchingChromiumInstance()
+
+			// re-init
+			r.init()
 		}
 	}()
 }
