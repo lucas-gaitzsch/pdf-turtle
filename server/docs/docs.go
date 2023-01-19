@@ -23,7 +23,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/health": {
+        "/health": {
             "get": {
                 "consumes": [
                     "multipart/form-data"

@@ -5,6 +5,7 @@ import (
 
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
+	"github.com/rs/zerolog/log"
 )
 
 // Health Endpoint (liveness) godoc
@@ -13,9 +14,11 @@ import (
 // @Accept       multipart/form-data
 // @Produce      text/plain
 // @Success      200
-// @Router       /api/health [get]
+// @Router       /health [get]
 func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
+	log.Ctx(ctx).Debug().Msg("execute health check / liveness probe")
 
 	testHtml := "health"
 
