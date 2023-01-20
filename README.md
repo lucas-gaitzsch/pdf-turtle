@@ -166,8 +166,12 @@ You can import the swagger file to test the service with Postman or an alternati
 | **StrContains**  | haystack, needle | Renders a SVG EAN code from content    |
 | **strHasPrefix** | haystack, needle | Renders a SVG EAN code from content    |
 | **strHasSuffix** | haystack, needle | Renders a SVG EAN code from content    |
-| **inc**          | int              | Increments a number (integer)          |
-| **dec**          | int              | Decrements a number (integer)          |
+| **add**          | float64, float64 | Adds two float64 numbers               |
+| **subtract**     | float64, float64 | Subtracts two float64 numbers          |
+| **multiply**     | float64, float64 | Multiplies two float64 numbers         |
+| **divide**       | float64, float64 | Divides two float64 numbers            |
+| **float64ToInt** | float64          | Convert a int to float64               |
+| **intToFloat64** | int              | Convert a float64 to int               |
 
 ## Development / Build from source
 

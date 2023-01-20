@@ -24,11 +24,23 @@ var templateFunctions = template.FuncMap{
 	"strContains":  strings.Contains,
     "strHasPrefix": strings.HasPrefix,
     "strHasSuffix": strings.HasSuffix,
-    "inc": func(val int) int {
-		return val + 1
+    "add": func(a float64, b float64) float64 {
+		return a + b
 	},
-    "dec": func(val int) int {
-		return val - 1
+    "subtract": func(a float64, b float64) float64 {
+		return a - b
+	},
+    "multiply": func(a float64, b float64) float64 {
+		return a * b
+	},
+    "divide": func(a float64, b float64) float64 {
+		return a / b
+	},
+    "float64ToInt": func(val float64) int {
+		return int(val)
+	},
+    "intToFloat64": func(val int) float64 {
+		return float64(val)
 	},
 }
 
