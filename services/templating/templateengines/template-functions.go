@@ -21,7 +21,14 @@ var templateFunctions = template.FuncMap{
 		qr, _ := barcodes.NewEanCode(content)
 		return template.HTML(qr.Svg())
 	},
-	"contains":  strings.Contains,
-    "hasPrefix": strings.HasPrefix,
-    "hasSuffix": strings.HasSuffix,
+	"strContains":  strings.Contains,
+    "strHasPrefix": strings.HasPrefix,
+    "strHasSuffix": strings.HasSuffix,
+    "inc": func(val int) int {
+		return val + 1
+	},
+    "dec": func(val int) int {
+		return val - 1
+	},
 }
+

@@ -158,14 +158,16 @@ You can import the swagger file to test the service with Postman or an alternati
 
 ### Included template functions
 
-| Function name  | Parameters       | Description                            |
-| -------------- | ---------------- | -------------------------------------- |
-| **marshal**    | object           | Encodes provided object as JSON string |
-| **barcodeQr**  | content          | Renders a SVG QR code from content     |
-| **barcodeEan** | content          | Renders a SVG EAN code from content    |
-| **contains**   | haystack, needle | Renders a SVG EAN code from content    |
-| **hasPrefix**  | haystack, needle | Renders a SVG EAN code from content    |
-| **hasSuffix**  | haystack, needle | Renders a SVG EAN code from content    |
+| Function name    | Parameters       | Description                            |
+| ---------------- | ---------------- | -------------------------------------- |
+| **marshal**      | object           | Encodes provided object as JSON string |
+| **barcodeQr**    | content          | Renders a SVG QR code from content     |
+| **barcodeEan**   | content          | Renders a SVG EAN code from content    |
+| **StrContains**  | haystack, needle | Renders a SVG EAN code from content    |
+| **strHasPrefix** | haystack, needle | Renders a SVG EAN code from content    |
+| **strHasSuffix** | haystack, needle | Renders a SVG EAN code from content    |
+| **inc**          | int              | Increments a number (integer)          |
+| **dec**          | int              | Decrements a number (integer)          |
 
 ## Development / Build from source
 
