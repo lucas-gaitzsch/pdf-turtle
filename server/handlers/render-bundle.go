@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 
@@ -35,23 +36,36 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	bundleFromForm, ok := r.MultipartForm.File[formDataKeyBundle]
 
 	if !ok || len(bundleFromForm) == 0 {
-		panic(errors.New("no zip bundle with key 'bundle' was attached in form data"))
+		panic(errors.New("no bundle data with key 'bundle' was attached in form data"))
 	}
 
 	bundle := &bundles.Bundle{}
 
 	for _, fb := range bundleFromForm {
-		reader, err := fb.Open()
-		if err != nil {
-			panic(err)
-		}
-		defer reader.Close()
 
-		err = bundle.ReadFromZip(reader, fb.Size)
+		if strings.HasSuffix(fb.Filename, ".zip") {
+			reader, err := fb.Open()
+			if err != nil {
+				panic(err)
+			}
+			defer reader.Close()
 
-		if err != nil {
-			panic(err)
+			err = bundle.ReadFromZip(reader, fb.Size)
+
+			if err != nil {
+				panic(err)
+			}
+		} else {
+			fp := &bundles.OpenerFileProxy{
+				MultipartFileOpener: fb,
+			}
+			bundle.AddFile(fb.Filename, fp)
 		}
+	}
+
+	err := bundle.TestIndexFile()
+	if err != nil {
+		panic(err)
 	}
 
 	pdfService := pdf.NewPdfService(ctx)
@@ -60,7 +74,6 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	templateEngine, _ := getValueFromForm(r.MultipartForm.Value, formDataKeyTemplateEngine)
 
 	pdfData, errRender := pdfService.PdfFromBundle(bundle, jsonModel, templateEngine)
-
 
 	if errRender != nil {
 		panic(errRender)

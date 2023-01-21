@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"mime/multipart"
 	"strings"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
@@ -17,8 +18,21 @@ const (
 	BundleOptionsFile = "options.json"
 )
 
+type MultipartFileOpener interface {
+	Open() (multipart.File, error)
+}
+
 type Opener interface {
 	Open() (io.ReadCloser, error)
+}
+
+type OpenerFileProxy struct {
+	MultipartFileOpener MultipartFileOpener
+}
+
+func (o *OpenerFileProxy) Open() (io.ReadCloser, error) {
+	r, err := o.MultipartFileOpener.Open()
+	return r, err
 }
 
 type BundleReader interface {
@@ -37,10 +51,6 @@ type Bundle struct {
 // Read files from zip to intern map (path to file).
 // This method can be called multiple times to assemble multiple zip bundles to one bundle.
 func (b *Bundle) ReadFromZip(file io.ReaderAt, size int64) error {
-	if b.files == nil {
-		b.files = make(map[string]Opener)
-	}
-
 	z, err := zip.NewReader(file, size)
 
 	if err != nil {
@@ -48,13 +58,32 @@ func (b *Bundle) ReadFromZip(file io.ReaderAt, size int64) error {
 	}
 
 	for _, f := range z.File {
-		b.files[f.Name] = f
+		b.AddFile(f.Name, f)
 	}
 
+	return nil
+}
+
+func (b *Bundle) AddFile(path string, file Opener) {
+	if b.files == nil {
+		b.files = make(map[string]Opener)
+	}
+
+	if !strings.Contains(path, "/") &&
+		path != BundleIndexFile &&
+		path != BundleHeaderFile &&
+		path != BundleFooterFile &&
+		path != BundleOptionsFile {
+		path = "assets/" + path
+	}
+
+	b.files[path] = file
+}
+
+func (b *Bundle) TestIndexFile() error {
 	if _, hasIndexFile := b.files[BundleIndexFile]; !hasIndexFile {
 		return errors.New("no index.html file was found on root of bundle")
 	}
-
 	return nil
 }
 

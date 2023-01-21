@@ -110,7 +110,7 @@ func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 			Ctx(ctx).
 			Error().
 			Msg("cant find bundle")
-		
+
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}

@@ -3,11 +3,11 @@ package models
 import "encoding/json"
 
 type RenderTemplateData struct {
-	HtmlTemplate       *string `json:"htmlTemplate"`
+	HtmlTemplate *string `json:"htmlTemplate"`
 	// Optional template for header. If empty, the header template will be parsed from main template (<PdfHeader></PdfHeader>).
-	HeaderHtmlTemplate string  `json:"headerHtmlTemplate,omitempty"` 
+	HeaderHtmlTemplate string `json:"headerHtmlTemplate,omitempty"`
 	// Optional template for footer. If empty, the footer template will be parsed from main template (<PdfFooter></PdfFooter>).
-	FooterHtmlTemplate string  `json:"footerHtmlTemplate,omitempty"` 
+	FooterHtmlTemplate string `json:"footerHtmlTemplate,omitempty"`
 
 	// Model with your data matching to the templates
 	Model any `json:"model,omitempty" swaggertype:"object"`

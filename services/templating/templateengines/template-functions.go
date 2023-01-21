@@ -22,25 +22,24 @@ var templateFunctions = template.FuncMap{
 		return template.HTML(qr.Svg())
 	},
 	"strContains":  strings.Contains,
-    "strHasPrefix": strings.HasPrefix,
-    "strHasSuffix": strings.HasSuffix,
-    "add": func(a float64, b float64) float64 {
+	"strHasPrefix": strings.HasPrefix,
+	"strHasSuffix": strings.HasSuffix,
+	"add": func(a float64, b float64) float64 {
 		return a + b
 	},
-    "subtract": func(a float64, b float64) float64 {
+	"subtract": func(a float64, b float64) float64 {
 		return a - b
 	},
-    "multiply": func(a float64, b float64) float64 {
+	"multiply": func(a float64, b float64) float64 {
 		return a * b
 	},
-    "divide": func(a float64, b float64) float64 {
+	"divide": func(a float64, b float64) float64 {
 		return a / b
 	},
-    "float64ToInt": func(val float64) int {
+	"float64ToInt": func(val float64) int {
 		return int(val)
 	},
-    "intToFloat64": func(val int) float64 {
+	"intToFloat64": func(val int) float64 {
 		return float64(val)
 	},
 }
-

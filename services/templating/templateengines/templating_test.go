@@ -36,7 +36,7 @@ func getModel() any {
 }
 
 func TestGetTemplateEngineByKeyGo(t *testing.T) {
-	engine:= getTemplateEngineByKey(t, GoTemplateEngineKey)
+	engine := getTemplateEngineByKey(t, GoTemplateEngineKey)
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
 		fatalWrongTemplateEngine(t)
@@ -44,7 +44,7 @@ func TestGetTemplateEngineByKeyGo(t *testing.T) {
 }
 
 func TestGetTemplateEngineByKeyHandlebars(t *testing.T) {
-	engine:= getTemplateEngineByKey(t, HandlebarsTemplateEngineKey)
+	engine := getTemplateEngineByKey(t, HandlebarsTemplateEngineKey)
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(HandlebarsTemplateEngine{}).Name() {
 		fatalWrongTemplateEngine(t)
@@ -52,7 +52,7 @@ func TestGetTemplateEngineByKeyHandlebars(t *testing.T) {
 }
 
 func TestGetTemplateEngineByKeyDjango(t *testing.T) {
-	engine:= getTemplateEngineByKey(t, DjangoTemplateEngineKey)
+	engine := getTemplateEngineByKey(t, DjangoTemplateEngineKey)
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(DjangoTemplateEngine{}).Name() {
 		fatalWrongTemplateEngine(t)
@@ -65,7 +65,6 @@ func TestGetTemplateEngineByKeyEmpty(t *testing.T) {
 	if found {
 		t.Fatal("found templateengine by empty key")
 	}
-
 
 	if reflect.TypeOf(engine).Elem().Name() != reflect.TypeOf(GoTemplateEngine{}).Name() {
 		fatalWrongTemplateEngine(t)
@@ -84,7 +83,7 @@ func TestGetTemplateEngineByKeyBullshit(t *testing.T) {
 	}
 }
 
-func getTemplateEngineByKey(t *testing.T, key string) TemplateEngine{
+func getTemplateEngineByKey(t *testing.T, key string) TemplateEngine {
 	engine, found := GetTemplateEngineByKey(key)
 
 	if !found {
