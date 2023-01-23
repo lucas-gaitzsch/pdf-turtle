@@ -42,8 +42,8 @@ func RenderBundleHandler(w http.ResponseWriter, r *http.Request) {
 	bundle := &bundles.Bundle{}
 
 	for _, fb := range bundleFromForm {
-
-		if strings.HasPrefix(fb.Filename, "bundle") || strings.HasPrefix(fb.Filename, "blob") || strings.HasSuffix(fb.Filename, ".zip") {
+		
+		if strings.HasPrefix(fb.Filename, "bundle") || fb.Header.Get("Content-Type") == "application/zip" || strings.HasSuffix(fb.Filename, ".zip") {
 			reader, err := fb.Open()
 			if err != nil {
 				panic(err)
