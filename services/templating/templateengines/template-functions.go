@@ -42,4 +42,7 @@ var templateFunctions = template.FuncMap{
 	"intToFloat64": func(val int) float64 {
 		return float64(val)
 	},
+	"bitwiseAnd": func(a int, b int) int {
+		return a & b
+	},
 }

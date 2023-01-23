@@ -172,6 +172,7 @@ You can import the swagger file to test the service with Postman or an alternati
 | **divide**       | float64, float64 | Divides two float64 numbers            |
 | **float64ToInt** | float64          | Convert a int to float64               |
 | **intToFloat64** | int              | Convert a float64 to int               |
+| **bitwiseAnd**   | int, int         | a \& b                                 |
 
 ## Development / Build from source
 
