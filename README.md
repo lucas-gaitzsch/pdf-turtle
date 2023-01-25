@@ -127,7 +127,8 @@ You will get a rendered PDF.
 
 #### Hint: You can split your bundle
 
-If you want to have the same header for all documents, you can create a ZIP file with with only the header.html file. Now you can call the Service with multiple bundle files. The service will assemble the files together.
+If you want to have the same header for all documents, you can create a ZIP file with with only the header.html and the required assets. Now you can call the Service with multiple bundle files. The service will assemble the files together.
+Single files can be send as bundle-component without compressing to a ZIP file. All files with other names than "index.html", "header.html", "footer.html" and "options.json" will be put to the folder "/assets/".
 
 ### PdfTurtle Playground
 
