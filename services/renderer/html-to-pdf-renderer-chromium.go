@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"regexp"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer/headlesschromium"
@@ -17,6 +18,8 @@ import (
 
 const magicHeaderFooterScaleFactor = 0.75
 const magicBodyPaddingInInches = 0.004
+
+var urlReferenceRegex = regexp.MustCompile(`(src|href)="(.+)"`)
 
 type HtmlToPdfRendererChromium struct {
 	ChromiumCtx          context.Context
@@ -163,12 +166,17 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 				margins.Bottom,
 				margins.Bottom)
 
-			headerHtml := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)
-			footerHtml := utils.AppendStyleToHtml(&data.FooterHtml, &headerFooterAppendCss)
+			headerHtmlPtr := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)
+			footerHtmlPtr := utils.AppendStyleToHtml(&data.FooterHtml, &headerFooterAppendCss)
+
+			if (data.RenderOptions.BasePath != "") {
+				headerHtmlPtr = utils.RequestAndInlineAllHtmlResources(headerHtmlPtr, data.RenderOptions.BasePath)
+				footerHtmlPtr = utils.RequestAndInlineAllHtmlResources(footerHtmlPtr, data.RenderOptions.BasePath)
+			}
 
 			params = params.
-				WithHeaderTemplate(*headerHtml).
-				WithFooterTemplate(*footerHtml)
+				WithHeaderTemplate(*headerHtmlPtr).
+				WithFooterTemplate(*footerHtmlPtr)
 		}
 
 		return params
