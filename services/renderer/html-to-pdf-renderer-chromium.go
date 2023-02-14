@@ -169,10 +169,8 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 			headerHtmlPtr := utils.AppendStyleToHtml(&data.HeaderHtml, &headerFooterAppendCss)
 			footerHtmlPtr := utils.AppendStyleToHtml(&data.FooterHtml, &headerFooterAppendCss)
 
-			if (data.RenderOptions.BasePath != "") {
-				headerHtmlPtr = utils.RequestAndInlineAllHtmlResources(headerHtmlPtr, data.RenderOptions.BasePath)
-				footerHtmlPtr = utils.RequestAndInlineAllHtmlResources(footerHtmlPtr, data.RenderOptions.BasePath)
-			}
+			headerHtmlPtr = utils.RequestAndInlineAllHtmlResources(ctx, headerHtmlPtr, data.RenderOptions.BasePath)
+			footerHtmlPtr = utils.RequestAndInlineAllHtmlResources(ctx, footerHtmlPtr, data.RenderOptions.BasePath)
 
 			params = params.
 				WithHeaderTemplate(*headerHtmlPtr).
