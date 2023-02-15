@@ -52,13 +52,13 @@ func RequestAndInlineAllHtmlResources(ctx context.Context, htmlPtr *string, base
 	logger := zerolog.Ctx(ctx)
 
 	html := urlReferenceRegex.ReplaceAllStringFunc(*htmlPtr, func(htmlAttribute string) string {
-		return requestAndReturnBase64IfPossible(htmlAttribute, baseUrl, logger)
+		return requestAndReturnBase64IfPossible(ctx, htmlAttribute, baseUrl, logger)
 	})
 
 	return &html
 }
 
-func requestAndReturnBase64IfPossible(htmlAttribute string, baseUrl string, logger *zerolog.Logger) string {
+func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string, baseUrl string, logger *zerolog.Logger) string {
 
 	groups := urlReferenceRegex.FindAllStringSubmatch(htmlAttribute, 2)
 	attribute := groups[0][1]
@@ -68,7 +68,13 @@ func requestAndReturnBase64IfPossible(htmlAttribute string, baseUrl string, logg
 		src = baseUrl + src
 	}
 
-	response, err := http.Get(src)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, src, nil)
+	if err != nil {
+		logger.Info().Err(err).Msg("cant initialize request")
+		return htmlAttribute
+	}
+	response, err := http.DefaultClient.Do(req)
+
 	if err != nil {
 		logger.Info().Str("resourceUrl", src).Err(err).Msg("cant fetch resource")
 		return htmlAttribute
