@@ -71,7 +71,7 @@ func (aps *AssetsProviderService) preloadCssFilesToCache() {
 		preloadedCssArr = append(preloadedCssArr, value)
 	}
 
-	aps.mergedCss = utils.MergeCss(preloadedCssArr)
+	aps.mergedCss = utils.MergeCss(preloadedCssArr...)
 }
 
 func (aps *AssetsProviderService) GetMergedCss() *string {

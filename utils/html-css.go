@@ -30,7 +30,7 @@ func AppendStyleToHtml(html *string, css *string) *string {
 	}
 }
 
-func MergeCss(css []*string) *string {
+func MergeCss(css ...*string) *string {
 	mergedCssBuilder := strings.Builder{}
 
 	for _, c := range css {
@@ -43,6 +43,10 @@ func MergeCss(css []*string) *string {
 }
 
 var urlReferenceRegex = regexp.MustCompile(` (src|href)="([^"]+)"`)
+
+type HttpClientExecuter interface {
+    Do(req *http.Request) (*http.Response, error)
+}
 
 func RequestAndInlineAllHtmlResources(ctx context.Context, htmlPtr *string, baseUrl string) *string {
 	if baseUrl != "" && !strings.HasSuffix(baseUrl, "/") {
@@ -68,12 +72,17 @@ func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string,
 		src = baseUrl + src
 	}
 
+	var client HttpClientExecuter = http.DefaultClient
+	if c, ok := ctx.Value("httpClient").(HttpClientExecuter); ok {
+		client = c
+	}
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, src, nil)
 	if err != nil {
 		logger.Info().Err(err).Msg("cant initialize request")
 		return htmlAttribute
 	}
-	response, err := http.DefaultClient.Do(req)
+	response, err := client.Do(req)
 
 	if err != nil {
 		logger.Info().Str("resourceUrl", src).Err(err).Msg("cant fetch resource")
@@ -92,5 +101,5 @@ func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string,
 	mimeType := http.DetectContentType(bytes)
 	base64 := base64.StdEncoding.EncodeToString(bytes)
 
-	return attribute + "=\"data:" + mimeType + ";base64," + base64 + "\""
+	return " " + attribute + "=\"data:" + mimeType + ";base64," + base64 + "\""
 }
