@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"encoding/json"
-	"net/http"
-
+	"github.com/gofiber/fiber/v2"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
 
@@ -20,15 +18,15 @@ import (
 // @Param        renderTemplateData  body      models.RenderTemplateData  true  "Render Data"
 // @Success      200                 "PDF File"
 // @Router       /api/pdf/from/html-template/render [post]
-func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+func RenderPdfFromHtmlFromTemplateHandler(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 
 	templateData := &models.RenderTemplateData{}
 
-	err := json.NewDecoder(r.Body).Decode(templateData)
+	err := c.BodyParser(templateData)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	pdfService := pdf.NewPdfService(ctx)
@@ -36,12 +34,10 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 	pdfData, err := pdfService.PdfFromHtmlTemplate(templateData)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	if err := writePdf(ctx, w, pdfData); err != nil {
-		panic(err)
-	}
+	return writePdf(c, pdfData)
 }
 
 // TestHtmlTemplateHandler godoc
@@ -53,14 +49,12 @@ func RenderPdfFromHtmlFromTemplateHandler(w http.ResponseWriter, r *http.Request
 // @Param        renderTemplateData  body  models.RenderTemplateData  true  "Render Data"
 // @Success      200                 {object}  dto.TemplateTestResult
 // @Router       /api/pdf/from/html-template/test [post]
-func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
+func TestHtmlTemplateHandler(c *fiber.Ctx) error {
 	response := dto.TemplateTestResult{}
 
 	templateData := &models.RenderTemplateData{}
 
-	err := json.NewDecoder(r.Body).Decode(templateData)
+	err := c.BodyParser(templateData)
 
 	if err == nil {
 
@@ -83,7 +77,5 @@ func TestHtmlTemplateHandler(w http.ResponseWriter, r *http.Request) {
 		response.IsValid = false
 	}
 
-	if err := writeJson(ctx, w, response); err != nil {
-		panic(err)
-	}
+	return c.JSON(response)
 }

@@ -3,21 +3,23 @@ package server
 import (
 	"context"
 	"fmt"
-	"net"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/server/handlers"
+	"github.com/lucas-gaitzsch/pdf-turtle/serverutils"
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+
+	fiberSwagger "github.com/swaggo/fiber-swagger" // fiber-swagger middleware
 
 	_ "github.com/lucas-gaitzsch/pdf-turtle/server/docs"
-
-	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 const (
@@ -25,7 +27,7 @@ const (
 )
 
 type Server struct {
-	Instance *http.Server
+	Instance *fiber.App
 }
 
 // @title          PdfTurtle API
@@ -39,54 +41,59 @@ type Server struct {
 func (s *Server) Serve(ctx context.Context) {
 	conf := config.Get(ctx)
 
+	app := fiber.New(fiber.Config{
+		WriteTimeout: 45 * time.Second,
+		ReadTimeout:  45 * time.Second,
+		IdleTimeout:  60 * time.Second,
+		BodyLimit: conf.MaxBodySizeInMb * 1024 * 1024,
+    })
+
+	app.Use(
+		cors.New(cors.Config{
+			AllowOrigins: "*",
+			AllowHeaders:  "*",
+			AllowMethods: strings.Join([]string{http.MethodGet, http.MethodPost}, ","),
+			AllowCredentials: true,
+		}),
+		recover.New(),
+		serverutils.ProvideUserCtxMiddleware(ctx),
+	)
+
 	servingAddr := fmt.Sprintf(":%d", conf.Port)
 	localUrl := fmt.Sprintf("http://localhost%s", servingAddr)
 
-	r := mux.NewRouter()
-
-	r.Path("/health").
-		Methods(http.MethodGet).
-		HandlerFunc(handlers.HealthCheckHandler).
+	app.
+		Get("/health", handlers.HealthCheckHandler).
 		Name("Liveness probe")
-	r.Path("/api/health").
-		Methods(http.MethodGet).
-		HandlerFunc(handlers.HealthCheckHandler).
+	app.
+		Get("/api/health", handlers.HealthCheckHandler).
 		Name("Liveness probe")
 
-	api := r.PathPrefix("/api").Subrouter()
-
-	api.Path("/pdf/from/html/render").
-		Methods(http.MethodPost).
-		HandlerFunc(handlers.RenderPdfFromHtmlHandler).
-		Name("Render PDF from HTML")
-
-	api.Path("/pdf/from/html-template/render").
-		Methods(http.MethodPost).
-		HandlerFunc(handlers.RenderPdfFromHtmlFromTemplateHandler).
-		Name("Render PDF from HTML template")
-
-	api.Path("/pdf/from/html-template/test").
-		Methods(http.MethodPost).
-		HandlerFunc(handlers.TestHtmlTemplateHandler).
-		Name("Test HTML template")
-
-	api.Path("/pdf/from/html-bundle/render").
-		Methods(http.MethodPost).
-		HandlerFunc(handlers.RenderBundleHandler).
-		Name("Render PDF from HTML-Bundle")
+	api := app.Group("/api")
 
 	api.Use(
-		maxBodySizeMiddleware(conf.MaxBodySizeInMb),
-		loggingMiddleware(),
-		recoverMiddleware(),
+		serverutils.RequestLoggingMiddleware(),
+		serverutils.RecoverMiddleware(),
 	)
 
+	api.Post("/pdf/from/html/render", handlers.RenderPdfFromHtmlHandler).
+		Name("Render PDF from HTML")
+
+	api.Post("/pdf/from/html-template/render", handlers.RenderPdfFromHtmlFromTemplateHandler).
+		Name("Render PDF from HTML template")
+
+	api.Post("/pdf/from/html-template/test", handlers.TestHtmlTemplateHandler).
+		Name("Test HTML template")
+
+	api.Post("/pdf/from/html-bundle/render", handlers.RenderBundleHandler).
+		Name("Render PDF from HTML-Bundle")
+
 	if conf.Secret != "" {
-		api.Use(secretMiddleware(conf.Secret))
+		api.Use(serverutils.SecretMiddleware(conf.Secret))
 	}
 
 	// Swagger
-	r.PathPrefix(swaggerRoute).Handler(httpSwagger.WrapHandler)
+	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	log.
 		Info().
@@ -99,38 +106,20 @@ func (s *Server) Serve(ctx context.Context) {
 			Info().
 			Str("url", localUrl).
 			Msg("serving playground")
-		servePlaygroundFronted(r)
+		servePlaygroundFronted(app)
 	}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedHeaders:   []string{"*"},
-		AllowedMethods:   []string{http.MethodGet, http.MethodPost},
-		AllowCredentials: true,
-	})
+	s.Instance = app
 
-	handler := c.Handler(r)
-
-	s.Instance = &http.Server{
-		Handler:      handler,
-		Addr:         servingAddr,
-		WriteTimeout: 45 * time.Second,
-		ReadTimeout:  45 * time.Second,
-		IdleTimeout:  60 * time.Second,
-		BaseContext: func(listener net.Listener) context.Context {
-			return ctx
-		},
-	}
-
-	go s.listenAndServe()
+	go s.listenAndServe(servingAddr)
 }
 
-func (s *Server) listenAndServe() {
-	log.Info().Msg("server: listens on " + s.Instance.Addr)
+func (s *Server) listenAndServe(servingAddr string) {
+	log.Info().Msg("server: listens on " + servingAddr)
 
-	if err := s.Instance.ListenAndServe(); err != nil {
+	if err := s.Instance.Listen(servingAddr); err != nil {
 		if err != http.ErrServerClosed {
-			log.Error().Err(err).Msg("server serve error")
+			log.Error().Err(err).Msg("loopback-server serve error")
 			panic(err)
 		}
 	}
@@ -138,21 +127,12 @@ func (s *Server) listenAndServe() {
 
 func (s *Server) Close(ctx context.Context) {
 	log.Info().Msg("server: shutdown gracefully")
-
 	gracefullyShutdownTimeout := time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec) * time.Second
-	timeoutCtx, cancel := context.WithTimeout(ctx, gracefullyShutdownTimeout)
-	defer cancel()
-	s.Instance.Shutdown(timeoutCtx)
+	s.Instance.ShutdownWithTimeout(gracefullyShutdownTimeout)
 }
 
-func servePlaygroundFronted(r *mux.Router) {
-	r.PathPrefix("/assets").Handler(http.FileServer(http.Dir(config.PathStaticExternPlayground)))
-
-	r.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/favicon.ico" {
-			http.ServeFile(w, r, config.PathStaticExternPlayground+"favicon.ico")
-		} else {
-			http.ServeFile(w, r, config.PathStaticExternPlayground+"index.html")
-		}
-	})
+func servePlaygroundFronted(app *fiber.App) {
+	app.Static("/assets", config.PathStaticExternPlayground)
+	app.Static("/favicon.ico", config.PathStaticExternPlayground+"favicon.ico")
+	app.Static("*", config.PathStaticExternPlayground+"index.html")
 }

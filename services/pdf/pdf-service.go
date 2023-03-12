@@ -60,7 +60,7 @@ func (ps *PdfService) PdfFromHtmlTemplate(templateData *models.RenderTemplateDat
 	})
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return ps.renderPdf(data)
