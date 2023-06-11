@@ -6,26 +6,22 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog/log"
 )
 
-func writePdf(ctx context.Context, w http.ResponseWriter, data io.Reader) error {
+func writePdf(c *fiber.Ctx, data io.Reader) error {
+	ctx:=c.UserContext()
+	
 	if data == nil {
 		log.Ctx(ctx).Info().Msg("nothing to writeout: pdf data empty")
-		w.WriteHeader(http.StatusNoContent)
-		return nil
+		return c.SendStatus(http.StatusNoContent)
 	}
 
-	w.Header().Set("Content-type", "application/pdf")
-	w.Header().Set("Content-disposition", "attachment; filename=\"document.pdf\"")
+	c.Set("Content-type", "application/pdf")
+	c.Set("Content-disposition", "attachment; filename=\"document.pdf\"")
 
-	_, err := io.Copy(w, data)
-	if err != nil {
-		log.Ctx(ctx).Error().Err(err).Msg("cant copy data to output stream")
-		return err
-	}
-
-	return nil
+	return c.SendStream(data)
 }
 
 func writeJson(ctx context.Context, w http.ResponseWriter, data any) error {

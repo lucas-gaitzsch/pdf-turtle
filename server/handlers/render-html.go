@@ -1,9 +1,7 @@
 package handlers
 
 import (
-	"encoding/json"
-	"net/http"
-
+	"github.com/gofiber/fiber/v2"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
@@ -20,15 +18,15 @@ const TemplateEngineQueryKey = "template-engine"
 // @Param        renderData  body  models.RenderData  true  "Render Data"
 // @Success      200         "PDF File"
 // @Router       /api/pdf/from/html/render [post]
-func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+func RenderPdfFromHtmlHandler(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 
 	data := &models.RenderData{}
 
-	err := json.NewDecoder(r.Body).Decode(&data)
+	err := c.BodyParser(data)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	pdfService := pdf.NewPdfService(ctx)
@@ -36,10 +34,8 @@ func RenderPdfFromHtmlHandler(w http.ResponseWriter, r *http.Request) {
 	pdfData, err := pdfService.PdfFromHtml(data)
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	if err := writePdf(ctx, w, pdfData); err != nil {
-		panic(err)
-	}
+	return writePdf(c, pdfData)
 }

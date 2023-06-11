@@ -23,25 +23,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/health": {
-            "get": {
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "text/plain"
-                ],
-                "tags": [
-                    "Internals"
-                ],
-                "summary": "Liveness probe for this service",
-                "responses": {
-                    "200": {
-                        "description": ""
-                    }
-                }
-            }
-        },
         "/api/pdf/from/html-bundle/render": {
             "post": {
                 "description": "Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required",
@@ -175,6 +156,25 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "PDF File"
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "Internals"
+                ],
+                "summary": "Liveness probe for this service",
+                "responses": {
+                    "200": {
+                        "description": ""
                     }
                 }
             }

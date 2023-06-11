@@ -3,60 +3,57 @@ package loopback
 import (
 	"context"
 	"fmt"
-	"io"
 	"mime"
-	"net"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/google/uuid"
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
+	"github.com/lucas-gaitzsch/pdf-turtle/serverutils"
 	"github.com/lucas-gaitzsch/pdf-turtle/services"
 
 	"github.com/rs/zerolog/log"
-
-	"github.com/gorilla/mux"
 )
 
-const resourceIdKey = "resourceId"
-const bundleIdKey = "bundleId"
 const BundlePath = "/bundle"
+const bundleIdKey = "bundleId"
 
 type Server struct {
-	Instance *http.Server
+	Instance *fiber.App
 }
 
 func (s *Server) Serve(ctx context.Context) {
+	app := fiber.New(fiber.Config{
+		WriteTimeout: 1 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		IdleTimeout:  5 * time.Second,
+    })
+
+	app.Use(
+		recover.New(),
+		serverutils.ProvideUserCtxMiddleware(ctx),
+	)
+	
 	conf := config.Get(ctx)
 
 	servingAddr := fmt.Sprintf("127.0.0.1:%d", conf.LoopbackPort)
 
-	r := mux.NewRouter()
-
-	r.PathPrefix(fmt.Sprintf("%s/{%s}", BundlePath, bundleIdKey)).
-		Methods(http.MethodGet).
-		HandlerFunc(GetBundleFileHandler).
+	app.
+		Get(fmt.Sprintf("%s/:%s/+", BundlePath, bundleIdKey), GetBundleFileHandler).
 		Name("Get file of bundle resource")
 
-	s.Instance = &http.Server{
-		Handler:      r,
-		Addr:         servingAddr,
-		WriteTimeout: 1 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		IdleTimeout:  5 * time.Second,
-		BaseContext: func(listener net.Listener) context.Context {
-			return ctx
-		},
-	}
+	s.Instance = app
 
-	go s.listenAndServe()
+	go s.listenAndServe(servingAddr)
 }
 
-func (s *Server) listenAndServe() {
-	log.Debug().Msg("loopback-server: listens on " + s.Instance.Addr)
+func (s *Server) listenAndServe(servingAddr string) {
+	log.Debug().Msg("loopback-server: listens on " + servingAddr)
 
-	if err := s.Instance.ListenAndServe(); err != nil {
+	if err := s.Instance.Listen(servingAddr); err != nil {
 		if err != http.ErrServerClosed {
 			log.Error().Err(err).Msg("loopback-server serve error")
 			panic(err)
@@ -65,26 +62,27 @@ func (s *Server) listenAndServe() {
 }
 
 func (s *Server) Close(ctx context.Context) {
-	log.Debug().Msg("loopback-server: shutdown gracefully")
-
 	gracefullyShutdownTimeout := time.Duration(config.Get(ctx).GracefulShutdownTimeoutInSec) * time.Second
-	timeoutCtx, cancel := context.WithTimeout(ctx, gracefullyShutdownTimeout)
-	defer cancel()
-	s.Instance.Shutdown(timeoutCtx)
+	s.Instance.ShutdownWithTimeout(gracefullyShutdownTimeout)
 }
 
 // ### Handler ###
 
-func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
+func GetBundleFileHandler(c *fiber.Ctx) error {
+	if c.Method() != http.MethodGet {
+		return c.SendStatus(http.StatusMethodNotAllowed)
+	}
 
-	vars := mux.Vars(r)
-	bundleIdFromRoute := vars[bundleIdKey]
+	ctx := c.UserContext()
+
+	bundleIdFromRoute :=  c.Params(bundleIdKey)
 
 	urlPathPrefix := BundlePath + "/" + bundleIdFromRoute + "/"
 
-	if r.URL.Path == urlPathPrefix || strings.HasPrefix(urlPathPrefix, r.URL.Path) {
-		return
+	path := c.Path()
+
+	if path == urlPathPrefix || strings.HasPrefix(urlPathPrefix, path) {
+		return c.SendStatus(http.StatusInternalServerError)
 	}
 
 	bundleId, err := uuid.Parse(bundleIdFromRoute)
@@ -97,8 +95,7 @@ func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 			Err(err).
 			Msg("cant parse bundle id")
 
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		return c.SendStatus(http.StatusInternalServerError)
 	}
 
 	bundleProvider := ctx.Value(config.ContextKeyBundleProviderService).(services.BundleProviderService)
@@ -111,11 +108,9 @@ func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 			Error().
 			Msg("cant find bundle")
 
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
 
-	path := r.URL.Path
+		return c.SendStatus(http.StatusNotFound)
+	}
 
 	splittedPathByDot := strings.Split(path, ".")
 	ext := splittedPathByDot[len(splittedPathByDot)-1]
@@ -129,22 +124,11 @@ func GetBundleFileHandler(w http.ResponseWriter, r *http.Request) {
 			Err(err).
 			Msg("cant get file")
 
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+
+		return c.SendStatus(http.StatusInternalServerError)
 	}
 	defer fileReader.Close()
 
-	w.Header().Set("Content-type", mimeType)
-	_, err = io.Copy(w, fileReader)
-
-	if err != nil {
-		log.
-			Ctx(ctx).
-			Error().
-			Err(err).
-			Msg("cant respond")
-
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+    c.Set(fiber.HeaderContentType, mimeType)
+	return c.SendStream(fileReader)
 }
