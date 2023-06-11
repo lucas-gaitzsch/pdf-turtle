@@ -4,29 +4,20 @@ COPY . .
 RUN go build -o pdf-turtle
 
 
-FROM node:lts as build-playground
-WORKDIR /app
-COPY .pdf-turtle-playground/. .
-RUN npm i
-RUN npm run build
-
-
-FROM chromedp/headless-shell:latest as runtime
-WORKDIR /app
-COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
-COPY --from=build-playground /app/dist /app/static-files/extern/playground
-
+FROM chromedp/headless-shell:stable as runtime
 RUN apt-get -y update
 RUN apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-color-emoji
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
 
 ENV LANG en-US.UTF-8
 ENV LOG_LEVEL_DEBUG false
 ENV LOG_JSON_OUTPUT false
 ENV WORKER_INSTANCES 40
 ENV PORT 8000
-ENV SERVE_PLAYGROUND true
 
 EXPOSE ${PORT}
 

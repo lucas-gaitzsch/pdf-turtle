@@ -21,3 +21,5 @@ go.work
 
 chromium-data-dir
 coverage
+
+.pdf-turtle-playground
