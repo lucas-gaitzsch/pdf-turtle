@@ -19,6 +19,7 @@ type Config struct {
 	MaxBodySizeInMb              int    `arg:"--maxBodySize,env:MAX_BODY_SIZE" default:"32" help:"Max body size in megabyte"`
 	ServePlayground              bool   `arg:"--servePlayground,env:SERVE_PLAYGROUND" default:"false" help:"Serve playground from path './static-files/playground/'"`
 	Secret                       string `arg:"env" default:"" help:"Secret used as bearer token"`
+	NoSandbox                    bool   `arg:"--no-sandbox,env:NO_SANDBOX" default:"false" help:"Disable chromium sandbox"`
 
 	PreloadedAssets []string `arg:"env" help:"Preload assets on startup. Example:'bar.js:https://foo.com/bar.js'"` //TODO:!
 

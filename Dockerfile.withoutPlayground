@@ -21,7 +21,4 @@ ENV PORT 8000
 
 EXPOSE ${PORT}
 
-RUN useradd -u 64198 app
-USER app
-
 ENTRYPOINT ["/app/pdf-turtle"]

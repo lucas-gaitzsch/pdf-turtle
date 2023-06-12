@@ -49,18 +49,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Build and push docker image without playground
-        uses: docker/build-push-action@v2
-        with:
-          file: ./Dockerfile.withoutPlayground
-          context: ./
-          tags: |
-            lucasgaitzsch/pdf-turtle:latest-without-playground
-            lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}-without-playground
-            ghcr.io/${{ github.repository }}:latest-without-playground
-            ghcr.io/${{ github.repository }}:v${{ env.VERSION }}-without-playground
-          push: true
 
       - name: Build and push docker image with playground
         uses: docker/build-push-action@v2
@@ -75,6 +63,30 @@ jobs:
             lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}-playground
             ghcr.io/${{ github.repository }}:latest-playground
             ghcr.io/${{ github.repository }}:v${{ env.VERSION }}-playground
+          push: true
+
+      - name: Build and push docker image with playground and unprivileged
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.unprivileged
+          context: ./
+          tags: |
+            lucasgaitzsch/pdf-turtle:latest-unprivileged
+            lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}-unprivileged
+            ghcr.io/${{ github.repository }}:latest-unprivileged
+            ghcr.io/${{ github.repository }}:v${{ env.VERSION }}-unprivileged
+          push: true
+      
+      - name: Build and push docker image without playground
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.withoutPlayground
+          context: ./
+          tags: |
+            lucasgaitzsch/pdf-turtle:latest-without-playground
+            lucasgaitzsch/pdf-turtle:v${{ env.VERSION }}-without-playground
+            ghcr.io/${{ github.repository }}:latest-without-playground
+            ghcr.io/${{ github.repository }}:v${{ env.VERSION }}-without-playground
           push: true
           
       - name: Docker Hub Description
