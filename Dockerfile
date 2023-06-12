@@ -17,7 +17,7 @@ COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
 COPY --from=build-playground /app/dist /app/static-files/extern/playground
 
 RUN apt-get -y update
-RUN apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-color-emoji
+RUN apt-get -y install media-types ca-certificates  fonts-open-sans fonts-roboto fonts-noto-color-emoji
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -29,5 +29,8 @@ ENV PORT 8000
 ENV SERVE_PLAYGROUND true
 
 EXPOSE ${PORT}
+
+RUN useradd -u 64198 app
+USER app
 
 ENTRYPOINT ["/app/pdf-turtle"]
