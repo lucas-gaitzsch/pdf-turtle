@@ -119,6 +119,9 @@ func TestWorkerBeyondTheLimit(t *testing.T) {
 	for i := 0; i < jobCount-workerInstances; i++ {
 		<-rendererMock.HitRenderChan
 	}
+	
+	<-time.After(50 * time.Millisecond)
+
 	if currLen := len(service.workerSlots); currLen != jobCount-workerInstances {
 		t.Fatalf("worker slots should have len of %d while request (curr: %d)", jobCount-workerInstances, currLen)
 	}
