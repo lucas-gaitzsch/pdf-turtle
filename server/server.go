@@ -132,7 +132,13 @@ func (s *Server) Close(ctx context.Context) {
 }
 
 func servePlaygroundFronted(app *fiber.App) {
-	app.Static("/assets", config.PathStaticExternPlayground)
-	app.Static("/favicon.ico", config.PathStaticExternPlayground+"favicon.ico")
-	app.Static("*", config.PathStaticExternPlayground+"index.html")
+	app.Get("/assets/*", func(ctx *fiber.Ctx) error {
+		return ctx.SendFile(config.PathStaticExternPlayground + ctx.Path())
+	})
+	app.Get("/favicon.ico", func(ctx *fiber.Ctx) error {
+		return ctx.SendFile(config.PathStaticExternPlayground+"favicon.ico")
+	})
+	app.Get("/*", func(ctx *fiber.Ctx) error {
+		return ctx.SendFile(config.PathStaticExternPlayground+"index.html")
+	})
 }
