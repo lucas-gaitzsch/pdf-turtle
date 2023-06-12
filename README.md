@@ -39,13 +39,13 @@ The container image is available on [Docker Hub](https://hub.docker.com/r/lucasg
 With the tag _\*-playground_ you get a bundled image with the web playground.
 
 ```bash
-docker pull lucasgaitzsch/pdf-turtle:latest-playground
+docker pull lucasgaitzsch/pdf-turtle
 
 docker run -d \
     -p 8000:8000 \
     --name pdf-turtle \
     --restart unless-stopped \
-    lucasgaitzsch/pdf-turtle:latest-playground
+    lucasgaitzsch/pdf-turtle
 ```
 
 Included fonts:
