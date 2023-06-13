@@ -27,9 +27,15 @@ func NewChromiumBrowser(ctx context.Context) (context.Context, context.CancelFun
 		chromedp.Flag("headless", true),
 		chromedp.Flag("hide-scrollbars", true),
 		chromedp.Flag("mute-audio", true),
-		chromedp.Flag("no-sandbox", config.Get(ctx).NoSandbox),
 	)
 
+	if (config.Get(ctx).NoSandbox) {
+		opts = append(
+			opts,
+			chromedp.Flag("no-sandbox", true),
+		)
+	}
+	
 	allocCtx, cancelAllocCtx := chromedp.NewExecAllocator(ctx, opts...)
 
 	cctx, cancelCctx := chromedp.NewContext(allocCtx)
