@@ -3,7 +3,7 @@ package utils
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -69,7 +69,7 @@ func (c *HttpClientMock) Do(req *http.Request) (*http.Response, error) {
 	c.RequestedResources = append(c.RequestedResources, req.URL.String())
 
     return &http.Response{
-		Body: ioutil.NopCloser(bytes.NewReader([]byte("foo"))),
+		Body: io.NopCloser(bytes.NewReader([]byte("foo"))),
 	}, nil
 }
 
