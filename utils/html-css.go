@@ -3,7 +3,7 @@ package utils
 import (
 	"context"
 	"encoding/base64"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"regexp"
 	"strings"
@@ -42,7 +42,7 @@ func MergeCss(css ...*string) *string {
 	return &mergedCss
 }
 
-var urlReferenceRegex = regexp.MustCompile(` (src|href)="([^"]+)"`)
+var urlReferenceRegex = regexp.MustCompile(`( src="| href="|src: *url\(")([^"]+)("\)|")`)
 
 type HttpClientExecuter interface {
     Do(req *http.Request) (*http.Response, error)
@@ -65,8 +65,9 @@ func RequestAndInlineAllHtmlResources(ctx context.Context, htmlPtr *string, base
 func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string, baseUrl string, logger *zerolog.Logger) string {
 
 	groups := urlReferenceRegex.FindAllStringSubmatch(htmlAttribute, 2)
-	attribute := groups[0][1]
+	prefix := groups[0][1]
 	src := groups[0][2]
+	suffix := groups[0][3]
 
 	if baseUrl != "" && !strings.HasPrefix(src, "http") {
 		src = baseUrl + src
@@ -90,7 +91,7 @@ func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string,
 	}
 	defer response.Body.Close()
 
-	bytes, err := ioutil.ReadAll(response.Body)
+	bytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		logger.Info().Str("resourceUrl", src).Err(err).Msg("cant fetch resource: cant read from response body")
 		return htmlAttribute
@@ -101,5 +102,12 @@ func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string,
 	mimeType := http.DetectContentType(bytes)
 	base64 := base64.StdEncoding.EncodeToString(bytes)
 
-	return " " + attribute + "=\"data:" + mimeType + ";base64," + base64 + "\""
+	isCssSrcUrl := strings.HasSuffix(prefix, `url("`)
+	
+	if (isCssSrcUrl) {
+		prefix = strings.TrimRight(prefix,`"`)
+		suffix = strings.TrimLeft(suffix,`"`)
+	}
+
+	return prefix + "data:" + mimeType + ";base64," + base64 + suffix
 }

@@ -74,7 +74,7 @@ func (c *HttpClientMock) Do(req *http.Request) (*http.Response, error) {
 }
 
 func TestRequestAndInlineAllHtmlResources(t *testing.T) {
-	inputHtml := "<body>Hello World <img src=\"http://my-image.org/test1.png\"/> <img src=\"test2.png\"/> </body>"
+	inputHtml := "<head><style>@font-face{ src:  url(\"http://my-font.org/font.eot\"); }</style></head> <body>Hello World <img src=\"http://my-image.org/test1.png\"/> <img src=\"test2.png\"/> </body>"
 	
 	httpClientMock := &HttpClientMock{}
 	ctx := context.WithValue(context.Background(), "httpClient", httpClientMock)
@@ -85,15 +85,19 @@ func TestRequestAndInlineAllHtmlResources(t *testing.T) {
 		t.Fatal("Result should not be nil")
 	}
 
-	if httpClientMock.RequestedResources[0] != "http://my-image.org/test1.png" {
+	if httpClientMock.RequestedResources[0] != "http://my-font.org/font.eot" {
+		t.Fatal("Font was not requested")
+	}
+
+	if httpClientMock.RequestedResources[1] != "http://my-image.org/test1.png" {
 		t.Fatal("First image was not requested")
 	}
 
-	if httpClientMock.RequestedResources[1] != "http://localhost:1234/test2.png" {
+	if httpClientMock.RequestedResources[2] != "http://localhost:1234/test2.png" {
 		t.Fatal("Second image was not requested")
 	}
 
-	expectedHtml := "<body>Hello World <img src=\"data:text/plain; charset=utf-8;base64,Zm9v\"/> <img src=\"data:text/plain; charset=utf-8;base64,Zm9v\"/> </body>"
+	expectedHtml := "<head><style>@font-face{ src:  url(data:text/plain; charset=utf-8;base64,Zm9v); }</style></head> <body>Hello World <img src=\"data:text/plain; charset=utf-8;base64,Zm9v\"/> <img src=\"data:text/plain; charset=utf-8;base64,Zm9v\"/> </body>"
 
 	if *outputPtr != expectedHtml {
 		t.Fatalf("Result was not expected: %s != %s", *outputPtr, expectedHtml)
