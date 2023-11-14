@@ -1,4 +1,4 @@
-FROM golang as build-service
+FROM golang:bullseye as build-service
 WORKDIR /build
 COPY . .
 RUN go build -o pdf-turtle
