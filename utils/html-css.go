@@ -42,7 +42,7 @@ func MergeCss(css ...*string) *string {
 	return &mergedCss
 }
 
-var urlReferenceRegex = regexp.MustCompile(`( src="| href="|src: *url\(")([^"]+)("\)|")`)
+var urlReferenceRegex = regexp.MustCompile(`(\ssrc="|\shref="|src:\s*(local\(.*\),)?\s*url\(["'])([^"']+)(["']\)|")`)
 
 type HttpClientExecuter interface {
     Do(req *http.Request) (*http.Response, error)
@@ -64,10 +64,10 @@ func RequestAndInlineAllHtmlResources(ctx context.Context, htmlPtr *string, base
 
 func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string, baseUrl string, logger *zerolog.Logger) string {
 
-	groups := urlReferenceRegex.FindAllStringSubmatch(htmlAttribute, 2)
+	groups := urlReferenceRegex.FindAllStringSubmatch(htmlAttribute, 4)
 	prefix := groups[0][1]
-	src := groups[0][2]
-	suffix := groups[0][3]
+	src := groups[0][3]
+	suffix := groups[0][4]
 
 	if baseUrl != "" && !strings.HasPrefix(src, "http") {
 		src = baseUrl + src

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"regexp"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/renderer/headlesschromium"
@@ -18,8 +17,6 @@ import (
 
 const magicHeaderFooterScaleFactor = 0.75
 const magicBodyPaddingInInches = 0.004
-
-var urlReferenceRegex = regexp.MustCompile(`(src|href)="(.+)"`)
 
 type HtmlToPdfRendererChromium struct {
 	ChromiumCtx          context.Context
