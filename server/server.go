@@ -53,7 +53,7 @@ func (s *Server) Serve(ctx context.Context) {
 			AllowOrigins: "*",
 			AllowHeaders:  "*",
 			AllowMethods: strings.Join([]string{http.MethodGet, http.MethodPost}, ","),
-			AllowCredentials: true,
+			AllowCredentials: false,
 		}),
 		recover.New(),
 		serverutils.ProvideUserCtxMiddleware(ctx),
