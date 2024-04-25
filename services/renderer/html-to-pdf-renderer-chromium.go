@@ -15,7 +15,6 @@ import (
 
 // TODO:! Testen was passiert, wenn chromium prozess beendet wurde
 
-const magicHeaderFooterScaleFactor = 0.75
 const magicBodyPaddingInInches = 0.004
 
 type HtmlToPdfRendererChromium struct {
@@ -113,27 +112,20 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 				headerFooterWidth = data.RenderOptions.PageSize.Height
 			}
 
-			scaledHeaderFooterWidth := float64(headerFooterWidth) * magicHeaderFooterScaleFactor
-
-			scaledHeaderHeight := float64(margins.Top) * magicHeaderFooterScaleFactor
-			scaledFooterHeight := float64(margins.Bottom) * magicHeaderFooterScaleFactor
-
 			headerFooterAppendCss := fmt.Sprintf(`
 				#header, #footer {
 					box-sizing: border-box;
 					padding: 0 !important;
 					margin:  0 !important;
 					
-					width: %fmm !important;
-					height: %fmm !important;
+					width: %dmm !important;
+					height: %dmm !important;
 				}
 				#footer {
-					height: %fmm !important;				
+					height: %dmm !important;				
 				}
 				#header > div, #footer > div {
 					box-sizing: border-box;
-					transform: scale(%f);
-					transform-origin: top left;
 
 					padding-left: %dmm !important;
 					padding-right: %dmm !important;
@@ -150,10 +142,9 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 					max-height: %dmm;
 				}
 			`,
-				scaledHeaderFooterWidth,
-				scaledHeaderHeight,
-				scaledFooterHeight,
-				magicHeaderFooterScaleFactor,
+				headerFooterWidth,
+				margins.Top,
+				margins.Bottom,
 				margins.Left,
 				margins.Right,
 				headerFooterWidth,
