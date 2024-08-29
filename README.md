@@ -159,21 +159,21 @@ You can import the swagger file to test the service with Postman or an alternati
 
 ### Included template functions
 
-| Function name    | Parameters       | Description                            |
-| ---------------- | ---------------- | -------------------------------------- |
-| **marshal**      | object           | Encodes provided object as JSON string |
-| **barcodeQr**    | content          | Renders a SVG QR code from content     |
-| **barcodeEan**   | content          | Renders a SVG EAN code from content    |
-| **StrContains**  | haystack, needle | Renders a SVG EAN code from content    |
-| **strHasPrefix** | haystack, needle | Renders a SVG EAN code from content    |
-| **strHasSuffix** | haystack, needle | Renders a SVG EAN code from content    |
-| **add**          | float64, float64 | Adds two float64 numbers               |
-| **subtract**     | float64, float64 | Subtracts two float64 numbers          |
-| **multiply**     | float64, float64 | Multiplies two float64 numbers         |
-| **divide**       | float64, float64 | Divides two float64 numbers            |
-| **float64ToInt** | float64          | Convert a int to float64               |
-| **intToFloat64** | int              | Convert a float64 to int               |
-| **bitwiseAnd**   | int, int         | a \& b                                 |
+| Function name    | Parameters       | Description                                  |
+| ---------------- | ---------------- | -------------------------------------------- |
+| **marshal**      | object           | Encodes provided object as JSON string       |
+| **barcodeQr**    | content          | Renders a SVG QR code from content           |
+| **barcodeEan**   | content          | Renders a SVG EAN code from content          |
+| **strContains**  | haystack, needle | Does the haystack contains the needle        |
+| **strHasPrefix** | haystack, needle | Does the first string starts with the second |
+| **strHasSuffix** | haystack, needle | Does the first string end with the second    |
+| **add**          | float64, float64 | Adds two float64 numbers                     |
+| **subtract**     | float64, float64 | Subtracts two float64 numbers                |
+| **multiply**     | float64, float64 | Multiplies two float64 numbers               |
+| **divide**       | float64, float64 | Divides two float64 numbers                  |
+| **float64ToInt** | float64          | Convert a int to float64                     |
+| **intToFloat64** | int              | Convert a float64 to int                     |
+| **bitwiseAnd**   | int, int         | a \& b                                       |
 
 ## Development / Build from source
 
