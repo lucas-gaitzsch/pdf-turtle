@@ -1,10 +1,10 @@
-FROM golang:bullseye as build-service
+FROM golang:bullseye AS build-service
 WORKDIR /build
 COPY . .
 RUN go build -o pdf-turtle
 
 
-FROM chromedp/headless-shell:stable as runtime
+FROM chromedp/headless-shell:stable AS runtime
 RUN apt-get -y update
 RUN apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-color-emoji
 RUN apt-get clean
