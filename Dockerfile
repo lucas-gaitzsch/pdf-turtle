@@ -21,12 +21,12 @@ RUN apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-c
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 
-ENV LANG en-US.UTF-8
-ENV LOG_LEVEL_DEBUG false
-ENV LOG_JSON_OUTPUT false
-ENV WORKER_INSTANCES 40
-ENV PORT 8000
-ENV SERVE_PLAYGROUND true
+ENV LANG=en-US.UTF-8
+ENV LOG_LEVEL_DEBUG=false
+ENV LOG_JSON_OUTPUT=false
+ENV WORKER_INSTANCES=40
+ENV PORT=8000
+ENV SERVE_PLAYGROUND=true
 
 EXPOSE ${PORT}
 
