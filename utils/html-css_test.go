@@ -20,7 +20,7 @@ func TestAppendStyleToHtml(t *testing.T) {
 
 	output := *outputPtr
 
-	if !strings.HasSuffix(output, "<style>" + css + "</style>") {
+	if !strings.HasSuffix(output, "<style>"+css+"</style>") {
 		t.Fatal("Result should have appended css")
 	}
 	if !strings.HasPrefix(output, inputHtml) {
@@ -38,7 +38,7 @@ func TestAppendStyleToHtmlReturnsEmptyWithNilInput(t *testing.T) {
 		t.Fatal("Result should not be nil")
 	}
 
-	if (*outputPtr != emptyString) {
+	if *outputPtr != emptyString {
 		t.Fatal("Result should be empty")
 	}
 }
@@ -48,8 +48,7 @@ func TestMergeCss(t *testing.T) {
 	css2 := ".test2 { color: blue; }"
 	css3 := ".test3 { color: green; }"
 
-	expectedMergedCss := css1+css2+css3
-
+	expectedMergedCss := css1 + css2 + css3
 
 	outputPtr := MergeCss(&css1, &css2, &css3)
 
@@ -65,17 +64,18 @@ func TestMergeCss(t *testing.T) {
 type HttpClientMock struct {
 	RequestedResources []string
 }
+
 func (c *HttpClientMock) Do(req *http.Request) (*http.Response, error) {
 	c.RequestedResources = append(c.RequestedResources, req.URL.String())
 
-    return &http.Response{
+	return &http.Response{
 		Body: io.NopCloser(bytes.NewReader([]byte("foo"))),
 	}, nil
 }
 
 func TestRequestAndInlineAllHtmlResources(t *testing.T) {
 	inputHtml := "<head><style>@font-face{ src:  url(\"http://my-font.org/font.eot\"); }</style></head> <body>Hello World <img src=\"http://my-image.org/test1.png\"/> <img src=\"test2.png\"/> </body>"
-	
+
 	httpClientMock := &HttpClientMock{}
 	ctx := context.WithValue(context.Background(), "httpClient", httpClientMock)
 

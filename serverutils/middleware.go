@@ -25,11 +25,11 @@ func ProvideUserCtxMiddleware(ctx context.Context) func(c *fiber.Ctx) error {
 		if requestCtx != nil {
 			go func() {
 				select {
-					case <-	requestCtx.Done():
-						cancel()
-						return
-					case <-combinedCtx.Done():
-						return
+				case <-requestCtx.Done():
+					cancel()
+					return
+				case <-combinedCtx.Done():
+					return
 				}
 			}()
 		}
@@ -88,7 +88,7 @@ func RecoverMiddleware() func(c *fiber.Ctx) error {
 				logRequestErr(c, rec)
 			}
 		}()
-		
+
 		err := c.Next()
 
 		if err != nil {

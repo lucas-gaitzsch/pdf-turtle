@@ -45,7 +45,7 @@ func MergeCss(css ...*string) *string {
 var urlReferenceRegex = regexp.MustCompile(`(\ssrc="|\shref="|src:\s*(local\(.*\),)?\s*url\(["'])([^"']+)(["']\)|")`)
 
 type HttpClientExecuter interface {
-    Do(req *http.Request) (*http.Response, error)
+	Do(req *http.Request) (*http.Response, error)
 }
 
 func RequestAndInlineAllHtmlResources(ctx context.Context, htmlPtr *string, baseUrl string) *string {
@@ -103,10 +103,10 @@ func requestAndReturnBase64IfPossible(ctx context.Context, htmlAttribute string,
 	base64 := base64.StdEncoding.EncodeToString(bytes)
 
 	isCssSrcUrl := strings.HasSuffix(prefix, `url("`)
-	
-	if (isCssSrcUrl) {
-		prefix = strings.TrimRight(prefix,`"`)
-		suffix = strings.TrimLeft(suffix,`"`)
+
+	if isCssSrcUrl {
+		prefix = strings.TrimRight(prefix, `"`)
+		suffix = strings.TrimLeft(suffix, `"`)
 	}
 
 	return prefix + "data:" + mimeType + ";base64," + base64 + suffix

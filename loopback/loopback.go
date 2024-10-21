@@ -30,13 +30,13 @@ func (s *Server) Serve(ctx context.Context) {
 		WriteTimeout: 1 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		IdleTimeout:  5 * time.Second,
-    })
+	})
 
 	app.Use(
 		recover.New(),
 		serverutils.ProvideUserCtxMiddleware(ctx),
 	)
-	
+
 	conf := config.Get(ctx)
 
 	servingAddr := fmt.Sprintf("127.0.0.1:%d", conf.LoopbackPort)
@@ -75,7 +75,7 @@ func GetBundleFileHandler(c *fiber.Ctx) error {
 
 	ctx := c.UserContext()
 
-	bundleIdFromRoute :=  c.Params(bundleIdKey)
+	bundleIdFromRoute := c.Params(bundleIdKey)
 
 	urlPathPrefix := BundlePath + "/" + bundleIdFromRoute + "/"
 
@@ -108,7 +108,6 @@ func GetBundleFileHandler(c *fiber.Ctx) error {
 			Error().
 			Msg("cant find bundle")
 
-
 		return c.SendStatus(http.StatusNotFound)
 	}
 
@@ -124,11 +123,10 @@ func GetBundleFileHandler(c *fiber.Ctx) error {
 			Err(err).
 			Msg("cant get file")
 
-
 		return c.SendStatus(http.StatusInternalServerError)
 	}
 	defer fileReader.Close()
 
-    c.Set(fiber.HeaderContentType, mimeType)
+	c.Set(fiber.HeaderContentType, mimeType)
 	return c.SendStream(fileReader)
 }

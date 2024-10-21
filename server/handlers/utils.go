@@ -11,8 +11,8 @@ import (
 )
 
 func writePdf(c *fiber.Ctx, data io.Reader) error {
-	ctx:=c.UserContext()
-	
+	ctx := c.UserContext()
+
 	if data == nil {
 		log.Ctx(ctx).Info().Msg("nothing to writeout: pdf data empty")
 		return c.SendStatus(http.StatusNoContent)
