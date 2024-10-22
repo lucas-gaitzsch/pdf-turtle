@@ -1,2 +1,7 @@
 coverage:
   range: 10..100
+
+# ignore:
+#   - "/loopback"
+#   - "/server"
+#   - "/main.go"
