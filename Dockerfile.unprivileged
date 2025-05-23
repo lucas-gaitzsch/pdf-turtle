@@ -11,15 +11,16 @@ RUN npm install
 RUN npm run build
 
 
-FROM chromedp/headless-shell:latest AS runtime
+FROM chromedp/headless-shell:136.0.7103.93 AS runtime
 WORKDIR /app
 COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
 COPY --from=build-playground /app/dist /app/static-files/extern/playground
 
-RUN apt-get -y update
-RUN apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-color-emoji
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/*
+RUN apt-get -y update && \
+    apt-get -y upgrade && \
+    apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-color-emoji && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV LANG=en-US.UTF-8
 ENV LOG_LEVEL_DEBUG=false
@@ -32,6 +33,6 @@ ENV NO_SANDBOX=true
 EXPOSE ${PORT}
 
 RUN useradd -u 64198 app
-USER app
+USER 64198
 
 ENTRYPOINT ["/app/pdf-turtle"]

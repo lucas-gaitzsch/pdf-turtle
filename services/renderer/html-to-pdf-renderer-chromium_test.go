@@ -6,8 +6,10 @@ import (
 	"io"
 	"testing"
 
+	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/templating/templateengines"
+	"github.com/lucas-gaitzsch/pdf-turtle/utils"
 	"github.com/lucas-gaitzsch/pdf-turtle/utils/logging"
 )
 
@@ -15,8 +17,10 @@ func TestRenderHtmlAsPdf(t *testing.T) {
 	logging.InitTestLogger(t)
 	defer logging.SetNullLogger()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctxCancel, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	ctx := getContextWithTestConfig(ctxCancel)
 
 	html := "<b>test"
 	renderer := NewAsyncHtmlRendererChromium(ctx)
@@ -46,8 +50,10 @@ func TestRenderHtmlAsPdfWithNilPointerBody(t *testing.T) {
 	logging.InitTestLogger(t)
 	defer logging.SetNullLogger()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctxCancel, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	ctx := getContextWithTestConfig(ctxCancel)
 
 	renderer := NewAsyncHtmlRendererChromium(ctx)
 	defer renderer.Close()
@@ -71,8 +77,10 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 	logging.InitTestLogger(t)
 	defer logging.SetNullLogger()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctxCancel, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	ctx := getContextWithTestConfig(ctxCancel)
 
 	data := generateRange(10_000)
 	template := `
@@ -115,6 +123,14 @@ func TestRenderHugeHtmlAsPdf(t *testing.T) {
 	if len(b) == 0 || err != nil {
 		t.Fatalf("RenderHtmlAsPdf result empty; err: %v", err)
 	}
+}
+
+func getContextWithTestConfig(parentCtx context.Context) context.Context  {	
+	c := &config.Config{}
+	utils.ReflectDefaultValues(c)
+	c.NoSandbox = true
+
+	return config.ContextWithConfig(parentCtx, *c)
 }
 
 func generateRange(until int) []int {
