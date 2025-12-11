@@ -14,7 +14,7 @@ require (
 	github.com/chromedp/chromedp v0.13.6
 	github.com/flosch/pongo2/v5 v5.0.0
 	github.com/flosch/pongo2/v6 v6.0.0
-	github.com/gofiber/fiber/v2 v2.52.9
+	github.com/gofiber/fiber/v2 v2.52.10
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
 	github.com/swaggo/fiber-swagger v1.3.0
