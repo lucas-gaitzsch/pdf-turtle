@@ -2,7 +2,7 @@ module github.com/lucas-gaitzsch/pdf-turtle
 
 go 1.24
 
-toolchain go1.24.2
+toolchain go1.25.5
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.3
