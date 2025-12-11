@@ -1,6 +1,6 @@
 module github.com/lucas-gaitzsch/pdf-turtle
 
-go 1.24
+go 1.24.0
 
 toolchain go1.24.2
 
@@ -18,7 +18,7 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/swaggo/fiber-swagger v1.3.0
 	github.com/swaggo/swag v1.16.4
-	golang.org/x/net v0.40.0
+	golang.org/x/net v0.48.0
 )
 
 require (
@@ -45,7 +45,7 @@ require (
 	github.com/swaggo/files v1.0.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.62.0 // indirect
-	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/tools v0.33.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
