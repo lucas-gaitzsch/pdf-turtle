@@ -8,7 +8,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - uses: browser-actions/setup-chrome@latest
       - uses: actions/setup-go@v6
         with:
@@ -36,7 +36,7 @@ jobs:
       - name: Set version to env
         run: |
           echo "VERSION=$(date +'%Y.%-m.%-d.%-H%M')" >> $GITHUB_ENV
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       # - run: git submodule update --init
