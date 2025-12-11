@@ -10,8 +10,8 @@ require (
 	github.com/alexflint/go-arg v1.6.0
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/boombuler/barcode v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20250521201632-aadd49e0822c
-	github.com/chromedp/chromedp v0.13.6
+	github.com/chromedp/cdproto v0.0.0-20250724212937-08a3db8b4327
+	github.com/chromedp/chromedp v0.14.2
 	github.com/flosch/pongo2/v5 v5.0.0
 	github.com/flosch/pongo2/v6 v6.0.0
 	github.com/gofiber/fiber/v2 v2.52.10
@@ -28,7 +28,7 @@ require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
-	github.com/go-json-experiment/json v0.0.0-20250517221953-25912455fbc8 // indirect
+	github.com/go-json-experiment/json v0.0.0-20250725192818-e39067aee2d2 // indirect
 	github.com/go-openapi/jsonpointer v0.21.1 // indirect
 	github.com/go-openapi/jsonreference v0.21.0 // indirect
 	github.com/go-openapi/spec v0.21.0 // indirect
