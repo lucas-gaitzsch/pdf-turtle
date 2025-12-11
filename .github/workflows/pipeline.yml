@@ -23,7 +23,7 @@ jobs:
       #- run: go test -timeout 120s ./...
       - run: go test -race -coverprofile=coverage.out -covermode=atomic -timeout 120s ./...
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
 
   publish-container:
     runs-on: ubuntu-latest
