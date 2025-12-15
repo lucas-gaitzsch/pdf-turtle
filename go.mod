@@ -12,7 +12,7 @@ require (
 	github.com/boombuler/barcode v1.1.0
 	github.com/chromedp/cdproto v0.0.0-20250724212937-08a3db8b4327
 	github.com/chromedp/chromedp v0.14.2
-	github.com/flosch/pongo2/v5 v5.0.0
+	github.com/flosch/pongo2/v6 v6.0.0
 	github.com/flosch/pongo2/v6 v6.0.0
 	github.com/gofiber/fiber/v2 v2.52.10
 	github.com/google/uuid v1.6.0
