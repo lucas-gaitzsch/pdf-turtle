@@ -16,6 +16,8 @@ github.com/alexflint/go-arg v1.5.1 h1:nBuWUCpuRy0snAG+uIJ6N0UvYxpxA0/ghA/AaHxlT8
 github.com/alexflint/go-arg v1.5.1/go.mod h1:A7vTJzvjoaSTypg4biM5uYNTkJ27SkNTArtYXnlqVO8=
 github.com/alexflint/go-arg v1.6.0 h1:wPP9TwTPO54fUVQl4nZoxbFfKCcy5E6HBCumj1XVRSo=
 github.com/alexflint/go-arg v1.6.0/go.mod h1:A7vTJzvjoaSTypg4biM5uYNTkJ27SkNTArtYXnlqVO8=
+github.com/alexflint/go-arg v1.6.1 h1:uZogJ6VDBjcuosydKgvYYRhh9sRCusjOvoOLZopBlnA=
+github.com/alexflint/go-arg v1.6.1/go.mod h1:nQ0LFYftLJ6njcaee0sU+G0iS2+2XJQfA8I062D0LGc=
 github.com/alexflint/go-scalar v1.2.0 h1:WR7JPKkeNpnYIOfHRa7ivM21aWAdHD0gEWHCx+WQBRw=
 github.com/alexflint/go-scalar v1.2.0/go.mod h1:LoFvNMqS1CPrMVltza4LvnGKhaSpc3oyLEBUZVhhS2o=
 github.com/andybalholm/brotli v1.0.4/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
