@@ -151,6 +151,32 @@
                 }
             }
         },
+        "/api/pdf/from/url/render": {
+            "get": {
+                "description": "Returns PDF file generated from HTML fetched from URL",
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render URL"
+                ],
+                "summary": "Render PDF from URL",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "URL to fetch HTML from",
+                        "name": "url",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "consumes": [

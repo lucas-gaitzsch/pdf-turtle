@@ -92,6 +92,15 @@ func (s *Server) Serve(ctx context.Context) {
 	api.Post("/pdf/from/html-bundle/render", handlers.RenderBundleHandler).
 		Name("Render PDF from HTML-Bundle")
 
+	if conf.EnableUrlRender {
+		log.
+			Info().
+			Str("url", localUrl).
+			Msg("serving url render endpoint")
+		api.Get("/pdf/from/url/render", handlers.RenderPdfFromUrlHandler).
+			Name("Render PDF from URL")
+	}
+
 	// Swagger
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 

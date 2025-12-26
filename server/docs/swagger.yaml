@@ -217,6 +217,23 @@ paths:
       summary: Render PDF from HTML
       tags:
       - Render HTML
+  /api/pdf/from/url/render:
+    get:
+      description: Returns PDF file generated from HTML fetched from URL
+      parameters:
+      - description: URL to fetch HTML from
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: Render PDF from URL
+      tags:
+      - Render URL
   /health:
     get:
       consumes:
