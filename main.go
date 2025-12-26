@@ -24,6 +24,10 @@ func initConfigByArgs(ctx context.Context) context.Context {
 	var c config.Config
 	arg.MustParse(&c)
 
+	if err := c.Validate(); err != nil {
+		log.Fatal().Err(err).Msg("invalid configuration")
+	}
+
 	return config.ContextWithConfig(ctx, c)
 }
 
