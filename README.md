@@ -67,6 +67,7 @@ Included fonts:
 | --maxBodySize         | MAX_BODY_SIZE        | integer | 32      | Max body size in megabyte                               |
 | --servePlayground     | SERVE_PLAYGROUND     | boolean | false   | Serve playground from path "./static-files/playground/" |
 | --secret              | SECRET               | string  | ""      | Secret used as bearer token                             |
+| --enableUrlRender     | ENABLE_URL_RENDER    | boolean | false   | Enable URL rendering endpoint                           |
 
 ## 🚀 How to use
 
