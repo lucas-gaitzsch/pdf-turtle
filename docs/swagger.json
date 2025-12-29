@@ -1,0 +1,350 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/pdf/from/html-bundle/render": {
+            "post": {
+                "description": "Returns PDF file generated from bundle (Zip-File) of HTML or HTML template of body, header, footer and assets. The index.html file in the Zip-Bundle is required",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render HTML-Bundle"
+                ],
+                "summary": "Render PDF from bundle including HTML(-Template) with model and assets provided in form-data (keys: bundle, model)",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Bundle Zip-File",
+                        "name": "bundle",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "JSON-Model for template (only required for template)",
+                        "name": "model",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Template engine to use for template (only required for template)",
+                        "name": "templateEngine",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
+        "/api/pdf/from/html-template/render": {
+            "post": {
+                "description": "Returns PDF file generated from HTML template plus model of body, header and footer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render HTML-Template"
+                ],
+                "summary": "Render PDF from HTML template",
+                "parameters": [
+                    {
+                        "description": "Render Data",
+                        "name": "renderTemplateData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RenderTemplateData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
+        "/api/pdf/from/html-template/test": {
+            "post": {
+                "description": "Returns information about matching model data to template",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Render HTML-Template"
+                ],
+                "summary": "Test HTML template matching model",
+                "parameters": [
+                    {
+                        "description": "Render Data",
+                        "name": "renderTemplateData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RenderTemplateData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TemplateTestResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/pdf/from/html/render": {
+            "post": {
+                "description": "Returns PDF file generated from HTML of body, header and footer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render HTML"
+                ],
+                "summary": "Render PDF from HTML",
+                "parameters": [
+                    {
+                        "description": "Render Data",
+                        "name": "renderData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RenderData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
+        "/api/pdf/from/url/render": {
+            "get": {
+                "description": "Returns PDF file generated from HTML fetched from URL",
+                "consumes": [
+                    "text/plain"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render URL"
+                ],
+                "summary": "Render PDF from URL",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "URL to fetch HTML from",
+                        "name": "url",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "Internals"
+                ],
+                "summary": "Liveness probe for this service",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "PageSize": {
+            "type": "object",
+            "properties": {
+                "height": {
+                    "description": "in mm",
+                    "type": "integer",
+                    "example": 297
+                },
+                "width": {
+                    "description": "in mm",
+                    "type": "integer",
+                    "example": 210
+                }
+            }
+        },
+        "RenderData": {
+            "type": "object",
+            "properties": {
+                "footerHtml": {
+                    "description": "Optional html for footer. If empty, the footer html will be parsed from main html (\u003cPdfFooter\u003e\u003c/PdfFooter\u003e).",
+                    "type": "string",
+                    "default": "\u003cdiv class=\"default-footer\"\u003e\u003cdiv\u003e\u003cspan class=\"pageNumber\"\u003e\u003c/span\u003e of \u003cspan class=\"totalPages\"\u003e\u003c/span\u003e\u003c/div\u003e\u003c/div\u003e"
+                },
+                "headerHtml": {
+                    "description": "Optional html for header. If empty, the header html will be parsed from main html (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
+                    "type": "string",
+                    "example": "\u003ch1\u003eHeading\u003c/h1\u003e"
+                },
+                "html": {
+                    "type": "string",
+                    "example": "\u003cb\u003eHello World\u003c/b\u003e"
+                },
+                "options": {
+                    "$ref": "#/definitions/RenderOptions"
+                }
+            }
+        },
+        "RenderOptions": {
+            "type": "object",
+            "properties": {
+                "excludeBuiltinStyles": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "landscape": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "margins": {
+                    "description": "margins in mm; fallback to default if null",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/RenderOptionsMargins"
+                        }
+                    ]
+                },
+                "pageFormat": {
+                    "type": "string",
+                    "default": "A4",
+                    "enum": [
+                        "A0",
+                        "A1",
+                        "A2",
+                        "A3",
+                        "A4",
+                        "A5",
+                        "A6",
+                        "Letter",
+                        "Legal"
+                    ]
+                },
+                "pageSize": {
+                    "description": "page size in mm; overrides page format",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PageSize"
+                        }
+                    ]
+                }
+            }
+        },
+        "RenderOptionsMargins": {
+            "type": "object",
+            "properties": {
+                "bottom": {
+                    "description": "margin bottom in mm",
+                    "type": "integer",
+                    "default": 20
+                },
+                "left": {
+                    "description": "margin left in mm",
+                    "type": "integer",
+                    "default": 25
+                },
+                "right": {
+                    "description": "margin right in mm",
+                    "type": "integer",
+                    "default": 25
+                },
+                "top": {
+                    "description": "margin top in mm",
+                    "type": "integer",
+                    "default": 25
+                }
+            }
+        },
+        "RenderTemplateData": {
+            "type": "object",
+            "properties": {
+                "footerHtmlTemplate": {
+                    "description": "Optional template for footer. If empty, the footer template will be parsed from main template (\u003cPdfFooter\u003e\u003c/PdfFooter\u003e).",
+                    "type": "string"
+                },
+                "headerHtmlTemplate": {
+                    "description": "Optional template for header. If empty, the header template will be parsed from main template (\u003cPdfHeader\u003e\u003c/PdfHeader\u003e).",
+                    "type": "string"
+                },
+                "htmlTemplate": {
+                    "type": "string"
+                },
+                "model": {
+                    "description": "Model with your data matching to the templates",
+                    "type": "object"
+                },
+                "options": {
+                    "$ref": "#/definitions/RenderOptions"
+                },
+                "templateEngine": {
+                    "type": "string",
+                    "default": "golang",
+                    "enum": [
+                        "golang",
+                        "handlebars",
+                        "django"
+                    ]
+                }
+            }
+        },
+        "TemplateTestResult": {
+            "type": "object",
+            "properties": {
+                "bodyTemplateError": {
+                    "type": "string"
+                },
+                "footerTemplateError": {
+                    "type": "string"
+                },
+                "headerTemplateError": {
+                    "type": "string"
+                },
+                "isValid": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}

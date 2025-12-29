@@ -1,0 +1,244 @@
+definitions:
+  PageSize:
+    properties:
+      height:
+        description: in mm
+        example: 297
+        type: integer
+      width:
+        description: in mm
+        example: 210
+        type: integer
+    type: object
+  RenderData:
+    properties:
+      footerHtml:
+        default: <div class="default-footer"><div><span class="pageNumber"></span>
+          of <span class="totalPages"></span></div></div>
+        description: Optional html for footer. If empty, the footer html will be parsed
+          from main html (<PdfFooter></PdfFooter>).
+        type: string
+      headerHtml:
+        description: Optional html for header. If empty, the header html will be parsed
+          from main html (<PdfHeader></PdfHeader>).
+        example: <h1>Heading</h1>
+        type: string
+      html:
+        example: <b>Hello World</b>
+        type: string
+      options:
+        $ref: '#/definitions/RenderOptions'
+    type: object
+  RenderOptions:
+    properties:
+      excludeBuiltinStyles:
+        default: false
+        type: boolean
+      landscape:
+        default: false
+        type: boolean
+      margins:
+        allOf:
+        - $ref: '#/definitions/RenderOptionsMargins'
+        description: margins in mm; fallback to default if null
+      pageFormat:
+        default: A4
+        enum:
+        - A0
+        - A1
+        - A2
+        - A3
+        - A4
+        - A5
+        - A6
+        - Letter
+        - Legal
+        type: string
+      pageSize:
+        allOf:
+        - $ref: '#/definitions/PageSize'
+        description: page size in mm; overrides page format
+    type: object
+  RenderOptionsMargins:
+    properties:
+      bottom:
+        default: 20
+        description: margin bottom in mm
+        type: integer
+      left:
+        default: 25
+        description: margin left in mm
+        type: integer
+      right:
+        default: 25
+        description: margin right in mm
+        type: integer
+      top:
+        default: 25
+        description: margin top in mm
+        type: integer
+    type: object
+  RenderTemplateData:
+    properties:
+      footerHtmlTemplate:
+        description: Optional template for footer. If empty, the footer template will
+          be parsed from main template (<PdfFooter></PdfFooter>).
+        type: string
+      headerHtmlTemplate:
+        description: Optional template for header. If empty, the header template will
+          be parsed from main template (<PdfHeader></PdfHeader>).
+        type: string
+      htmlTemplate:
+        type: string
+      model:
+        description: Model with your data matching to the templates
+        type: object
+      options:
+        $ref: '#/definitions/RenderOptions'
+      templateEngine:
+        default: golang
+        enum:
+        - golang
+        - handlebars
+        - django
+        type: string
+    type: object
+  TemplateTestResult:
+    properties:
+      bodyTemplateError:
+        type: string
+      footerTemplateError:
+        type: string
+      headerTemplateError:
+        type: string
+      isValid:
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /api/pdf/from/html-bundle/render:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Returns PDF file generated from bundle (Zip-File) of HTML or HTML
+        template of body, header, footer and assets. The index.html file in the Zip-Bundle
+        is required
+      parameters:
+      - description: Bundle Zip-File
+        in: formData
+        name: bundle
+        required: true
+        type: file
+      - description: JSON-Model for template (only required for template)
+        in: formData
+        name: model
+        type: string
+      - description: Template engine to use for template (only required for template)
+        in: formData
+        name: templateEngine
+        type: string
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: 'Render PDF from bundle including HTML(-Template) with model and assets
+        provided in form-data (keys: bundle, model)'
+      tags:
+      - Render HTML-Bundle
+  /api/pdf/from/html-template/render:
+    post:
+      consumes:
+      - application/json
+      description: Returns PDF file generated from HTML template plus model of body,
+        header and footer
+      parameters:
+      - description: Render Data
+        in: body
+        name: renderTemplateData
+        required: true
+        schema:
+          $ref: '#/definitions/RenderTemplateData'
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: Render PDF from HTML template
+      tags:
+      - Render HTML-Template
+  /api/pdf/from/html-template/test:
+    post:
+      consumes:
+      - application/json
+      description: Returns information about matching model data to template
+      parameters:
+      - description: Render Data
+        in: body
+        name: renderTemplateData
+        required: true
+        schema:
+          $ref: '#/definitions/RenderTemplateData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TemplateTestResult'
+      summary: Test HTML template matching model
+      tags:
+      - Render HTML-Template
+  /api/pdf/from/html/render:
+    post:
+      consumes:
+      - application/json
+      description: Returns PDF file generated from HTML of body, header and footer
+      parameters:
+      - description: Render Data
+        in: body
+        name: renderData
+        required: true
+        schema:
+          $ref: '#/definitions/RenderData'
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: Render PDF from HTML
+      tags:
+      - Render HTML
+  /api/pdf/from/url/render:
+    get:
+      consumes:
+      - text/plain
+      description: Returns PDF file generated from HTML fetched from URL
+      parameters:
+      - description: URL to fetch HTML from
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/pdf
+      responses:
+        "200":
+          description: PDF File
+      summary: Render PDF from URL
+      tags:
+      - Render URL
+  /health:
+    get:
+      consumes:
+      - multipart/form-data
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+      summary: Liveness probe for this service
+      tags:
+      - Internals
+swagger: "2.0"
