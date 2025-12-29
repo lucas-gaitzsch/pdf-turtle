@@ -6,9 +6,9 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
 )
@@ -33,7 +33,6 @@ func (b *bytesOpener) Open() (io.ReadCloser, error) {
 // @Router       /api/pdf/from/url/render [get]
 func RenderPdfFromUrlHandler(c *fiber.Ctx) error {
 	ctx := c.UserContext()
-	conf := config.Get(ctx)
 
 	urlParam := c.Query("url")
 	if urlParam == "" {
@@ -55,11 +54,8 @@ func RenderPdfFromUrlHandler(c *fiber.Ctx) error {
 	safeURL := parsedURL.String()
 
 	// Create HTTP client with optional proxy configuration
-	client := &http.Client{}
-	if proxyURL := conf.GetProxyUrl(); proxyURL != nil {
-		client.Transport = &http.Transport{
-			Proxy: http.ProxyURL(proxyURL),
-		}
+	client := &http.Client{
+		Timeout: 30 * time.Second,
 	}
 
 	resp, err := client.Get(safeURL)

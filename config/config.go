@@ -2,11 +2,8 @@ package config
 
 import (
 	"context"
-	"fmt"
-	"net/url"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/utils"
-
 	"github.com/rs/zerolog/log"
 )
 
@@ -28,25 +25,6 @@ type Config struct {
 	LoopbackPort int `arg:"env" default:"8001" help:"Loopback-Server port"`
 
 	EnableUrlRender bool   `arg:"--enableUrlRender,env:ENABLE_URL_RENDER" default:"false" help:"Enable URL render endpoint for fetching and rendering HTML from URLs"`
-	ProxyUrl        string `arg:"--proxyUrl,env:PROXY_URL" default:"" help:"HTTP proxy URL for outbound requests (e.g., http://proxy.example.com:8080)"`
-	proxyUrlParsed  *url.URL
-}
-
-// Validate validates the configuration and returns an error if invalid
-func (c *Config) Validate() error {
-	if c.ProxyUrl != "" {
-		proxyURL, err := url.Parse(c.ProxyUrl)
-		if err != nil {
-			return fmt.Errorf("invalid proxy url: %w", err)
-		}
-		c.proxyUrlParsed = proxyURL
-	}
-	return nil
-}
-
-// GetProxyUrl returns the parsed proxy URL if configured
-func (c *Config) GetProxyUrl() *url.URL {
-	return c.proxyUrlParsed
 }
 
 func ContextWithConfig(parentCtx context.Context, config Config) context.Context {
