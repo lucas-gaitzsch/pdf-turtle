@@ -38,7 +38,8 @@ definitions:
         default: false
         type: boolean
       margins:
-        $ref: '#/definitions/RenderOptionsMargins'
+        allOf:
+        - $ref: '#/definitions/RenderOptionsMargins'
         description: margins in mm; fallback to default if null
       pageFormat:
         default: A4
@@ -54,7 +55,8 @@ definitions:
         - Legal
         type: string
       pageSize:
-        $ref: '#/definitions/PageSize'
+        allOf:
+        - $ref: '#/definitions/PageSize'
         description: page size in mm; overrides page format
     type: object
   RenderOptionsMargins:
@@ -113,16 +115,7 @@ definitions:
         type: boolean
     type: object
 info:
-  contact:
-    email: lucas@gaitzsch.dev
-    name: Lucas Gaitzsch
-  description: A painless HTML to PDF rendering service. Generate PDF reports and
-    documents from HTML templates or raw HTML.
-  license:
-    name: AGPL-3.0
-    url: https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE
-  title: PdfTurtle API
-  version: "1.1"
+  contact: {}
 paths:
   /api/pdf/from/html-bundle/render:
     post:
@@ -219,6 +212,8 @@ paths:
       - Render HTML
   /api/pdf/from/url/render:
     get:
+      consumes:
+      - text/plain
       description: Returns PDF file generated from HTML fetched from URL
       parameters:
       - description: URL to fetch HTML from
@@ -242,7 +237,7 @@ paths:
       - text/plain
       responses:
         "200":
-          description: ""
+          description: OK
       summary: Liveness probe for this service
       tags:
       - Internals
