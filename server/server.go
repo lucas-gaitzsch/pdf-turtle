@@ -95,10 +95,14 @@ func (s *Server) Serve(ctx context.Context) {
 	if conf.EnableUrlRender {
 		log.
 			Info().
-			Str("url",  fmt.Sprintf("%s%s", localUrl, "/api/pdf/from/url/render")).
+			Str("url", fmt.Sprintf("%s%s", localUrl, "/api/pdf/from/url/render")).
 			Msg("serving url render endpoint")
 		api.Get("/pdf/from/url/render", handlers.RenderPdfFromUrlHandler).
 			Name("Render PDF from URL")
+	} else {
+		api.Get("/pdf/from/url/render", func(c *fiber.Ctx) error {
+			return fiber.NewError(fiber.StatusNotFound, "ender pdf from URL is disabled")
+		})
 	}
 
 	// Swagger
