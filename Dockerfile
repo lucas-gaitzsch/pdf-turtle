@@ -11,7 +11,7 @@ RUN npm install
 RUN npm run build
 
 
-FROM chromedp/headless-shell:145.0.7632.5 AS runtime
+FROM chromedp/headless-shell:146.0.7635.3 AS runtime
 WORKDIR /app
 COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
 COPY --from=build-playground /app/dist /app/static-files/extern/playground
