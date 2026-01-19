@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/utils"
-
 	"github.com/rs/zerolog/log"
 )
 
@@ -24,6 +23,8 @@ type Config struct {
 	PreloadedAssets []string `arg:"env" help:"Preload assets on startup. Example:'bar.js:https://foo.com/bar.js'"` //TODO:!
 
 	LoopbackPort int `arg:"env" default:"8001" help:"Loopback-Server port"`
+
+	EnableUrlRender bool   `arg:"--enableUrlRender,env:ENABLE_URL_RENDER" default:"false" help:"Enable URL render endpoint for fetching and rendering HTML from URLs"`
 }
 
 func ContextWithConfig(parentCtx context.Context, config Config) context.Context {

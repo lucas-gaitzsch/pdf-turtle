@@ -160,6 +160,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/pdf/from/url/render": {
+            "get": {
+                "description": "Returns PDF file generated from HTML fetched from URL",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "Render URL"
+                ],
+                "summary": "Render PDF from URL",
+                "parameters": [
+                    {
+                        "description": "URL Request",
+                        "name": "url",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PDF File"
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "consumes": [

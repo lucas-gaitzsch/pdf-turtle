@@ -1,17 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "A painless HTML to PDF rendering service. Generate PDF reports and documents from HTML templates or raw HTML.",
-        "title": "PdfTurtle API",
-        "contact": {
-            "name": "Lucas Gaitzsch",
-            "email": "lucas@gaitzsch.dev"
-        },
-        "license": {
-            "name": "AGPL-3.0",
-            "url": "https://github.com/lucas-gaitzsch/pdf-turtle/blob/main/LICENSE"
-        },
-        "version": "1.1"
+        "contact": {}
     },
     "paths": {
         "/api/pdf/from/html-bundle/render": {
@@ -154,6 +144,9 @@
         "/api/pdf/from/url/render": {
             "get": {
                 "description": "Returns PDF file generated from HTML fetched from URL",
+                "consumes": [
+                    "text/plain"
+                ],
                 "produces": [
                     "application/pdf"
                 ],
@@ -191,7 +184,7 @@
                 "summary": "Liveness probe for this service",
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "OK"
                     }
                 }
             }
@@ -248,7 +241,11 @@
                 },
                 "margins": {
                     "description": "margins in mm; fallback to default if null",
-                    "$ref": "#/definitions/RenderOptionsMargins"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/RenderOptionsMargins"
+                        }
+                    ]
                 },
                 "pageFormat": {
                     "type": "string",
@@ -267,7 +264,11 @@
                 },
                 "pageSize": {
                     "description": "page size in mm; overrides page format",
-                    "$ref": "#/definitions/PageSize"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/PageSize"
+                        }
+                    ]
                 }
             }
         },
