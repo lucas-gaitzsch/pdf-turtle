@@ -2,5 +2,31 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "branchConcurrentLimit": 0,
+  "packageRules": [
+    {
+      "description": "Delay major updates by 30 days",
+      "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "30 days",
+      "minimumReleaseAgeBehaviour": "timestamp-optional",
+      "internalChecksFilter": "strict"
+    },
+    {
+      "description": "Delay minor updates by 14 days",
+      "matchUpdateTypes": ["minor"],
+      "minimumReleaseAge": "14 days",
+      "minimumReleaseAgeBehaviour": "timestamp-optional",
+      "internalChecksFilter": "strict"
+    },
+    {
+      "description": "Delay patch updates by 2 days",
+      "matchUpdateTypes": ["patch"],
+      "minimumReleaseAge": "2 days",
+      "minimumReleaseAgeBehaviour": "timestamp-optional",
+      "internalChecksFilter": "strict"
+    }
   ]
 }
