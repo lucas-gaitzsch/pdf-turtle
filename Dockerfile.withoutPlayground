@@ -4,7 +4,7 @@ COPY . .
 RUN go build -o pdf-turtle
 
 
-FROM chromedp/headless-shell:146.0.7655.3 AS runtime
+FROM chromedp/headless-shell:146.0.7680.0 AS runtime
 RUN apt-get -y update && \
     apt-get -y upgrade && \
     apt-get -y install ca-certificates fonts-open-sans fonts-roboto fonts-noto-color-emoji && \
