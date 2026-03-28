@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
 
@@ -18,12 +18,12 @@ import (
 // @Param        renderTemplateData  body      models.RenderTemplateData  true  "Render Data"
 // @Success      200                 "PDF File"
 // @Router       /api/pdf/from/html-template/render [post]
-func RenderPdfFromHtmlFromTemplateHandler(c *fiber.Ctx) error {
-	ctx := c.UserContext()
+func RenderPdfFromHtmlFromTemplateHandler(c fiber.Ctx) error {
+	ctx := c.Context()
 
 	templateData := &models.RenderTemplateData{}
 
-	err := c.BodyParser(templateData)
+	err := c.Bind().Body(templateData)
 
 	if err != nil {
 		return err
@@ -49,12 +49,12 @@ func RenderPdfFromHtmlFromTemplateHandler(c *fiber.Ctx) error {
 // @Param        renderTemplateData  body  models.RenderTemplateData  true  "Render Data"
 // @Success      200                 {object}  dto.TemplateTestResult
 // @Router       /api/pdf/from/html-template/test [post]
-func TestHtmlTemplateHandler(c *fiber.Ctx) error {
+func TestHtmlTemplateHandler(c fiber.Ctx) error {
 	response := dto.TemplateTestResult{}
 
 	templateData := &models.RenderTemplateData{}
 
-	err := c.BodyParser(templateData)
+	err := c.Bind().Body(templateData)
 
 	if err == nil {
 

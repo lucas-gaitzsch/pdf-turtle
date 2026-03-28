@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/lucas-gaitzsch/pdf-turtle/models"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
 	"github.com/rs/zerolog/log"
@@ -16,8 +16,8 @@ import (
 // @Produce      text/plain
 // @Success      200
 // @Router       /health [get]
-func HealthCheckHandler(c *fiber.Ctx) error {
-	ctx := c.UserContext()
+func HealthCheckHandler(c fiber.Ctx) error {
+	ctx := c.Context()
 
 	log.Ctx(ctx).Debug().Msg("execute health check / liveness probe")
 

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/google/uuid"
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/serverutils"
@@ -68,12 +68,12 @@ func (s *Server) Close(ctx context.Context) {
 
 // ### Handler ###
 
-func GetBundleFileHandler(c *fiber.Ctx) error {
+func GetBundleFileHandler(c fiber.Ctx) error {
 	if c.Method() != http.MethodGet {
 		return c.SendStatus(http.StatusMethodNotAllowed)
 	}
 
-	ctx := c.UserContext()
+	ctx := c.Context()
 
 	bundleIdFromRoute := c.Params(bundleIdKey)
 

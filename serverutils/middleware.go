@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
 	"github.com/lucas-gaitzsch/pdf-turtle/models/dto"
 
@@ -16,12 +16,12 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func ProvideUserCtxMiddleware(ctx context.Context) func(c *fiber.Ctx) error {
-	return func(c *fiber.Ctx) error {
+func ProvideUserCtxMiddleware(ctx context.Context) func(c fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		combinedCtx, cancel := context.WithCancel(ctx)
 		defer cancel()
 
-		requestCtx := c.Context()
+		requestCtx := c.RequestCtx()
 		if requestCtx != nil {
 			go func() {
 				select {
@@ -34,14 +34,14 @@ func ProvideUserCtxMiddleware(ctx context.Context) func(c *fiber.Ctx) error {
 			}()
 		}
 
-		c.SetUserContext(combinedCtx)
+		c.SetContext(combinedCtx)
 		return c.Next()
 	}
 }
 
-func RequestLoggingMiddleware() func(c *fiber.Ctx) error {
-	return func(c *fiber.Ctx) error {
-		ctx := c.UserContext()
+func RequestLoggingMiddleware() func(c fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
+		ctx := c.Context()
 		path := c.Path()
 
 		requestUUID := uuid.New()
@@ -76,13 +76,13 @@ func RequestLoggingMiddleware() func(c *fiber.Ctx) error {
 				)
 		}(time.Now())
 
-		c.SetUserContext(ctx)
+		c.SetContext(ctx)
 		return c.Next()
 	}
 }
 
-func RecoverMiddleware() func(c *fiber.Ctx) error {
-	return func(c *fiber.Ctx) error {
+func RecoverMiddleware() func(c fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		defer func() {
 			if rec := recover(); rec != nil {
 				logRequestErr(c, rec)
@@ -99,8 +99,8 @@ func RecoverMiddleware() func(c *fiber.Ctx) error {
 	}
 }
 
-func logRequestErr(c *fiber.Ctx, anyErr any) error {
-	ctx := c.UserContext()
+func logRequestErr(c fiber.Ctx, anyErr any) error {
+	ctx := c.Context()
 
 	logMsgBuilder := log.Ctx(ctx).
 		Error().
@@ -138,10 +138,10 @@ func logRequestErr(c *fiber.Ctx, anyErr any) error {
 }
 
 // TODO: test
-func SecretMiddleware(secret string) func(c *fiber.Ctx) error {
-	return func(c *fiber.Ctx) error {
+func SecretMiddleware(secret string) func(c fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		authHeader := strings.Split(c.Get("Authorization"), "Bearer ")
-		ctx := c.UserContext()
+		ctx := c.Context()
 
 		if len(authHeader) != 2 {
 			log.Ctx(ctx).Debug().Msg("no valid bearer token")
