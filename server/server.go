@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/config"
@@ -13,9 +12,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
+	"github.com/gofiber/fiber/v3/middleware/recover"
 
 	fiberSwagger "github.com/swaggo/fiber-swagger" // fiber-swagger middleware
 
@@ -50,9 +49,9 @@ func (s *Server) Serve(ctx context.Context) {
 
 	app.Use(
 		cors.New(cors.Config{
-			AllowOrigins:     "*",
-			AllowHeaders:     "*",
-			AllowMethods:     strings.Join([]string{http.MethodGet, http.MethodPost}, ","),
+			AllowOrigins:     []string{"*"},
+			AllowHeaders:     []string{"*"},
+			AllowMethods:     []string{http.MethodGet, http.MethodPost},
 			AllowCredentials: false,
 		}),
 		recover.New(),
@@ -132,13 +131,13 @@ func (s *Server) Close(ctx context.Context) {
 }
 
 func servePlaygroundFronted(app *fiber.App) {
-	app.Get("/assets/*", func(ctx *fiber.Ctx) error {
+	app.Get("/assets/*", func(ctx fiber.Ctx) error {
 		return ctx.SendFile(config.PathStaticExternPlayground + ctx.Path())
 	})
-	app.Get("/favicon.ico", func(ctx *fiber.Ctx) error {
+	app.Get("/favicon.ico", func(ctx fiber.Ctx) error {
 		return ctx.SendFile(config.PathStaticExternPlayground + "favicon.ico")
 	})
-	app.Get("/*", func(ctx *fiber.Ctx) error {
+	app.Get("/*", func(ctx fiber.Ctx) error {
 		return ctx.SendFile(config.PathStaticExternPlayground + "index.html")
 	})
 }

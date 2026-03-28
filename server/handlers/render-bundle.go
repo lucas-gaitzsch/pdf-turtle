@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 
 	"github.com/lucas-gaitzsch/pdf-turtle/services/bundles"
 	"github.com/lucas-gaitzsch/pdf-turtle/services/pdf"
@@ -27,8 +27,8 @@ const (
 // @Param        templateEngine  formData  string  false  "Template engine to use for template (only required for template)"
 // @Success      200             "PDF File"
 // @Router       /api/pdf/from/html-bundle/render [post]
-func RenderBundleHandler(c *fiber.Ctx) error {
-	ctx := c.UserContext()
+func RenderBundleHandler(c fiber.Ctx) error {
+	ctx := c.Context()
 
 	form, err := c.MultipartForm()
 	if err != nil {

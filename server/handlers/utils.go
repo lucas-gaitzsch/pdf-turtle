@@ -6,12 +6,12 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/rs/zerolog/log"
 )
 
-func writePdf(c *fiber.Ctx, data io.Reader) error {
-	ctx := c.UserContext()
+func writePdf(c fiber.Ctx, data io.Reader) error {
+	ctx := c.Context()
 
 	if data == nil {
 		log.Ctx(ctx).Info().Msg("nothing to writeout: pdf data empty")
