@@ -3,7 +3,7 @@ package templateengines
 import (
 	"errors"
 
-	"github.com/flosch/pongo2/v5"
+	"github.com/flosch/pongo2/v6"
 )
 
 const DjangoTemplateEngineKey = "django"
