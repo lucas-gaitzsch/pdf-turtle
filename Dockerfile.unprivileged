@@ -1,4 +1,4 @@
-FROM golang:bullseye AS build-service
+FROM golang:1.26 AS build-service
 WORKDIR /build
 COPY . .
 RUN go build -o pdf-turtle
@@ -11,7 +11,7 @@ RUN npm install
 RUN npm run build
 
 
-FROM chromedp/headless-shell:146.0.7655.3 AS runtime
+FROM chromedp/headless-shell:148.0.7753.0 AS runtime
 WORKDIR /app
 COPY --from=build-service /build/pdf-turtle /app/pdf-turtle
 COPY --from=build-playground /app/dist /app/static-files/extern/playground
