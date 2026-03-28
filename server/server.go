@@ -12,11 +12,10 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	swaggo "github.com/gofiber/contrib/v3/swaggo"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 	"github.com/gofiber/fiber/v3/middleware/recover"
-
-	fiberSwagger "github.com/swaggo/fiber-swagger" // fiber-swagger middleware
 
 	_ "github.com/lucas-gaitzsch/pdf-turtle/server/docs"
 )
@@ -92,7 +91,7 @@ func (s *Server) Serve(ctx context.Context) {
 		Name("Render PDF from HTML-Bundle")
 
 	// Swagger
-	app.Get("/swagger/*", fiberSwagger.WrapHandler)
+	app.Get("/swagger/*", swaggo.HandlerDefault)
 
 	log.
 		Info().
