@@ -11,7 +11,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20260427013145-5737772c319b
 	github.com/chromedp/chromedp v0.15.1
 	github.com/flosch/pongo2/v6 v6.0.0
-	github.com/gofiber/contrib/v3/swaggo v1.0.3
+	github.com/gofiber/contrib/v3/swaggo v1.0.4
 	github.com/gofiber/fiber/v3 v3.2.0
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.35.1
@@ -43,7 +43,7 @@ require (
 	github.com/gofiber/utils/v2 v2.0.4 // indirect
 	github.com/klauspost/compress v1.18.5 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
-	github.com/mattn/go-isatty v0.0.21 // indirect
+	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/swaggo/files/v2 v2.0.2 // indirect
 	github.com/tinylib/msgp v1.6.4 // indirect
