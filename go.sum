@@ -95,6 +95,8 @@ github.com/gofiber/contrib/v3/swaggo v1.0.1 h1:b1pj5CcZhXkj9k2vcO1AnwQ/zE7nva070
 github.com/gofiber/contrib/v3/swaggo v1.0.1/go.mod h1:H1ipNwVlmVepEPP0ydKhXiSQRHWObDNMi9KaT8njs6o=
 github.com/gofiber/contrib/v3/swaggo v1.0.3 h1:su1hkDzXZUYdHnedMcZaxoutgIp897qtwxPRiQN3uW8=
 github.com/gofiber/contrib/v3/swaggo v1.0.3/go.mod h1:HwSUoHIVFiA0A81qw45mU2eClZ9VC/r20THOueiQLOo=
+github.com/gofiber/contrib/v3/swaggo v1.0.4 h1:12chRTXI2TdSfbmJ7PTqgc4XWa+pivPohpP/TvMaQBA=
+github.com/gofiber/contrib/v3/swaggo v1.0.4/go.mod h1:oDvgG3V6e3/ORcPBEGIySw+piVwZEfRvpx751/pQMK4=
 github.com/gofiber/fiber/v3 v3.1.0 h1:1p4I820pIa+FGxfwWuQZ5rAyX0WlGZbGT6Hnuxt6hKY=
 github.com/gofiber/fiber/v3 v3.1.0/go.mod h1:n2nYQovvL9z3Too/FGOfgtERjW3GQcAUqgfoezGBZdU=
 github.com/gofiber/fiber/v3 v3.2.0 h1:g9+09D320foINPpCnR3ibQ5oBEFHjAWRRfDG1te54u8=
@@ -129,6 +131,8 @@ github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWE
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/mattn/go-isatty v0.0.21 h1:xYae+lCNBP7QuW4PUnNG61ffM4hVIfm+zUzDuSzYLGs=
 github.com/mattn/go-isatty v0.0.21/go.mod h1:ZXfXG4SQHsB/w3ZeOYbR0PrPwLy+n6xiMrJlRFqopa4=
+github.com/mattn/go-isatty v0.0.22 h1:j8l17JJ9i6VGPUFUYoTUKPSgKe/83EYU2zBC7YNKMw4=
+github.com/mattn/go-isatty v0.0.22/go.mod h1:ZXfXG4SQHsB/w3ZeOYbR0PrPwLy+n6xiMrJlRFqopa4=
 github.com/orisano/pixelmatch v0.0.0-20220722002657-fb0b55479cde h1:x0TT0RDC7UhAVbbWWBzr41ElhJx5tXPWkIHA2HWPRuw=
 github.com/orisano/pixelmatch v0.0.0-20220722002657-fb0b55479cde/go.mod h1:nZgzbfBr3hhjoZnS66nKrHmduYNpc34ny7RK4z5/HM0=
 github.com/philhofer/fwd v1.2.0 h1:e6DnBTl7vGY+Gz322/ASL4Gyp1FspeMvx1RNDoToZuM=
