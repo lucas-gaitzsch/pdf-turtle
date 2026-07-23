@@ -12,7 +12,7 @@ require (
 	github.com/chromedp/chromedp v0.15.1
 	github.com/flosch/pongo2/v6 v6.1.0
 	github.com/gofiber/contrib/v3/swaggo v1.0.7
-	github.com/gofiber/fiber/v3 v3.3.0
+	github.com/gofiber/fiber/v3 v3.4.0
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.35.1
 	github.com/swaggo/swag v1.16.6
@@ -22,7 +22,7 @@ require (
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/alexflint/go-scalar v1.2.0 // indirect
-	github.com/andybalholm/brotli v1.2.1 // indirect
+	github.com/andybalholm/brotli v1.2.2 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/go-json-experiment/json v0.0.0-20260623181947-01eb4420fa68 // indirect
@@ -39,16 +39,16 @@ require (
 	github.com/gobwas/httphead v0.1.0 // indirect
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.4.0 // indirect
-	github.com/gofiber/schema v1.7.2 // indirect
-	github.com/gofiber/utils/v2 v2.1.0 // indirect
-	github.com/klauspost/compress v1.18.6 // indirect
+	github.com/gofiber/schema v1.8.0 // indirect
+	github.com/gofiber/utils/v2 v2.1.1 // indirect
+	github.com/klauspost/compress v1.19.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/swaggo/files/v2 v2.0.2 // indirect
 	github.com/tinylib/msgp v1.6.4 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.71.0 // indirect
+	github.com/valyala/fasthttp v1.72.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.54.0 // indirect
 	golang.org/x/mod v0.37.0 // indirect
