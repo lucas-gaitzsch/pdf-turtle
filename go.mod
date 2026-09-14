@@ -3,7 +3,7 @@ module github.com/lucas-gaitzsch/pdf-turtle
 go 1.26
 
 require (
-	github.com/PuerkitoBio/goquery v1.12.0
+	github.com/PuerkitoBio/goquery v1.13.0
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/alexflint/go-arg v1.6.1
 	github.com/aymerick/raymond v2.0.2+incompatible
@@ -23,7 +23,7 @@ require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/alexflint/go-scalar v1.2.0 // indirect
 	github.com/andybalholm/brotli v1.2.2 // indirect
-	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/andybalholm/cascadia v1.3.4 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/go-json-experiment/json v0.0.0-20260820222146-c27c302e5fc3 // indirect
 	github.com/go-openapi/jsonpointer v1.0.0 // indirect
