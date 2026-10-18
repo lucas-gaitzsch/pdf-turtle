@@ -1,6 +1,6 @@
 module github.com/lucas-gaitzsch/pdf-turtle
 
-go 1.26.0
+go 1.27
 
 require (
 	github.com/PuerkitoBio/goquery v1.13.0
@@ -8,7 +8,7 @@ require (
 	github.com/alexflint/go-arg v1.6.1
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/boombuler/barcode v1.1.0
-	github.com/chromedp/cdproto v0.0.0-20260912003405-686a5c723acc
+	github.com/chromedp/cdproto v0.157.6
 	github.com/chromedp/chromedp v0.16.0
 	github.com/flosch/pongo2/v6 v6.1.0
 	github.com/gofiber/contrib/v3/swaggo v1.0.11
