@@ -1,4 +1,4 @@
-FROM golang:1.26 AS build-service
+FROM golang:1.27 AS build-service
 WORKDIR /build
 COPY . .
 RUN go build -o pdf-turtle
