@@ -11,6 +11,7 @@ import (
 
 	"github.com/rs/zerolog/log"
 
+	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
 )
@@ -41,7 +42,7 @@ func NewChromiumBrowser(ctx context.Context) (context.Context, context.CancelFun
 	cctx, cancelCctx := chromedp.NewContext(allocCtx)
 
 	// Keep chromium browser process running
-	if err := chromedp.Run(cctx); err != nil {
+	if err := chromedp.Do(cctx); err != nil {
 		log.Error().Err(err).Msg("chromium browser could not be initialized")
 		panic(err)
 	}
@@ -57,7 +58,7 @@ func NewChromiumBrowser(ctx context.Context) (context.Context, context.CancelFun
 	return cctx, cancel
 }
 
-type OptionsConfigureFunc func(params *page.PrintToPDFParams) *page.PrintToPDFParams
+type OptionsConfigureFunc func(params *page.PrintToPDFParams)
 
 func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context, location string, html *string, optionsConfigureFunc OptionsConfigureFunc) (io.Reader, error) {
 	if html == nil && location == "" {
@@ -81,67 +82,53 @@ func RenderHtmlAsPdf(chromiumAllocCtx context.Context, outerCtx context.Context,
 	}()
 
 	var pdfStream io.Reader
-	tasks := chromedp.Tasks{
+	tasks := []chromedp.Action[chromedp.Void]{
 		chromedp.Navigate(location),
-
-		chromedp.ActionFunc(func(cctx context.Context) error {
-			lctx, cancelLctx := context.WithCancel(cctx)
-			defer cancelLctx()
-
-			done := make(chan bool, 1)
-
-			chromedp.ListenTarget(lctx, func(ev any) {
-				if _, ok := ev.(*page.EventLoadEventFired); ok {
-					cancelLctx()
-					done <- true
-				}
-			})
-
-			frameTree, err := page.GetFrameTree().Do(cctx)
-			if err != nil {
-				return err
-			}
-
-			if html != nil {
-				if err := page.SetDocumentContent(frameTree.Frame.ID, *html).Do(cctx); err != nil {
-					return err
-				}
-			}
-
-			select {
-			case <-done:
-				return nil
-			case <-time.After(time.Duration(config.Get(outerCtx).RenderTimeoutInSeconds) * time.Second):
-				return errors.New("render timeout")
-			case <-outerCtx.Done():
-				return errors.New("canceled by outer ctx")
-			}
-		}),
-
-		// injectCss(preloadedMergedCss),
-
-		chromedp.ActionFunc(func(cctx context.Context) error {
-			params := page.PrintToPDF()
-			b, _, err := optionsConfigureFunc(params).Do(cctx)
-
-			pdfStream = bytes.NewReader(b)
-
-			return err
-		}),
 	}
 
-	if err := chromedp.Run(cctx, runWithTimeOut(outerCtx, tasks)); err != nil {
+	if html != nil {
+		tasks = append(tasks, chromedp.Func(func(ctx context.Context, target *chromedp.Target) error {
+			_, err := chromedp.WaitEvent(page.LoadEventFired, nil,
+				chromedp.Func(func(ctx context.Context, target *chromedp.Target) error {
+					frameTree, err := cdp.Call(ctx, target, page.GetFrameTree, cdp.Empty{})
+					if err != nil {
+						return err
+					}
+
+					_, err = cdp.Call(ctx, target, page.SetDocumentContent, page.SetDocumentContentParams{
+						FrameID: frameTree.FrameTree.Frame.ID,
+						HTML:    *html,
+					})
+					return err
+				}),
+			)(ctx, target)
+			return err
+		}))
+	}
+
+	// injectCss(preloadedMergedCss)
+
+	tasks = append(tasks, chromedp.Func(func(ctx context.Context, target *chromedp.Target) error {
+		params := page.PrintToPDFParams{}
+		optionsConfigureFunc(&params)
+
+		result, err := cdp.Call(ctx, target, page.PrintToPDF, params)
+		pdfStream = bytes.NewReader(result.Data)
+		return err
+	}))
+
+	if err := chromedp.Do(cctx, runWithTimeOut(outerCtx, chromedp.Steps(tasks...))); err != nil {
 		return nil, err
 	}
 
 	return pdfStream, nil
 }
 
-func runWithTimeOut(outerCtx context.Context, tasks chromedp.Tasks) chromedp.ActionFunc {
+func runWithTimeOut(outerCtx context.Context, tasks chromedp.Action[chromedp.Void]) chromedp.Action[chromedp.Void] {
 	timeout := time.Duration(config.Get(outerCtx).RenderTimeoutInSeconds) * time.Second
-	return func(ctx context.Context) error {
+	return func(ctx context.Context, target *chromedp.Target) (chromedp.Void, error) {
 		timeoutCtx, cancel := context.WithTimeout(ctx, timeout)
 		defer cancel()
-		return tasks.Do(timeoutCtx)
+		return tasks(timeoutCtx, target)
 	}
 }

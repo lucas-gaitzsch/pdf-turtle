@@ -82,7 +82,7 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 
 	hasHeaderOrFooter := data.HasHeaderOrFooterHtml()
 
-	paramsFunc := func(params *page.PrintToPDFParams) *page.PrintToPDFParams {
+	paramsFunc := func(params *page.PrintToPDFParams) {
 
 		margins := models.RenderOptionsMargins{}
 
@@ -92,16 +92,16 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 			data.RenderOptions.Margins = &margins
 		}
 
-		params = params.WithPrintBackground(false).
-			WithPreferCSSPageSize(false).
-			WithDisplayHeaderFooter(hasHeaderOrFooter).
-			WithLandscape(data.RenderOptions.Landscape).
-			WithPaperWidth(utils.MmToInches(data.RenderOptions.PageSize.Width)).
-			WithPaperHeight(utils.MmToInches(data.RenderOptions.PageSize.Height)).
-			WithMarginTop(utils.MmToInches(margins.Top)).
-			WithMarginRight(utils.MmToInches(margins.Right) + magicBodyPaddingInInches).
-			WithMarginBottom(utils.MmToInches(margins.Bottom)).
-			WithMarginLeft(utils.MmToInches(margins.Left) + magicBodyPaddingInInches)
+		params.PrintBackground = new(false)
+		params.PreferCSSPageSize = new(false)
+		params.DisplayHeaderFooter = new(hasHeaderOrFooter)
+		params.Landscape = new(data.RenderOptions.Landscape)
+		params.PaperWidth = utils.MmToInches(data.RenderOptions.PageSize.Width)
+		params.PaperHeight = utils.MmToInches(data.RenderOptions.PageSize.Height)
+		params.MarginTop = new(utils.MmToInches(margins.Top))
+		params.MarginRight = new(utils.MmToInches(margins.Right) + magicBodyPaddingInInches)
+		params.MarginBottom = new(utils.MmToInches(margins.Bottom))
+		params.MarginLeft = new(utils.MmToInches(margins.Left) + magicBodyPaddingInInches)
 
 		if hasHeaderOrFooter {
 			var headerFooterWidth int
@@ -160,12 +160,9 @@ func (r *HtmlToPdfRendererChromium) RenderHtmlAsPdf(ctx context.Context, data *m
 			headerHtmlPtr = utils.RequestAndInlineAllHtmlResources(ctx, headerHtmlPtr, data.RenderOptions.BasePath)
 			footerHtmlPtr = utils.RequestAndInlineAllHtmlResources(ctx, footerHtmlPtr, data.RenderOptions.BasePath)
 
-			params = params.
-				WithHeaderTemplate(*headerHtmlPtr).
-				WithFooterTemplate(*footerHtmlPtr)
+			params.HeaderTemplate = *headerHtmlPtr
+			params.FooterTemplate = *footerHtmlPtr
 		}
-
-		return params
 	}
 
 	bodyHtml := data.Html
