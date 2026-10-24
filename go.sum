@@ -203,6 +203,8 @@ github.com/gofiber/contrib/v3/swaggo v1.0.11 h1:1p3Bo6zb4jCWQoT4A4KliDmjmpIw6coo
 github.com/gofiber/contrib/v3/swaggo v1.0.11/go.mod h1:vchYSzcGth8lFtJsvTU+q0E9OUki2G/kGcVgnY34JBQ=
 github.com/gofiber/contrib/v3/swaggo v1.0.13 h1:5+rAjSv5STSaMwSFG4LaCjj5kLj0j8TuCrI4bToC+xY=
 github.com/gofiber/contrib/v3/swaggo v1.0.13/go.mod h1:V036Mp/0Y94U/kYnNlJhcUFo+y7gYdfrmiBFZ6s161Q=
+github.com/gofiber/contrib/v3/swaggo v1.0.14 h1:uaHSulZGSKkvLlbSM05LP/aO3lZfPGH0lRilawRBDaE=
+github.com/gofiber/contrib/v3/swaggo v1.0.14/go.mod h1:5S27pP+FqZ+IPBtChtNYUQhaqkSJgG+DRvDVqCIHbLE=
 github.com/gofiber/fiber/v3 v3.1.0 h1:1p4I820pIa+FGxfwWuQZ5rAyX0WlGZbGT6Hnuxt6hKY=
 github.com/gofiber/fiber/v3 v3.1.0/go.mod h1:n2nYQovvL9z3Too/FGOfgtERjW3GQcAUqgfoezGBZdU=
 github.com/gofiber/fiber/v3 v3.2.0 h1:g9+09D320foINPpCnR3ibQ5oBEFHjAWRRfDG1te54u8=
@@ -229,6 +231,8 @@ github.com/gofiber/schema v1.8.6 h1:xVlbSg3vsyKVlfzRBps2tJ7pHx1d8mSgiaJye6Lb3xs=
 github.com/gofiber/schema v1.8.6/go.mod h1:Cxh3loYVG3FLA7FzW4C5G83pL/pmCmAnuaIJ5y2HwkU=
 github.com/gofiber/schema v1.8.8 h1:md5t65+Z9LttOuj7FdMcQ63D2+6GniT2ganLXwvTJM4=
 github.com/gofiber/schema v1.8.8/go.mod h1:Hzf0L/fTPP1IwOAwKipKflm9C2722aebnSKJCMOgb1I=
+github.com/gofiber/schema v1.9.0 h1:Dahwvth6qy1ELuHUkxk4ca+pW9zTBlak+Sw7pWJ7Iek=
+github.com/gofiber/schema v1.9.0/go.mod h1:M0dV/AiPKfzHazzSkCPqragxubCvz8pP2GjJmFBsG+w=
 github.com/gofiber/utils/v2 v2.0.2 h1:ShRRssz0F3AhTlAQcuEj54OEDtWF7+HJDwEi/aa6QLI=
 github.com/gofiber/utils/v2 v2.0.2/go.mod h1:+9Ub4NqQ+IaJoTliq5LfdmOJAA/Hzwf4pXOxOa3RrJ0=
 github.com/gofiber/utils/v2 v2.0.3 h1:qJyfS/t7s7Z4+/zlU1i1pafYNP2+xLupVPgkW8ce1uI=
@@ -295,6 +299,8 @@ github.com/orisano/pixelmatch v0.0.0-20220722002657-fb0b55479cde h1:x0TT0RDC7UhA
 github.com/orisano/pixelmatch v0.0.0-20220722002657-fb0b55479cde/go.mod h1:nZgzbfBr3hhjoZnS66nKrHmduYNpc34ny7RK4z5/HM0=
 github.com/philhofer/fwd v1.2.0 h1:e6DnBTl7vGY+Gz322/ASL4Gyp1FspeMvx1RNDoToZuM=
 github.com/philhofer/fwd v1.2.0/go.mod h1:RqIHx9QI14HlwKwm98g9Re5prTQ6LdeRQn+gXJFxsJM=
+github.com/philhofer/fwd v1.2.1 h1:UtpS73q8bFgy/yH3gCq8LSNvj5gv/FowNOiWZa7uKwQ=
+github.com/philhofer/fwd v1.2.1/go.mod h1:RqIHx9QI14HlwKwm98g9Re5prTQ6LdeRQn+gXJFxsJM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
@@ -335,6 +341,8 @@ github.com/valyala/fasthttp v1.74.0 h1:wMS9fnO2QTALozYx5pId2Vi7ZwU/epUkY8i/KPWCH
 github.com/valyala/fasthttp v1.74.0/go.mod h1:3ARmLamUcw7ElxVtC8PXaGzQ6VEuvnetlkrwIklQBSE=
 github.com/valyala/fasthttp v1.75.0 h1:W3xrvNJHG60j2ZCjxpP8kkB+oPG8kh9/g1n4+3xUwNA=
 github.com/valyala/fasthttp v1.75.0/go.mod h1:JiVkPRZU124PuPsreV/s9dZRgG2lRK7wNEikdQ0Rk4s=
+github.com/valyala/fasthttp v1.76.0 h1:QitrT4foDQuqvUnr/hzmQUDbYzV12Zz4vkLOlipU4Cw=
+github.com/valyala/fasthttp v1.76.0/go.mod h1:m8oTPC8riDDky07invpl+Gz3RixnAN5BbwyUuVB5H2o=
 github.com/x448/float16 v0.8.4 h1:qLwI1I70+NjRFUR3zs1JPUCgaCXSh3SW62uAKT1mSBM=
 github.com/x448/float16 v0.8.4/go.mod h1:14CWIYCyZA/cWjXOioeEpHeN/83MdbZDRQHoFcYsOfg=
 github.com/xyproto/randomstring v1.0.5 h1:YtlWPoRdgMu3NZtP45drfy1GKoojuR7hmRcnhZqKjWU=
