@@ -16,7 +16,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.35.1
 	github.com/swaggo/swag v1.16.6
-	golang.org/x/net v0.61.0
+	golang.org/x/net v0.62.0
 )
 
 require (
