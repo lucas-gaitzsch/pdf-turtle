@@ -9,7 +9,7 @@ require (
 	github.com/aymerick/raymond v2.0.2+incompatible
 	github.com/boombuler/barcode v1.1.0
 	github.com/chromedp/cdproto v0.159.3
-	github.com/chromedp/chromedp v0.22.1
+	github.com/chromedp/chromedp v0.23.0
 	github.com/flosch/pongo2/v6 v6.1.0
 	github.com/gofiber/contrib/v3/swaggo v1.0.17
 	github.com/gofiber/fiber/v3 v3.7.0
