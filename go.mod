@@ -7,7 +7,7 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20211024235047-1546f124cd8b
 	github.com/alexflint/go-arg v1.6.1
 	github.com/aymerick/raymond v2.0.2+incompatible
-	github.com/boombuler/barcode v1.1.0
+	github.com/boombuler/barcode v1.1.1
 	github.com/chromedp/cdproto v0.160.0
 	github.com/chromedp/chromedp v0.22.1
 	github.com/flosch/pongo2/v6 v6.1.0
